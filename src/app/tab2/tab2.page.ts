@@ -25,16 +25,19 @@ export class Tab2Page implements OnInit, AfterViewInit {
   asociatedIdAlert: any;
   bellAlert: number = 0;
   ticketNumber: string;
-  ticketName: string="Gustavo Valerin Zamora";
+  ticketName: any;
   ticketUbi: string;
   ticketDesti: string;
-  NumberPosition: string;
+  ticketPosition: any;
   person: any;
   beaconsPoints: any;
   lastBeacon: any;
   timeLeft: number = 60;
   content: String;
+  createdTicket: any;
+  ticketStatus: any;
   interval;
+  generatedServices: any;
 
   constructor(private services: CrudService,
     private params: UtilsService,
@@ -49,11 +52,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.getInfoTickets();
-    //this.getTicketInfo();
-    //this. getTicketName();
-    //this. getTicketUbi();
-    //this.getTicketDesti();
+    this.GenerateServices();
   }
 
   ngAfterViewInit() {
@@ -64,7 +63,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       //this.getLastBeacon();
       //this.getUserLogged(); es bueno
       this.getAsociatedAlerts();
-      this. getTicketName();
+      this.getTicketName();
       //this.getUserPosition();
       this.presentLoadingDefault()
     }, 1000);
@@ -72,12 +71,37 @@ export class Tab2Page implements OnInit, AfterViewInit {
       this.getTicketInfo();
       this.getTicketUbi();
       this.getTicketDesti();
-      this.getNumberPosition();
+      this.getTicketPosition();
     }, 5000);
   }
 
+  //Metodo de PRUEBA que crea los servicios para crear un tiquete
+  GenerateServices(){
+    this.services.saveTicket('http://localhost:56673/api/orchestra_services', null).subscribe((resp) => {
+      this.generatedServices = resp;
+      this.storeService.localSave(this.localParam.localParam.ticketServices, this.generatedServices);
+
+      console.log(this.generatedServices);
+    }, (err) => {
+      console.error(err);
+    });
+  }
+
+  //Metodo que trae los servicios existentes para crear tiquetes
+  getTicketServices(){
+    this.services.get('http://localhost:56673/api/orchestra_services').subscribe((resp) => {
+      this.generatedServices = resp;
+      this.storeService.localSave(this.localParam.localParam.ticketServices, this.generatedServices);
+
+      console.log(this.generatedServices);
+    }, (err) => {
+      console.error(err);
+    });
+  }
+
+  //Metodo para el numero del tiquete
   getTicketInfo() {
-    if (this.ticketNumber != "") {
+    /*if (this.ticketNumber != "") {
       this.ticketNumber = "A36";
       this.setVibration();
       this.interval = setInterval(() => {
@@ -92,32 +116,60 @@ export class Tab2Page implements OnInit, AfterViewInit {
           this.timeLeft = 60;
         }
       }, 1000)
-    }
+    }*/
+    this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
+      this.createdTicket = resp;
+      if(!this.createdTicket){
+        this.ticketNumber = "No se ha creado un tiquete";
+      }else if(this.createdTicket){
+        this.ticketNumber = this.createdTicket.ticketNumber;
+        this.setVibration();
+      }
+    }, (err) => {
+      console.error(err);
+    });
   }
+
+  //Metodo que pone el nombre de la persona en el tiquete
   getTicketName() {
-    if (this.ticketName != "") {
-      this.ticketName="Gustavo Valerin Zamora"
-    }
+    this.storeService.localGet(this.localParam.localParam.userLogged).then((resp) => {
+      this.person = resp;
+      if(!this.person){
+        this.ticketName = "Inicie sesión";
+      }else if(this.person){
+        this.ticketName = this.person.person.name;
+      }
+    }, (err) => {
+      console.error(err);
+    });
   }
+
   getTicketUbi() {
     if (this.ticketUbi != "") {
       this.ticketUbi = "Pasillo Mujeres Sur";
     }
   }
+
   getTicketDesti() {
     if (this.ticketDesti != "") {
       this.ticketDesti = "Pasillo Hombres Norte";
     }
   }
-  getNumberPosition() {
-    if (this.NumberPosition != "") {
-      let x = 1;
-      this.NumberPosition = x + " people left";
-      if (x = 1) {
-        this.presentAlert();
+
+  //Metodo para saber cuantas personas hay en la fila
+  getTicketPosition() {
+    this.storeService.localGet(this.localParam.localParam.ticketStatus).then((resp) => {
+      this.ticketStatus = resp;
+      if(!this.ticketStatus){
+        this.ticketPosition = "No se ha creado un tiquete";
+      }else if(this.ticketStatus){
+        this.ticketPosition = this.ticketStatus.position+" People left";
       }
-    }
+    }, (err) => {
+      console.error(err);
+    });
   }
+
   setVibration() {
     navigator.vibrate([500, 500, 500]);
     console.log("Esta vibrando");
@@ -205,16 +257,6 @@ export class Tab2Page implements OnInit, AfterViewInit {
         console.log(toast);
       }
     );
-  }
-
-  //Metodo de prueba del api de los tiquetes
-  getInfoTickets() {
-    this.services.get('http://localhost:56673/api/orchestra_createTicket1/1').subscribe((resp) => {
-      this.tickets = resp;
-      console.log(this.tickets);
-    }, (err) => {
-      console.error(err);
-    });
   }
 
   QR() {

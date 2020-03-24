@@ -11,8 +11,11 @@
   </ion-button>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
-  <ngx-charts-line-chart
+<ion-content class="ion-padding center">
+  <ion-card-content>
+    <ion-title class="title">Emergency Services</ion-title>
+    <br>
+  <!--<ngx-charts-line-chart
  
       [view]="view"
       [scheme]="colorScheme"
@@ -30,5 +33,10 @@
       [yScaleMax]="yScaleMax"
       [yScaleMin]="yScaleMin"
       (select)="onSelect($event)">
-  </ngx-charts-line-chart>
+  </ngx-charts-line-chart>-->
+  <p class="text">Select an option:</p>
+  <ion-list *ngFor="let ts of ticketServices">
+      <ion-button class="btnServices" (click)="go(ts.id)">{{ts.name}}</ion-button>
+  </ion-list>
+</ion-card-content>
   </ion-content>

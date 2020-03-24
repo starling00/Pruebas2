@@ -10,6 +10,9 @@ export class UtilStorageService {
     alertsId:"",
     gatewaybeacons:"",
     lastBeacon:"",
+    createdTicket:"",
+    ticketStatus:"",
+    ticketServices:"",
   }
 
   constructor() { 
@@ -18,5 +21,8 @@ export class UtilStorageService {
     this.localParam.alertsId = "alerts-id";
     this.localParam.gatewaybeacons = "gatewaybeacons";
     this.localParam.lastBeacon = "last-beacon";
+    this.localParam.createdTicket = "created-ticket";
+    this.localParam.ticketStatus = "ticket-status";
+    this.localParam.ticketServices = "ticket-services";
   }
 }
