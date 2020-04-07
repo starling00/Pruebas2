@@ -36,6 +36,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   content: String;
   createdTicket: any;
   ticketStatus: any;
+  refreshedTicket: any;
   interval;
   generatedServices: any;
 
@@ -72,6 +73,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       this.getTicketUbi();
       this.getTicketDesti();
       this.getTicketPosition();
+      this.timer();
     }, 5000);
   }
 
@@ -145,15 +147,29 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   getTicketUbi() {
-    if (this.ticketUbi != "") {
-      this.ticketUbi = "Pasillo Mujeres Sur";
-    }
+    this.storeService.localGet(this.localParam.localParam.ticketStatus).then((resp) => {
+      this.ticketStatus = resp;
+      if(!this.ticketStatus){
+        this.ticketUbi = "No se ha creado un tiquete";
+      }else if(this.ticketStatus){
+        this.ticketUbi = this.ticketStatus.queueName;
+      }
+    }, (err) => {
+      console.error(err);
+    });
   }
 
   getTicketDesti() {
-    if (this.ticketDesti != "") {
-      this.ticketDesti = "Pasillo Hombres Norte";
-    }
+    this.storeService.localGet(this.localParam.localParam.ticketStatus).then((resp) => {
+      this.ticketStatus = resp;
+      if(!this.ticketStatus){
+        this.ticketDesti = "No se ha creado un tiquete";
+      }else if(this.ticketStatus){
+        this.ticketDesti = this.ticketStatus.queueName;
+      }
+    }, (err) => {
+      console.error(err);
+    });
   }
 
   //Metodo para saber cuantas personas hay en la fila
@@ -168,6 +184,34 @@ export class Tab2Page implements OnInit, AfterViewInit {
     }, (err) => {
       console.error(err);
     });
+  }
+
+  refreshTicket(){
+    this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
+      this.createdTicket = resp;
+      let visitId = this.createdTicket.visitId;
+      let checksum = this.createdTicket.checksum;
+      this.services.get('http://localhost:56673/api/orchestra_ticketStatus/'+visitId+'/'+checksum).subscribe((resp) => {
+        this.refreshedTicket = resp;
+        this.ticketPosition = this.refreshedTicket.position+" People left";
+        this.ticketNumber = this.refreshedTicket.ticketId;
+        //this.ticketDesti = this.refreshedTicket.queueName;
+        console.log(this.refreshedTicket);
+      }, (err) => {
+        if(err.status == 404){
+          this.ticketNumber = "Atendido";
+          this.ticketPosition = 0+" People left";
+        }
+      });
+    }, (err) => {
+      console.error(err);
+    });
+  }
+
+  timer() {
+    this.interval = setInterval(() => {
+      this.refreshTicket();
+    }, 10000);
   }
 
   setVibration() {
