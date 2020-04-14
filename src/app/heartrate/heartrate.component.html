@@ -13,7 +13,7 @@
 </ion-header>
 <ion-content class="ion-padding center">
   <ion-card-content>
-    <ion-title class="title">Emergency Services</ion-title>
+    <ion-title class="title">Servicios:</ion-title>
     <br>
   <!--<ngx-charts-line-chart
  
@@ -34,7 +34,7 @@
       [yScaleMin]="yScaleMin"
       (select)="onSelect($event)">
   </ngx-charts-line-chart>-->
-  <p class="text">Select an option:</p>
+  <p class="text">Seleccione una opción:</p>
   <ion-list *ngFor="let ts of ticketServices">
       <ion-button class="btnServices" (click)="go(ts.id)">{{ts.name}}</ion-button>
   </ion-list>

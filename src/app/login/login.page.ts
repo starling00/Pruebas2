@@ -84,6 +84,7 @@ export class LoginPage implements OnInit {
     });
   }
 
+  //Revisa si existe una persona en el local storage
   getUserLogged(){
     this.storeService.localGet(this.localParam.localParam.userLogged).then((resp) => {
       this.person = resp;

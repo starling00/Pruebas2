@@ -77,9 +77,9 @@ export class Tab2Page implements OnInit, AfterViewInit {
     }, 5000);
   }
 
-  //Metodo de PRUEBA que crea los servicios para crear un tiquete
+  //Metodo que crea los servicios para crear un tiquete
   GenerateServices(){
-    this.services.saveTicket('http://localhost:56673/api/orchestra_services', null).subscribe((resp) => {
+    this.services.saveTicket(this.params.params.ticketServices, null).subscribe((resp) => {
       this.generatedServices = resp;
       this.storeService.localSave(this.localParam.localParam.ticketServices, this.generatedServices);
 
@@ -89,7 +89,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     });
   }
 
-  //Metodo que trae los servicios existentes para crear tiquetes
+  //Metodo de PRUEBA que trae los servicios existentes para crear tiquetes
   getTicketServices(){
     this.services.get('http://localhost:56673/api/orchestra_services').subscribe((resp) => {
       this.generatedServices = resp;
@@ -122,7 +122,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
       this.createdTicket = resp;
       if(!this.createdTicket){
-        this.ticketNumber = "No se ha creado un tiquete";
+        this.ticketNumber = "No hay tiquete";
       }else if(this.createdTicket){
         this.ticketNumber = this.createdTicket.ticketNumber;
         this.setVibration();
@@ -146,6 +146,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     });
   }
 
+  //Metodo para poner la ubicacion del tiquete
   getTicketUbi() {
     this.storeService.localGet(this.localParam.localParam.ticketStatus).then((resp) => {
       this.ticketStatus = resp;
@@ -159,6 +160,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     });
   }
 
+  //Metodo para poner el destino del tiquete
   getTicketDesti() {
     this.storeService.localGet(this.localParam.localParam.ticketStatus).then((resp) => {
       this.ticketStatus = resp;
@@ -179,30 +181,36 @@ export class Tab2Page implements OnInit, AfterViewInit {
       if(!this.ticketStatus){
         this.ticketPosition = "No se ha creado un tiquete";
       }else if(this.ticketStatus){
-        this.ticketPosition = this.ticketStatus.position+" People left";
+        this.ticketPosition = this.ticketStatus.position+" personas adelante";
       }
     }, (err) => {
       console.error(err);
     });
   }
 
+  //Revisa si existe un tiquete creado, si existe hace un get del tiquete nuevamente para refrescarlo
   refreshTicket(){
     this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
       this.createdTicket = resp;
-      let visitId = this.createdTicket.visitId;
-      let checksum = this.createdTicket.checksum;
-      this.services.get('http://localhost:56673/api/orchestra_ticketStatus/'+visitId+'/'+checksum).subscribe((resp) => {
-        this.refreshedTicket = resp;
-        this.ticketPosition = this.refreshedTicket.position+" People left";
-        this.ticketNumber = this.refreshedTicket.ticketId;
-        //this.ticketDesti = this.refreshedTicket.queueName;
-        console.log(this.refreshedTicket);
-      }, (err) => {
-        if(err.status == 404){
-          this.ticketNumber = "Atendido";
-          this.ticketPosition = 0+" People left";
-        }
-      });
+      if(this.createdTicket){
+        let visitId = this.createdTicket.visitId;
+        let checksum = this.createdTicket.checksum;
+        this.services.get(this.params.params.ticketStatus+'/'+visitId+'/'+checksum).subscribe((resp) => {
+          this.refreshedTicket = resp;
+          this.ticketPosition = this.refreshedTicket.position+" personas adelante";
+          if(this.refreshedTicket.position == null){
+            this.ticketPosition = 0+" personas adelante";
+          }
+          this.ticketNumber = this.refreshedTicket.ticketId;
+          //this.ticketDesti = this.refreshedTicket.queueName;
+          console.log(this.refreshedTicket);
+        }, (err) => {
+          if(err.status == 404){
+            this.ticketNumber = "Atendido";
+            this.ticketPosition = 0+" personas adelante";
+          }
+        });
+      }
     }, (err) => {
       console.error(err);
     });
@@ -261,7 +269,6 @@ export class Tab2Page implements OnInit, AfterViewInit {
   getAsociatedId() {
     this.storeService.localGet(this.localParam.localParam.alertsId).then((resp) => {
       this.asociatedId = resp;
-      console.log(this.asociatedId);
     }, (err) => {
       console.error(err);
     });
@@ -380,7 +387,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   //alert
   async presentLoadingDefault() {
     let loading = await this.loadingCtrl.create({
-      message: 'Please wait...'
+      message: 'Por favor espere...'
     });
 
     loading.present();
@@ -391,7 +398,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
   async presentLoadingDefaults() {
     let loading = await this.loadingCtrl.create({
-      message: 'Please wait...'
+      message: 'Por favor espere...'
     });
 
     loading.present();
@@ -407,7 +414,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       header: 'Alert',
       subHeader: '',
       message:
-        'it is your turn',
+        'Es su turno',
       buttons: [{
         text: 'OK',
         role: 'OK',

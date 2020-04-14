@@ -48,8 +48,10 @@ export class UtilsService {
     personalert:"",
     assetalert:"",
     heartrate:"",
-    gatewaybeacons:""
-
+    gatewaybeacons:"",
+    ticketCreate:"",
+    ticketServices:"",
+    ticketStatus:""
    };
 
    mapwizeParams = {
@@ -57,6 +59,7 @@ export class UtilsService {
    }
   constructor() { 
     var newserverURL = 'http://35.222.165.70/summit/api/';
+    var ticketsURL = 'http://35.222.165.70/summitOrchestraTicket/api/';
     this.params.serverurl = newserverURL;
     this.params.registerurl = newserverURL+"register";
     this.params.loginurl = newserverURL+"users/login";
@@ -105,7 +108,9 @@ export class UtilsService {
     var apikey= "?api_key=439578d65ac560a55bb586feaa299bf7";
     this.mapwizeParams.searchdirection = mapwizeurl+ "directions"+apikey;
 
-
+    this.params.ticketCreate = ticketsURL+"orchestra_createTicket";
+    this.params.ticketServices = ticketsURL+"orchestra_services";
+    this.params.ticketStatus = ticketsURL+"orchestra_ticketStatus";
   }//fin de bob
 
 

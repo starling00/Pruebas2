@@ -115,7 +115,7 @@ getHeartData(){
   }
 
   getTicketStatus(visitId){
-    this.service.get('http://localhost:56673/api/orchestra_ticketStatus/'+visitId).subscribe((resp) => {
+    this.service.get(this.params.params.ticketStatus+'/'+visitId).subscribe((resp) => {
       this.ticketStatus = resp;
       this.storeService.localSave(this.localParam.localParam.ticketStatus, this.ticketStatus);
 
@@ -126,7 +126,7 @@ getHeartData(){
   }
 
   createTicket(id){
-    this.service.saveTicket('http://localhost:56673/api/orchestra_createTicket/'+id, null).subscribe((resp) => {
+    this.service.saveTicket(this.params.params.ticketCreate+'/'+id, null).subscribe((resp) => {
       this.createdTicket = resp;
       this.storeService.localSave(this.localParam.localParam.createdTicket, this.createdTicket);
 
