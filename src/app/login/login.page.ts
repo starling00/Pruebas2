@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams } from '@ionic/angular';
+import { NavController, NavParams, LoadingController } from '@ionic/angular';
 import { CrudService } from '../services/crud.service';
 import { Storage } from '@ionic/storage';
 import { UtilsService } from '../services/utils.service';
@@ -38,6 +38,7 @@ export class LoginPage implements OnInit {
     private params: UtilsService,
     private router: Router,
     private toast: Toast,
+    public loadingCtrl: LoadingController,
     /*public formBuilder: FormBuilder*/)
      {
       /*this.loginForm = formBuilder.group({
@@ -47,12 +48,12 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    this.getUserLogged();
-    setTimeout(() => {
+    //this.getUserLogged();
+    /*setTimeout(() => {
       if(this.person.person != null){
         this.router.navigateByUrl('/menu/first/tabs/tab2');
       }
-    }, 1000);
+    }, 1000);*/
   }
 
   alert(msg: string) {
@@ -65,23 +66,38 @@ export class LoginPage implements OnInit {
 
   login() {
 
-    this.service.get(this.params.params.staffurl + "/asocieted/cid/" + this.cedula).subscribe((resp) => {
+    this.getBeconsPoints();
+    this.presentLoadingDefault();
+      setTimeout(() => {
+        this.router.navigateByUrl('/heart-rate');
+      }, 0);
+
+    /*this.service.get(this.params.params.staffurl + "/asocieted/cid/" + this.cedula).subscribe((resp) => {
 
       this.userdata = resp;
 
       this.storeService.localSave(this.localParam.localParam.userLogged, this.userdata);
       //this.storeService.localSave(this.localParam.localParam.alerts, 10);
       this.getAsociatedAlerts();
-      this.getBeconsPoints();
-      setTimeout(() => {
-        this.router.navigateByUrl('/menu/first/tabs/tab2');
-      }, 0);
+      
 
       console.log(this.userdata);
     }, (err) => {
       console.error(err);
       this.alert(JSON.stringify(err));
+    });*/
+  }
+
+  async presentLoadingDefault() {
+    let loading = await this.loadingCtrl.create({
+      message: 'Por favor espere...'
     });
+
+    loading.present();
+
+    setTimeout(() => {
+      loading.dismiss();
+    }, 4000);
   }
 
   //Revisa si existe una persona en el local storage

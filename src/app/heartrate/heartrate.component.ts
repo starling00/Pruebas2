@@ -17,6 +17,7 @@ export class HeartrateComponent implements OnInit {
   createdTicket: any;
   ticketServices: any;
   serviceId: any;
+  generatedServices: any;
 
   pages=[
     { title: 'Home',
@@ -107,8 +108,21 @@ getHeartData(){
   ngOnInit() {
     //this.getHeartData();
     //this.timer();
-    this.getServices();
+    //this.getServices();
+    this.GenerateServices();
   }
+
+  GenerateServices(){
+    this.service.saveTicket(this.params.params.ticketServices, null).subscribe((resp) => {
+      this.ticketServices = resp;
+      this.storeService.localSave(this.localParam.localParam.ticketServices, this.ticketServices);
+
+      console.log(this.ticketServices);
+    }, (err) => {
+      console.error(err);
+    });
+  }
+
   go(id) {
     this.createTicket(id);
     this.router.navigateByUrl('/menu/first/tabs/tab2');

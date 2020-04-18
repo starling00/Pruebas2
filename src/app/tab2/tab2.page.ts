@@ -39,6 +39,8 @@ export class Tab2Page implements OnInit, AfterViewInit {
   refreshedTicket: any;
   interval;
   generatedServices: any;
+  stopPopUp = false;
+  popUp: any;
 
   constructor(private services: CrudService,
     private params: UtilsService,
@@ -53,20 +55,21 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.GenerateServices();
+    //this.GenerateServices();
   }
 
   ngAfterViewInit() {
 
+    this.presentLoadingDefault();
     this.getAsociatedId();
     setTimeout(() => {
       //this.getBeaconsPointLocal();
       //this.getLastBeacon();
       //this.getUserLogged(); es bueno
       this.getAsociatedAlerts();
-      this.getTicketName();
+      //this.getTicketName();
       //this.getUserPosition();
-      this.presentLoadingDefault()
+      
     }, 1000);
     setTimeout(() => {
       this.getTicketInfo();
@@ -74,7 +77,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       this.getTicketDesti();
       this.getTicketPosition();
       this.timer();
-    }, 5000);
+    }, 4000);
   }
 
   //Metodo que crea los servicios para crear un tiquete
@@ -200,6 +203,16 @@ export class Tab2Page implements OnInit, AfterViewInit {
           this.ticketPosition = this.refreshedTicket.position+" personas adelante";
           if(this.refreshedTicket.position == null){
             this.ticketPosition = 0+" personas adelante";
+            if (!this.stopPopUp) {
+              //this.stopPopUp = true;
+              if(this.popUp == null){
+                this.presentAlert();
+                this.setVibration();
+              }else if(this.popUp != null){
+                this.popUp.dismiss();
+                this.presentAlert();
+              }
+            }
           }
           this.ticketNumber = this.refreshedTicket.ticketId;
           //this.ticketDesti = this.refreshedTicket.queueName;
@@ -219,7 +232,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   timer() {
     this.interval = setInterval(() => {
       this.refreshTicket();
-    }, 10000);
+    }, 8000);
   }
 
   setVibration() {
@@ -410,21 +423,22 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
 
   async presentAlert() {
-    const alert = await this.alertCtrl.create({
-      header: 'Alert',
+    this.popUp = await this.alertCtrl.create({
+      header: 'Es su turno:',
       subHeader: '',
       message:
-        'Es su turno',
+        'Usted está siendo llamado',
       buttons: [{
         text: 'OK',
         role: 'OK',
         handler: () => {
           console.log('you clicked me');
+          this.stopPopUp = true;
         }
       },
       ]
     });
-    await alert.present();
+    await this.popUp.present();
   }
 
 }//fin de la classs tab2
