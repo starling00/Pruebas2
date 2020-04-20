@@ -9,6 +9,7 @@ import { UtilStorageService } from '../services/util-storage.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 
 @Component({
@@ -52,11 +53,23 @@ export class Tab2Page implements OnInit, AfterViewInit {
     private qrScanner: QRScanner,
     private toast: Toast,
     private router: Router,
+    private localNotificactions: LocalNotifications,
+    public platform: Platform,
     public loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     public menuCtrl: MenuController,
-    private storage: Storage) {
+    private storage: Storage) 
+    {
       this.menuCtrl.enable(false);
+       this.platform.ready().then(() => {
+      this.localNotificactions.on('click').subscribe(res => {
+        let msg = res.data ? res.mydata : '';
+         this.showAlert(res.title, res.text, msg);
+        this.setVibration();
+
+      });
+    
+    });
   }
 
   ngOnInit() {
@@ -84,7 +97,14 @@ export class Tab2Page implements OnInit, AfterViewInit {
       this.timer();
     }, 4000);
   }
-
+  showAlert(header, sub, msg) {
+    this.alertCtrl.create({
+      header: header,
+      subHeader: sub,
+      message: msg,
+      buttons: ['OK']
+    }).then(alert => alert.present());
+  }
   //Metodo que crea los servicios para crear un tiquete
   GenerateServices(){
     this.services.saveTicket(this.params.params.ticketServices, null).subscribe((resp) => {
@@ -486,4 +506,12 @@ export class Tab2Page implements OnInit, AfterViewInit {
     });
     await this.ticketPopUp.present();
   }
+  alertTi(){
+  this.localNotificactions.schedule({
+    id: 1,
+    text: 'Single ILocalNotification',
+    sound: this.platform.is('android') ? 'file://sound.mp3': 'file://beep.caf',
+    
+  });
+}
 }//fin de la classs tab2
