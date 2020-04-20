@@ -5,6 +5,7 @@ import { IBeacon } from '@ionic-native/ibeacon/ngx';
 import { CrudService } from '../services/crud.service';
 import { StorageService } from '../services/storage.service';
 import { UtilStorageService } from '../services/util-storage.service';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-heartrate',
@@ -101,8 +102,9 @@ getHeartData(){
   constructor( private router: Router,  private params: UtilsService,
     private service: CrudService,
     private storeService: StorageService,
-    private localParam: UtilStorageService, ) { 
-  
+    private localParam: UtilStorageService, 
+    public menuCtrl: MenuController) { 
+      this.menuCtrl.enable(false);
   }
 
   ngOnInit() {

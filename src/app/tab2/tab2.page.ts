@@ -56,7 +56,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     private alertCtrl: AlertController,
     public menuCtrl: MenuController,
     private storage: Storage) {
-      //this.menuCtrl.swipeGesture(false);
+      this.menuCtrl.enable(false);
   }
 
   ngOnInit() {
@@ -229,7 +229,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
             this.storage.remove("ticket-status");
             this.ticketNumber = "Atendido";
             this.ticketPosition = "Atendido";
-            
+
           }
         });
       }
@@ -244,17 +244,22 @@ export class Tab2Page implements OnInit, AfterViewInit {
     }, 8000);
   }
 
-  menuClick(){
+  activeTicket(){
     this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
       this.activeTicketStatus = resp;
       if(this.activeTicketStatus){
         this.popUpActiveTicket();
       }else{
-        //this.menuCtrl.swipeGesture(true);
+        this.router.navigateByUrl('/heart-rate');
       }
     }, (err) => {
       console.error(err);
     });
+  }
+
+  salir(){
+    this.storage.clear();
+    this.router.navigateByUrl('/login');
   }
 
   setVibration() {
@@ -481,5 +486,4 @@ export class Tab2Page implements OnInit, AfterViewInit {
     });
     await this.ticketPopUp.present();
   }
-
 }//fin de la classs tab2
