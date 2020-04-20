@@ -2,12 +2,13 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CrudService } from '../services/crud.service';
 import { UtilsService } from '../services/utils.service';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
-import { Platform, LoadingController, AlertController } from '@ionic/angular';
+import { Platform, LoadingController, AlertController, MenuController } from '@ionic/angular';
 import { Toast } from '@ionic-native/toast/ngx';
 import { StorageService } from '../services/storage.service';
 import { UtilStorageService } from '../services/util-storage.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
 
 
 @Component({
@@ -36,11 +37,13 @@ export class Tab2Page implements OnInit, AfterViewInit {
   content: String;
   createdTicket: any;
   ticketStatus: any;
+  activeTicketStatus: any;
   refreshedTicket: any;
   interval;
   generatedServices: any;
   stopPopUp = false;
   popUp: any;
+  ticketPopUp: any;
 
   constructor(private services: CrudService,
     private params: UtilsService,
@@ -50,8 +53,10 @@ export class Tab2Page implements OnInit, AfterViewInit {
     private toast: Toast,
     private router: Router,
     public loadingCtrl: LoadingController,
-    private alertCtrl: AlertController) {
-
+    private alertCtrl: AlertController,
+    public menuCtrl: MenuController,
+    private storage: Storage) {
+      //this.menuCtrl.swipeGesture(false);
   }
 
   ngOnInit() {
@@ -184,7 +189,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       if(!this.ticketStatus){
         this.ticketPosition = "No se ha creado un tiquete";
       }else if(this.ticketStatus){
-        this.ticketPosition = this.ticketStatus.position+" personas adelante";
+        this.ticketPosition = "Su posición es: "+this.ticketStatus.position;
       }
     }, (err) => {
       console.error(err);
@@ -200,9 +205,10 @@ export class Tab2Page implements OnInit, AfterViewInit {
         let checksum = this.createdTicket.checksum;
         this.services.get(this.params.params.ticketStatus+'/'+visitId+'/'+checksum).subscribe((resp) => {
           this.refreshedTicket = resp;
-          this.ticketPosition = this.refreshedTicket.position+" personas adelante";
+          this.storeService.localSave(this.localParam.localParam.ticketStatus, this.refreshedTicket);
+          this.ticketPosition = "Su posición es: "+this.refreshedTicket.position;
           if(this.refreshedTicket.position == null){
-            this.ticketPosition = 0+" personas adelante";
+            this.ticketPosition = "Su posición es: "+0;
             if (!this.stopPopUp) {
               //this.stopPopUp = true;
               if(this.popUp == null){
@@ -219,8 +225,11 @@ export class Tab2Page implements OnInit, AfterViewInit {
           console.log(this.refreshedTicket);
         }, (err) => {
           if(err.status == 404){
+            this.storage.remove("created-ticket");
+            this.storage.remove("ticket-status");
             this.ticketNumber = "Atendido";
-            this.ticketPosition = 0+" personas adelante";
+            this.ticketPosition = "Atendido";
+            
           }
         });
       }
@@ -233,6 +242,19 @@ export class Tab2Page implements OnInit, AfterViewInit {
     this.interval = setInterval(() => {
       this.refreshTicket();
     }, 8000);
+  }
+
+  menuClick(){
+    this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
+      this.activeTicketStatus = resp;
+      if(this.activeTicketStatus){
+        this.popUpActiveTicket();
+      }else{
+        //this.menuCtrl.swipeGesture(true);
+      }
+    }, (err) => {
+      console.error(err);
+    });
   }
 
   setVibration() {
@@ -439,6 +461,25 @@ export class Tab2Page implements OnInit, AfterViewInit {
       ]
     });
     await this.popUp.present();
+  }
+
+  async popUpActiveTicket() {
+    this.ticketPopUp = await this.alertCtrl.create({
+      header: 'Tiquete Activo',
+      subHeader: '',
+      message:
+        'Usted tiene un tiquete activo, por favor espere:',
+      buttons: [{
+        text: 'OK',
+        role: 'OK',
+        handler: () => {
+          console.log('you clicked me');
+          //this.stopPopUp = true;
+        }
+      },
+      ]
+    });
+    await this.ticketPopUp.present();
   }
 
 }//fin de la classs tab2
