@@ -19,6 +19,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 })
 export class Tab2Page implements OnInit, AfterViewInit {
 
+  alertSound= false;
   points: any;
   tickets: any;
   platfrom: any;
@@ -45,6 +46,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   stopPopUp = false;
   popUp: any;
   ticketPopUp: any;
+  exitPopUp: any;
 
   constructor(private services: CrudService,
     private params: UtilsService,
@@ -61,14 +63,17 @@ export class Tab2Page implements OnInit, AfterViewInit {
     private storage: Storage) 
     {
       this.menuCtrl.enable(false);
-       this.platform.ready().then(() => {
+      this.platform.ready().then(() => {
       this.localNotificactions.on('click').subscribe(res => {
         let msg = res.data ? res.mydata : '';
-         this.showAlert(res.title, res.text, msg);
-        this.setVibration();
+       
 
       });
-    
+      this.localNotificactions.on('trigger').subscribe(res => {
+        let msg = res.data ? res.mydata : '';
+        this.showAlert(res.title, res.text, msg);
+
+      });
     });
   }
 
@@ -232,8 +237,10 @@ export class Tab2Page implements OnInit, AfterViewInit {
             if (!this.stopPopUp) {
               //this.stopPopUp = true;
               if(this.popUp == null){
-                this.presentAlert();
+                //this.presentAlert();
+                this.alertTi();
                 this.setVibration();
+               
               }else if(this.popUp != null){
                 this.popUp.dismiss();
                 this.presentAlert();
@@ -278,8 +285,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   salir(){
-    this.storage.clear();
-    this.router.navigateByUrl('/login');
+    this.popUpExit();
   }
 
   setVibration() {
@@ -509,9 +515,45 @@ export class Tab2Page implements OnInit, AfterViewInit {
   alertTi(){
   this.localNotificactions.schedule({
     id: 1,
-    text: 'Single ILocalNotification',
-    sound: this.platform.is('android') ? 'file://sound.mp3': 'file://beep.caf',
-    
+  title: 'Aviso',
+  text: 'Usted esta siendo llamado',
+  trigger: { at: new Date(new Date().getTime() + 500) },
+  sound: this.setSoundOnEntry(),
+  data: { secret: 'key' }
   });
+  this.alertSound=true;
 }
+ setSoundOnEntry() {
+    if (this.platform.is('android')) {
+      return 'file://assets/sounds/1102.mp3';
+    } else {
+      return 'file://assets/sounds/1102.caf';
+    }
+  }
+  async popUpExit() {
+    this.exitPopUp = await this.alertCtrl.create({
+      header: '¿Desea salir?',
+      subHeader: '',
+      message:
+        'Si tiene un tiquete activo se perderá',
+      buttons: [{
+        text: 'Salir',
+        role: 'OK',
+        handler: () => {
+          console.log('Salir');
+          this.storage.clear();
+          this.router.navigateByUrl('/login');
+        }
+      },
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancelar');
+        }
+      },
+      ]
+    });
+    await this.exitPopUp.present();
+  }
 }//fin de la classs tab2
