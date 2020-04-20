@@ -44,6 +44,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   stopPopUp = false;
   popUp: any;
   ticketPopUp: any;
+  exitPopUp: any;
 
   constructor(private services: CrudService,
     private params: UtilsService,
@@ -258,8 +259,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   salir(){
-    this.storage.clear();
-    this.router.navigateByUrl('/login');
+    this.popUpExit();
   }
 
   setVibration() {
@@ -485,5 +485,32 @@ export class Tab2Page implements OnInit, AfterViewInit {
       ]
     });
     await this.ticketPopUp.present();
+  }
+
+  async popUpExit() {
+    this.exitPopUp = await this.alertCtrl.create({
+      header: '¿Desea salir?',
+      subHeader: '',
+      message:
+        'Si tiene un tiquete activo se perderá',
+      buttons: [{
+        text: 'Salir',
+        role: 'OK',
+        handler: () => {
+          console.log('Salir');
+          this.storage.clear();
+          this.router.navigateByUrl('/login');
+        }
+      },
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancelar');
+        }
+      },
+      ]
+    });
+    await this.exitPopUp.present();
   }
 }//fin de la classs tab2
