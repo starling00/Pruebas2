@@ -440,5 +440,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     });
     await this.popUp.present();
   }
-
+  goS(){
+    this.router.navigateByUrl('/heart-rate'); 
+  }
 }//fin de la classs tab2
