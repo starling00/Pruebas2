@@ -71,7 +71,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       });
       this.localNotificactions.on('trigger').subscribe(res => {
         let msg = res.data ? res.mydata : '';
-        this.showAlert(res.title, res.text, msg);
+        //this.showAlert(res.title, res.text, msg);
 
       });
     });
@@ -237,8 +237,8 @@ export class Tab2Page implements OnInit, AfterViewInit {
             if (!this.stopPopUp) {
               //this.stopPopUp = true;
               if(this.popUp == null){
-                //this.presentAlert();
-                this.alertTi();
+                this.presentAlert();
+                
                 this.setVibration();
                
               }else if(this.popUp != null){
@@ -476,6 +476,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
 
   async presentAlert() {
+    this.alertTi();
     this.popUp = await this.alertCtrl.create({
       header: 'Es su turno:',
       subHeader: '',
@@ -517,7 +518,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     id: 1,
   title: 'Aviso',
   text: 'Usted esta siendo llamado',
-  trigger: { at: new Date(new Date().getTime() + 500) },
+  trigger: { at: new Date(new Date().getTime() + 10) },
   sound: this.setSoundOnEntry(),
   data: { secret: 'key' }
   });

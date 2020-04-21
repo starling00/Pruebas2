@@ -28,3 +28,39 @@
 .btnLoging{
     --background: #203B69;
 }
+
+.card-background-page {
+
+    ion-card {
+      position: relative;
+      text-align: center;
+    }
+  
+    .card-title {
+      position: absolute;
+      top: 36%;
+      font-size: 1.0em;
+      width: 100%;
+      font-weight: bold;
+      color: #fff;
+    }
+  
+    .card-subtitle {
+      font-size: 1.0em;
+      position: absolute;
+      top: 52%;
+      width: 100%;
+      color: #fff;
+    }
+  
+  }
+
+  .imgCards{
+    box-shadow: 2px 2px 5px #999;
+    -webkit-box-shadow: 2px 2px 5px #999;
+    -moz-box-shadow: 2px 2px 5px #999;
+  } 
+  .text1{
+      text-align: center;
+      font-size: 19px;
+  }

@@ -1,28 +1,45 @@
 
 <ion-header >
     <ion-toolbar class="topMenu" >
-        <ion-title>Welcome</ion-title>
+        <ion-title>Bienvenidos</ion-title>
       </ion-toolbar>
 </ion-header>
  
-<ion-content padding>
+<ion-content class="card-background-page" padding>
   <div class="logo">
-        <img src="../../assets/img/ST1.png" alt="" > 
+        <img src="../../assets/img/tse.png" alt="Logo del tribunal supreme de elecciones" > 
           
       </div>
-      <!--<div>
-          <div padding>
-              <ion-segment [(ngModel)]="opt"  color="dark">
-                <ion-segment-button value="signin">
-                  Sign In
-                </ion-segment-button>
-                <ion-segment-button value="signup">
-                  Sign Up
-                </ion-segment-button>
-              </ion-segment>
+      
+      <ion-grid>
+        <ion-row>
+            <ion-col>
+              <div>
+               <p class="text1">Seleccione la opción de su visita</p>       
+              </div>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <div  (click)="login()">
+
+              <ion-card >
+                <img class="imgCards" src="../../assets/img/ACS1.png"/>
+                <div class="card-title">Solicitar ficha</div>
+               <!-- <div class="card-subtitle">Escoja mae</div>-->
+              </ion-card>
             </div>
-       </div>
-       <div>-->
-  <!--<button ion-button full routerLink="/menu/first/tabs/tab2 (click)="doLogin()">Login</button>-->
-  <ion-button class="btnLoging" expand="block" (click)="login()">Iniciar sesión<ion-icon name="log-in"></ion-icon></ion-button>
+          </ion-col>
+          <ion-col>
+            <div class="">
+              <ion-card>
+                <img  class="imgCards" class="" src="../../assets/img/CS.png"/>
+                <div class="card-title">Cita programada</div>
+                 <!-- <div class="card-subtitle">Canjee Mae</div>-->
+              </ion-card>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+   <!--<ion-button class="btnLoging" expand="block" (click)="login()">Ingresar<ion-icon name="log-in"></ion-icon></ion-button>-->
 </ion-content>
