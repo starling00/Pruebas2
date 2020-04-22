@@ -13,6 +13,7 @@ export class UtilStorageService {
     createdTicket:"",
     ticketStatus:"",
     ticketServices:"",
+    ticketOffice:"",
   }
 
   constructor() { 
@@ -24,5 +25,6 @@ export class UtilStorageService {
     this.localParam.createdTicket = "created-ticket";
     this.localParam.ticketStatus = "ticket-status";
     this.localParam.ticketServices = "ticket-services";
+    this.localParam.ticketOffice = "ticket-office";
   }
 }

@@ -69,7 +69,7 @@ export class LoginPage implements OnInit {
     this.getBeconsPoints();
     this.presentLoadingDefault();
       setTimeout(() => {
-        this.router.navigateByUrl('/heart-rate');
+        this.router.navigateByUrl('/offices');
       }, 0);
 
     /*this.service.get(this.params.params.staffurl + "/asocieted/cid/" + this.cedula).subscribe((resp) => {

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UtilsService } from '../services/utils.service';
 import { IBeacon } from '@ionic-native/ibeacon/ngx';
 import { CrudService } from '../services/crud.service';
@@ -12,13 +12,14 @@ import { MenuController } from '@ionic/angular';
   templateUrl: './heartrate.component.html',
   styleUrls: ['./heartrate.component.scss'],
 })
-export class HeartrateComponent implements OnInit {
+export class HeartrateComponent implements OnInit, AfterViewInit {
 
   ticketStatus: any;
   createdTicket: any;
   ticketServices: any;
   serviceId: any;
   generatedServices: any;
+  urlId: any;
 
   pages=[
     { title: 'Home',
@@ -103,19 +104,25 @@ getHeartData(){
     private service: CrudService,
     private storeService: StorageService,
     private localParam: UtilStorageService, 
-    public menuCtrl: MenuController) { 
+    public menuCtrl: MenuController,
+    private route: ActivatedRoute) { 
       this.menuCtrl.enable(false);
   }
 
   ngOnInit() {
+    this.urlId = this.route.snapshot.paramMap.get("id");
     //this.getHeartData();
     //this.timer();
     //this.getServices();
+    
+  }
+
+  ngAfterViewInit(){
     this.GenerateServices();
   }
 
   GenerateServices(){
-    this.service.saveTicket(this.params.params.ticketServices, null).subscribe((resp) => {
+    this.service.saveTicket(this.params.params.ticketServices+'/'+this.urlId, null).subscribe((resp) => {
       this.ticketServices = resp;
       this.storeService.localSave(this.localParam.localParam.ticketServices, this.ticketServices);
 
@@ -142,7 +149,7 @@ getHeartData(){
   }
 
   createTicket(id){
-    this.service.saveTicket(this.params.params.ticketCreate+'/'+id, null).subscribe((resp) => {
+    this.service.saveTicket(this.params.params.ticketCreate+'/serviceId/'+id+'/officeId/'+this.urlId, null).subscribe((resp) => {
       this.createdTicket = resp;
       this.storeService.localSave(this.localParam.localParam.createdTicket, this.createdTicket);
 

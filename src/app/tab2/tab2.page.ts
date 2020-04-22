@@ -228,7 +228,8 @@ export class Tab2Page implements OnInit, AfterViewInit {
       if(this.createdTicket){
         let visitId = this.createdTicket.visitId;
         let checksum = this.createdTicket.checksum;
-        this.services.get(this.params.params.ticketStatus+'/'+visitId+'/'+checksum).subscribe((resp) => {
+        let officeId = this.createdTicket.branchId;
+        this.services.get(this.params.params.ticketStatus+'/visitId/'+visitId+'/checksum/'+checksum+'/officeId/'+officeId).subscribe((resp) => {
           this.refreshedTicket = resp;
           this.storeService.localSave(this.localParam.localParam.ticketStatus, this.refreshedTicket);
           this.ticketPosition = "Su posición es: "+this.refreshedTicket.position;
@@ -277,7 +278,12 @@ export class Tab2Page implements OnInit, AfterViewInit {
       if(this.activeTicketStatus){
         this.popUpActiveTicket();
       }else{
-        this.router.navigateByUrl('/heart-rate');
+        this.storeService.localGet(this.localParam.localParam.ticketOffice).then((resp) => {
+          let urlId = resp;
+          this.router.navigateByUrl('/heart-rate/'+urlId);
+        }, (err) => {
+          console.error(err);
+        });
       }
     }, (err) => {
       console.error(err);

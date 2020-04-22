@@ -27,9 +27,10 @@ import { ModalNotificationPage } from './modal-notification/modal-notification.p
 import { HeartrateComponent } from './heartrate/heartrate.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { OfficesComponent } from './offices/offices.component';
 
 @NgModule({
-  declarations: [AppComponent, ModalPagePage, ModalNotificationPage,HeartrateComponent],
+  declarations: [AppComponent, ModalPagePage, ModalNotificationPage, HeartrateComponent, OfficesComponent],
   entryComponents: [ModalPagePage,ModalNotificationPage],
   imports: [BrowserModule,BrowserAnimationsModule, IonicModule.forRoot(), NgxChartsModule, AppRoutingModule,HttpClientModule,AutoCompleteModule,IonicStorageModule.forRoot()],
   providers: [

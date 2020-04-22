@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar class="topMenu">
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title>Summit</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding center">
+  <ion-card-content>
+    <ion-title class="title">Oficinas:</ion-title>
+    <br>
+    <p class="text">Seleccione la oficina:</p>
+    <ion-list *ngFor="let ofi of offices">
+      <ion-button class="btnServices" (click)="goServices(ofi.id)">{{ofi.name}}</ion-button>
+    </ion-list>
+  </ion-card-content>
+</ion-content>
