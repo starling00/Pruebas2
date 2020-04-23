@@ -59,9 +59,9 @@ export class UtilsService {
    }
   constructor() { 
     var newserverURL = 'http://35.222.165.70/summit/api/';
-    //var ticketsURL = 'http://35.222.165.70/summitOrchestraTicket/api/';
-    //var ticketsURL = 'http://35.222.165.70/ticketstse/api/';
-    var ticketsURL = 'http://localhost:56673/api/';
+    //var ticketsURL = 'https://35.222.165.70/summitOrchestraTicket/api/';
+    var ticketsURL = 'http://35.222.165.70/ticketstse/api/';
+    //var ticketsURL = 'http://localhost:56673/api/';
     this.params.serverurl = newserverURL;
     this.params.registerurl = newserverURL+"register";
     this.params.loginurl = newserverURL+"users/login";

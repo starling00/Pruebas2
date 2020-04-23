@@ -44,7 +44,7 @@ export class GenerateMeetingComponent implements OnInit, AfterViewInit {
     }
     let refNumber = this.referenceNumber.substr(position, value.length - 4 - position);
 
-    this.service.get('http://localhost:56673/api/orchestra_offices/meeting/'+refNumber).subscribe((resp) => {
+    this.service.get('http://35.222.165.70/ticketstse/api/orchestra_services/meeting/'+refNumber).subscribe((resp) => {
       this.meetingData = resp;
       this.storeService.localSave(this.localParam.localParam.meetingData, this.meetingData);
       console.log(this.meetingData);

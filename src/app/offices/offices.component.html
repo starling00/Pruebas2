@@ -1,19 +1,57 @@
 <ion-header>
   <ion-toolbar class="topMenu">
       <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
+        <ion-back-button defaultHref="/"></ion-back-button>
       </ion-buttons>
     <ion-title>Summit</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding center">
-  <ion-card-content>
-    <ion-title class="title">Oficinas:</ion-title>
+<ion-content class="card-background-page">
+ 
+    <ion-grid >
+    <ion-row>
+      <ion-col>
+        <div>
+
+          <ion-card >
+            <img src="../../assets/img/rect931.png"/>
+            <div class="card-title">Oficinas</div>
+           <!-- <div class="card-subtitle">Escoja mae</div>-->
+          </ion-card>
+        </div>
+      </ion-col>
+   
+    </ion-row>
+  </ion-grid>
+   
+    <p class="text1">Seleccione la oficina:</p>
     <br>
-    <p class="text">Seleccione la oficina:</p>
-    <ion-list *ngFor="let ofi of offices">
-      <ion-button class="btnServices" (click)="goServices(ofi.id)">{{ofi.name}}</ion-button>
+    <ion-card-content >
+    <ion-list >
+      <ion-card *ngFor="let ofi of offices">
+        <ion-card-header>
+          <ion-card-title>
+          {{ofi.name}}
+        </ion-card-title>
+        </ion-card-header>
+        <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div></div>
+          </ion-col>
+          <ion-col col-6>
+            <div> 
+               <ion-button class="btnServices" (click)="goServices(ofi.id)">Ver<ion-icon name="arrow-forward"></ion-icon></ion-button>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div></div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+   
+    </ion-card>
     </ion-list>
   </ion-card-content>
 </ion-content>

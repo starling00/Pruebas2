@@ -34,7 +34,10 @@ export class MeetingComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(){
-    this.getMeetingData();
+    setTimeout(() => {
+      this.getMeetingData();
+    }, 4000);
+   
   }
 
   getMeetingData(){
