@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar class="topMenu">
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title>Summit</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding center">
+  <ion-card-content>
+    <ion-title class="title">Cita:</ion-title>
+    <br>
+    <ion-item>
+      <ion-input [(ngModel)]="personName" readonly="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="officeName" readonly="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="serviceName" readonly="true"></ion-input>
+    </ion-item>
+  </ion-card-content>
+</ion-content>

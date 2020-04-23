@@ -88,6 +88,12 @@ export class LoginPage implements OnInit {
     });*/
   }
 
+  meetings(){
+    setTimeout(() => {
+      this.router.navigateByUrl('/gen-meeting');
+    }, 0);
+  }
+
   async presentLoadingDefault() {
     let loading = await this.loadingCtrl.create({
       message: 'Por favor espere...'

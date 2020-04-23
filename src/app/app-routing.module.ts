@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HeartrateComponent } from './heartrate/heartrate.component';
 import { OfficesComponent } from './offices/offices.component';
+import { GenerateMeetingComponent } from './generate-meeting/generate-meeting.component';
+import { MeetingComponent } from './meeting/meeting.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -13,7 +15,8 @@ const routes: Routes = [
   { path: 'modal-page', loadChildren: './modal-page/modal-page.module#ModalPagePageModule' },
   { path: 'modal-notification', loadChildren: './modal-notification/modal-notification.module#ModalNotificationPageModule' },
   { path: 'offices', component: OfficesComponent },
-  
+  { path: 'gen-meeting', component: GenerateMeetingComponent },
+  { path: 'meeting', component: MeetingComponent },
 
  
 ];

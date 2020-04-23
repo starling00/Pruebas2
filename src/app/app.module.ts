@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { FormsModule } from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
@@ -28,11 +29,13 @@ import { HeartrateComponent } from './heartrate/heartrate.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OfficesComponent } from './offices/offices.component';
+import { GenerateMeetingComponent } from './generate-meeting/generate-meeting.component';
+import { MeetingComponent } from './meeting/meeting.component';
 
 @NgModule({
-  declarations: [AppComponent, ModalPagePage, ModalNotificationPage, HeartrateComponent, OfficesComponent],
+  declarations: [AppComponent, ModalPagePage, ModalNotificationPage, HeartrateComponent, OfficesComponent, GenerateMeetingComponent, MeetingComponent],
   entryComponents: [ModalPagePage,ModalNotificationPage],
-  imports: [BrowserModule,BrowserAnimationsModule, IonicModule.forRoot(), NgxChartsModule, AppRoutingModule,HttpClientModule,AutoCompleteModule,IonicStorageModule.forRoot()],
+  imports: [BrowserModule,BrowserAnimationsModule, IonicModule.forRoot(), NgxChartsModule, AppRoutingModule,FormsModule,HttpClientModule,AutoCompleteModule,IonicStorageModule.forRoot()],
   providers: [
     StatusBar,
     SplashScreen,
