@@ -12,6 +12,9 @@
     <ion-title class="title">Cita:</ion-title>
     <br>
     <ion-item>
+      <ion-input readonly="true"><strong >{{ dateMeeting | date:"dd/MM/yyyy 'a las' h:mm a"}}</strong></ion-input>
+    </ion-item>
+    <ion-item>
       <ion-input [(ngModel)]="personName" readonly="true"></ion-input>
     </ion-item>
     <ion-item>
@@ -20,5 +23,6 @@
     <ion-item>
       <ion-input [(ngModel)]="serviceName" readonly="true"></ion-input>
     </ion-item>
+  
   </ion-card-content>
 </ion-content>

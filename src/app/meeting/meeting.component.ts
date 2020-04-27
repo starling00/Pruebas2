@@ -17,6 +17,7 @@ export class MeetingComponent implements OnInit, AfterViewInit {
   personName: any;
   officeName: any;
   serviceName: any;
+  dateMeeting: any;
 
   constructor(private router: Router,
     private params: UtilsService,
@@ -41,13 +42,19 @@ export class MeetingComponent implements OnInit, AfterViewInit {
   }
 
   getMeetingData(){
+    let value;
+  
+    let shortMac;
     this.storeService.localGet(this.localParam.localParam.meetingData).then((resp) => {
       this.meetingData = resp;
       this.personName = this.meetingData.appointment.customers[0].name;
       this.officeName = this.meetingData.appointment.branch.name;
       this.serviceName = this.meetingData.appointment.services[0].name;
-
-      console.log(this.meetingData);
+      this.dateMeeting=this.meetingData.appointment.start;
+      
+      console.log(this.meetingData);{
+        console.log( this.dateMeeting);
+      }
     }, (err) => {
       console.error(err);
     });
