@@ -66,7 +66,7 @@ export class LoginPage implements OnInit {
 
   login() {
 
-    this.getBeconsPoints();
+    //this.getBeconsPoints();
     this.presentLoadingDefault();
       setTimeout(() => {
         this.router.navigateByUrl('/offices');
@@ -151,7 +151,7 @@ export class LoginPage implements OnInit {
     this.service.get(this.params.params.gatewaybeacons+"/shortid").subscribe((resp) => {
       this.beaconsPoints= resp;
       this.storeService.localSave(this.localParam.localParam.gatewaybeacons, this.beaconsPoints);
-      console.log(this.beaconsPoints);
+      //console.log(this.beaconsPoints);
     }, (err) => {
       this.alert( "Error:Contacte al adminstrador del sistema");
       console.error(err);

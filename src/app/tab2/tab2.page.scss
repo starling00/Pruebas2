@@ -6,17 +6,17 @@
 .line-input {
     margin-bottom: 0!important;
     ion-item {
-        --border-color: transparent!important;
+        //--border-color: transparent!important;
         --highlight-height: 0;
         border-radius: 12px;
-        --background:#EFEEEE;
+        //--background:#EFEEEE;
        
         border:  1px solid rgba(255,255,255,0.20);
         &.item-has-focus {
             border: 1px solid var(--ion-color-primary);
         }
         ion-label {
-            color: #807e7e!important;
+            //color: #807e7e!important;
             font-weight: 300;
             font-size: 1rem!important;
         }
@@ -27,8 +27,14 @@
     text-align: center;
     font-weight: bold;
 }
+.ios .title{
+    text-align: center;
+    font-weight: bold;
+    position: inherit;
+    font-size: 23px;
+}
 ion-card-content{
-    --background:#EFEEEE;
+    background:#fff;
     border:  1px solid rgba(255,255,255,0.20);
     border-radius: 12px;
     box-shadow: -6px -6px 26px 0 rgba(255,255,255,0.83);
@@ -38,3 +44,12 @@ ion-card-content{
 .iconC{
     --background: #203B69;
 }
+
+
+
+.tabbar{
+    --color: #203B69 !important;
+  }
+  ion-content{
+    --background: #eaeaea;
+  }
