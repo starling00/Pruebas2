@@ -9,4 +9,12 @@
 
 <ion-content>
   <div id="map"></div>
+  <div id="slider-container">
+    <ion-slides [options]="sliderConfig" id="slides" #slides (ionSlideDidChange)="slideChanged()">
+      <ion-slide *ngFor="let agency of bestOptionsAgencies" class="slide">
+        <ion-text>{{agency.name}}</ion-text>
+        <ion-text>{{agency.clientes}}</ion-text>
+      </ion-slide>
+    </ion-slides>
+  </div>
 </ion-content>
