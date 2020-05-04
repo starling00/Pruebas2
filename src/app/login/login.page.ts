@@ -94,6 +94,10 @@ export class LoginPage implements OnInit {
     }, 0);
   }
 
+  mapsAgencies(){
+    this.router.navigateByUrl('/agencies-maps');
+  }
+
   async presentLoadingDefault() {
     let loading = await this.loadingCtrl.create({
       message: 'Por favor espere...'
