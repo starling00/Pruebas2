@@ -16,7 +16,8 @@ const routes: Routes = [
   { path: 'modal-notification', loadChildren: './modal-notification/modal-notification.module#ModalNotificationPageModule' },
   { path: 'offices', component: OfficesComponent },
   { path: 'gen-meeting', component: GenerateMeetingComponent },
-  { path: 'meeting', component: MeetingComponent },
+  { path: 'meeting', component: MeetingComponent },  { path: 'agencies-maps', loadChildren: './agencies-maps/agencies-maps.module#AgenciesMapsPageModule' },
+
 
  
 ];
