@@ -94,7 +94,7 @@ export class LoginPage implements OnInit {
     }, 0);
   }
 
-  mapsAgencies(){
+  agenciesMap(){
     this.router.navigateByUrl('/agencies-maps');
   }
 

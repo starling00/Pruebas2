@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 declare var google;
 
@@ -11,10 +12,19 @@ export class AgenciesMapsPage implements OnInit {
 
   map = null;
 
-  constructor() { }
+  constructor(private geolocation: Geolocation) {}
 
   ngOnInit() {
     this.loadMap();
+    this.getCurrentPosition();
+  }
+
+  getCurrentPosition(){
+    this.geolocation.getCurrentPosition({enableHighAccuracy:true, maximumAge:1000}).then((resp)=>{
+      console.log(resp);
+    }).catch((error)=>{
+      console.log(error)
+    });
   }
 
   loadMap() {

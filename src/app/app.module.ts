@@ -6,6 +6,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FormsModule } from '@angular/forms';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 
 import { AppComponent } from './app.component';
@@ -41,7 +42,9 @@ import { MeetingComponent } from './meeting/meeting.component';
     SplashScreen,
     
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    CrudService,UtilsService, StorageService, UtilStorageService, BeaconService,IBeacon, BLE, Toast, QRScanner, LocalNotifications,SeePeoplePage,
+    CrudService,UtilsService, StorageService, UtilStorageService,
+    BeaconService,IBeacon, BLE, Toast, QRScanner, LocalNotifications,
+    SeePeoplePage, Geolocation
   ],
   bootstrap: [AppComponent]
 })
