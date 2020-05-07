@@ -4,6 +4,7 @@ import { HeartrateComponent } from './heartrate/heartrate.component';
 import { OfficesComponent } from './offices/offices.component';
 import { GenerateMeetingComponent } from './generate-meeting/generate-meeting.component';
 import { MeetingComponent } from './meeting/meeting.component';
+import { AgenciesComponent } from './agencies/agencies.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'offices', component: OfficesComponent },
   { path: 'gen-meeting', component: GenerateMeetingComponent },
   { path: 'meeting', component: MeetingComponent },
+  {path: 'agencies', component:AgenciesComponent},
 
  
 ];

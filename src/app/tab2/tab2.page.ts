@@ -47,6 +47,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   popUp: any;
   ticketPopUp: any;
   exitPopUp: any;
+  progressBar: number = 0;
 
   constructor(private services: CrudService,
     private params: UtilsService,
@@ -269,6 +270,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   timer() {
     this.interval = setInterval(() => {
       this.refreshTicket();
+      this. progress();
     }, 8000);
   }
 
@@ -544,7 +546,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       message:
         'Si tiene un tiquete activo se perderá',
       buttons: [{
-        text: 'Salir',
+        text: 'Sí',
         role: 'OK',
         handler: () => {
           console.log('Salir');
@@ -553,7 +555,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
         }
       },
       {
-        text: 'Cancelar',
+        text: 'No',
         role: 'cancel',
         handler: () => {
           console.log('Cancelar');
@@ -562,5 +564,8 @@ export class Tab2Page implements OnInit, AfterViewInit {
       ]
     });
     await this.exitPopUp.present();
+  }
+  progress(){
+    this.progressBar += .1;
   }
 }//fin de la classs tab2

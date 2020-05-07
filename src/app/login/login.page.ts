@@ -15,6 +15,7 @@ import { FormGroup, FormBuilder, Validators,ReactiveFormsModule} from '@angular/
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  
   pages = [
     {
       title: 'Home',
@@ -28,7 +29,7 @@ export class LoginPage implements OnInit {
   person: any;
   personAlert: any;
   bellAlert: number = 0;
-  public loginForm: FormGroup;
+  myForm: FormGroup;
   
 
   constructor(private storage: Storage,
@@ -39,12 +40,11 @@ export class LoginPage implements OnInit {
     private router: Router,
     private toast: Toast,
     public loadingCtrl: LoadingController,
-    /*public formBuilder: FormBuilder*/)
+    public formBuilder: FormBuilder)
      {
-      /*this.loginForm = formBuilder.group({
-        cedula: ['', Validators.required]
+      this.myForm = this.createMyForm();
         
-    });*/
+    
   }
 
   ngOnInit() {
@@ -55,6 +55,15 @@ export class LoginPage implements OnInit {
       }
     }, 1000);*/
   }
+
+ private createMyForm() {
+    return this.formBuilder.group({
+     
+     cedula: ['', Validators.required],
+     
+    });
+  }
+
 
   alert(msg: string) {
     this.toast.show(msg, '5000', 'center').subscribe(
@@ -69,7 +78,7 @@ export class LoginPage implements OnInit {
     //this.getBeconsPoints();
     this.presentLoadingDefault();
       setTimeout(() => {
-        this.router.navigateByUrl('/offices');
+        this.router.navigateByUrl('/agencies');
       }, 0);
 
     /*this.service.get(this.params.params.staffurl + "/asocieted/cid/" + this.cedula).subscribe((resp) => {
