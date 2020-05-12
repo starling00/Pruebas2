@@ -76,10 +76,7 @@ export class LoginPage implements OnInit {
   login() {
 
     //this.getBeconsPoints();
-    this.presentLoadingDefault();
-      setTimeout(() => {
-        this.router.navigateByUrl('/agencies');
-      }, 0);
+    this.router.navigateByUrl('/agencies');
 
     /*this.service.get(this.params.params.staffurl + "/asocieted/cid/" + this.cedula).subscribe((resp) => {
 

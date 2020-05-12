@@ -22,12 +22,7 @@ export class AgenciesComponent implements OnInit {
 
   openOffices() {
 
-
-    this.presentLoadingDefault();
-    setTimeout(() => {
       this.router.navigateByUrl('/offices');
-    }, 0);
-
 
   }
   

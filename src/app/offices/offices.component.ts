@@ -4,7 +4,7 @@ import { UtilsService } from '../services/utils.service';
 import { CrudService } from '../services/crud.service';
 import { StorageService } from '../services/storage.service';
 import { UtilStorageService } from '../services/util-storage.service';
-import { MenuController } from '@ionic/angular';
+import { MenuController, LoadingController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -13,11 +13,15 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./offices.component.scss'],
 })
 export class OfficesComponent implements OnInit {
+
   urlId: any;
   ticketServices: any;
   offices: any;
   ticketStatus: any;
   createdTicket: any;
+  officeId: any;
+  serviceId: any;
+
   constructor(
     private router: Router,
     private params: UtilsService,
@@ -25,17 +29,19 @@ export class OfficesComponent implements OnInit {
     private storeService: StorageService,
     private localParam: UtilStorageService, 
     public menuCtrl: MenuController,
-    
+    public loadingCtrl: LoadingController,
   ) { 
     this.menuCtrl.enable(false);
     
   }
+
   ngAfterViewInit(){
-    this.GenerateServices();
-  }
-  ngOnInit() {
-    this.getOffices();
     
+  }
+
+  ngOnInit() {
+    this.presentLoadingDefault();
+    this.getOffices();
   }
 
   getOffices(){
@@ -51,10 +57,12 @@ export class OfficesComponent implements OnInit {
     this.storeService.localSave(this.localParam.localParam.ticketOffice, id);
     this.router.navigateByUrl('/heart-rate/'+id);
   }
+
   customActionSheetOptions: any = {
     header: 'Colors',
     subHeader: 'Select your favorite color'
   };
+
   getTicketStatus(visitId){
     this.service.get(this.params.params.ticketStatus+'/'+visitId).subscribe((resp) => {
       this.ticketStatus = resp;
@@ -67,7 +75,7 @@ export class OfficesComponent implements OnInit {
   }
 
   createTicket(){
-    this.service.saveTicket(this.params.params.ticketCreate+'/serviceId/'+20+'/officeId/'+ 9, null).subscribe((resp) => {
+    this.service.saveTicket(this.params.params.ticketCreate+'/serviceId/'+this.serviceId+'/officeId/'+this.officeId, null).subscribe((resp) => {
       this.createdTicket = resp;
       this.storeService.localSave(this.localParam.localParam.createdTicket, this.createdTicket);
 
@@ -78,9 +86,9 @@ export class OfficesComponent implements OnInit {
     });
   }
  
-
-  GenerateServices(){
-    this.service.saveTicket(this.params.params.ticketServices+'/'+9, null).subscribe((resp) => {
+  GenerateServices(id){
+    this.officeId = id;
+    this.service.saveTicket(this.params.params.ticketServices+'/'+id, null).subscribe((resp) => {
       this.ticketServices = resp;
       this.storeService.localSave(this.localParam.localParam.ticketServices, this.ticketServices);
 
@@ -89,8 +97,25 @@ export class OfficesComponent implements OnInit {
       console.error(err);
     });
   }
+
+  getSelectedServiceId(id){
+    this.serviceId = id;
+  }
+
   go() {
     this.createTicket();
     this.router.navigateByUrl('/menu/first/tabs/tab2');
+  }
+
+  async presentLoadingDefault() {
+    let loading = await this.loadingCtrl.create({
+      message: 'Por favor espere...'
+    });
+
+    loading.present();
+
+    setTimeout(() => {
+      loading.dismiss();
+    }, 2000);
   }
 }// fin d la class

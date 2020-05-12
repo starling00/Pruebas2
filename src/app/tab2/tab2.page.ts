@@ -47,7 +47,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   popUp: any;
   ticketPopUp: any;
   exitPopUp: any;
-  progressBar: number = 0;
+  maxProgressBar: number = 0;
 
   constructor(private services: CrudService,
     private params: UtilsService,
@@ -80,11 +80,10 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
   ngOnInit() {
     //this.GenerateServices();
+    this.presentLoadingDefault();
   }
 
   ngAfterViewInit() {
-
-    this.presentLoadingDefault();
     this.getAsociatedId();
     setTimeout(() => {
       //this.getBeaconsPointLocal();
@@ -96,6 +95,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       
     }, 1000);
     setTimeout(() => {
+      this.popUpActiveTicket();
       this.getTicketInfo();
       this.getTicketUbi();
       this.getTicketDesti();
@@ -187,7 +187,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       if(!this.ticketStatus){
         this.ticketUbi = "No se ha creado un tiquete";
       }else if(this.ticketStatus){
-        this.ticketUbi = this.ticketStatus.queueName;
+        this.ticketUbi = this.ticketStatus.currentServiceName;
       }
     }, (err) => {
       console.error(err);
@@ -216,6 +216,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
         this.ticketPosition = "No se ha creado un tiquete";
       }else if(this.ticketStatus){
         this.ticketPosition = "Su posición es: "+this.ticketStatus.position;
+        this.maxProgressBar = 1/this.ticketStatus.position;
       }
     }, (err) => {
       console.error(err);
@@ -234,18 +235,22 @@ export class Tab2Page implements OnInit, AfterViewInit {
           this.refreshedTicket = resp;
           this.storeService.localSave(this.localParam.localParam.ticketStatus, this.refreshedTicket);
           this.ticketPosition = "Su posición es: "+this.refreshedTicket.position;
+          
+          this.maxProgressBar = 1/this.refreshedTicket.position;
+        
+          let calledFrom = this.refreshedTicket.servicePointName;
           if(this.refreshedTicket.position == null){
             this.ticketPosition = "Su posición es: "+0;
             if (!this.stopPopUp) {
               //this.stopPopUp = true;
               if(this.popUp == null){
-                this.presentAlert();
+                this.presentAlert(calledFrom);
                 
                 this.setVibration();
                
               }else if(this.popUp != null){
                 this.popUp.dismiss();
-                this.presentAlert();
+                this.presentAlert(calledFrom);
               }
             }
           }
@@ -270,26 +275,11 @@ export class Tab2Page implements OnInit, AfterViewInit {
   timer() {
     this.interval = setInterval(() => {
       this.refreshTicket();
-      this. progress();
     }, 8000);
   }
 
-  activeTicket(){
-    this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
-      this.activeTicketStatus = resp;
-      if(this.activeTicketStatus){
-        this.popUpActiveTicket();
-      }else{
-        this.storeService.localGet(this.localParam.localParam.ticketOffice).then((resp) => {
-          let urlId = resp;
-          this.router.navigateByUrl('/heart-rate/'+urlId);
-        }, (err) => {
-          console.error(err);
-        });
-      }
-    }, (err) => {
-      console.error(err);
-    });
+  postponeTicket(){
+
   }
 
   salir(){
@@ -483,13 +473,13 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
 
-  async presentAlert() {
+  async presentAlert(calledFrom) {
     this.alertTi();
     this.popUp = await this.alertCtrl.create({
       header: 'Es su turno:',
       subHeader: '',
       message:
-        'Usted está siendo llamado',
+        'Usted está siendo llamado de la ventanilla: ' + calledFrom,
       buttons: [{
         text: 'OK',
         role: 'OK',
@@ -505,16 +495,15 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
   async popUpActiveTicket() {
     this.ticketPopUp = await this.alertCtrl.create({
-      header: 'Tiquete Activo',
+      header: '¡Ficoticket Generado!',
       subHeader: '',
       message:
-        'Usted tiene un tiquete activo, por favor espere:',
+        'Te estaremos notificando según se aproxime tu llamado.',
       buttons: [{
         text: 'OK',
         role: 'OK',
         handler: () => {
-          console.log('you clicked me');
-          //this.stopPopUp = true;
+          
         }
       },
       ]
@@ -549,9 +538,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
         text: 'Sí',
         role: 'OK',
         handler: () => {
-          console.log('Salir');
-          this.storage.clear();
-          this.router.navigateByUrl('/login');
+          this.cancelledTicket();
         }
       },
       {
@@ -565,7 +552,23 @@ export class Tab2Page implements OnInit, AfterViewInit {
     });
     await this.exitPopUp.present();
   }
-  progress(){
-    this.progressBar += .1;
+
+  async cancelledTicket() {
+    let cancelledPopUp = await this.alertCtrl.create({
+      header: 'Ficoticket',
+      subHeader: '',
+      message:
+        'Has cancelado el ticket generado, te invitamos a seguir utilizando nuestro servicio de Ficoticket.',
+      buttons: [{
+        text: 'OK',
+        role: 'OK',
+        handler: () => {
+          this.storage.clear();
+          this.router.navigateByUrl('/login');
+        }
+      },
+      ]
+    });
+    await cancelledPopUp.present();
   }
 }//fin de la classs tab2

@@ -13,10 +13,34 @@
 <br>
   <ion-list >
     <ion-item>
-      <ion-label>Oficina</ion-label>
-          <ion-select placeholder="Selecione la oficina"  *ngFor="let ofi of offices">
-            <ion-select-option value="01">  {{ofi.name}}</ion-select-option>
+      <ion-label>Agencia</ion-label>
+          <ion-select placeholder="Selecione la oficina" #C (ionChange)="GenerateServices(C.value)">
+            <ion-select-option *ngFor="let ofi of offices" [value]="ofi.id">{{ofi.name}}</ion-select-option>
            
+            
+          </ion-select>
+
+    </ion-item>
+
+    <br>
+    <ion-item>
+      <ion-label>Tipo de cliente</ion-label>
+          <ion-select placeholder="Seleccione el tipo de cliente">
+            <ion-select-option value="01">Cliente frecuente</ion-select-option>
+            <ion-select-option value="02">Cliente natural</ion-select-option>
+            <ion-select-option value="03">Cliente asociado</ion-select-option>
+            
+          </ion-select>
+
+    </ion-item>
+    <br>
+
+    <ion-item>
+      <ion-label>Área de visita</ion-label>
+          <ion-select placeholder="Seleccione Plataforma">
+            <ion-select-option value="01">Caja</ion-select-option>
+            <ion-select-option value="02">Servicios</ion-select-option>
+            <ion-select-option value="03">Negocios</ion-select-option>
             
           </ion-select>
 
@@ -24,33 +48,10 @@
     <br>
     <ion-item>
       <ion-label>Servicios</ion-label>
-          <ion-select  placeholder="Seleccione servicio"  *ngFor="let ts of ticketServices">
-            <ion-select-option value="01">{{ts.name}}</ion-select-option>
+          <ion-select  placeholder="Seleccione servicio" #S (ionChange)="getSelectedServiceId(S.value)">
+            <ion-select-option *ngFor="let ts of ticketServices" [value]="ts.id">{{ts.name}}</ion-select-option>
             
         
-          </ion-select>
-
-    </ion-item>
-    <br>
-
-    <ion-item>
-      <ion-label>Plataforma</ion-label>
-          <ion-select value="03" placeholder="Seleccione Plataforma">
-            <ion-select-option value="01">Plataforma 1</ion-select-option>
-            <ion-select-option value="02">Plataforma 2</ion-select-option>
-            <ion-select-option value="03">Plataforma 3</ion-select-option>
-            
-          </ion-select>
-
-    </ion-item>
-    <br>
-    <ion-item>
-      <ion-label>Cajas</ion-label>
-          <ion-select value="03">
-            <ion-select-option value="01">Caja 1</ion-select-option>
-            <ion-select-option value="02">Caja 2</ion-select-option>
-            <ion-select-option value="03">Caja 3</ion-select-option>
-            
           </ion-select>
 
     </ion-item>
@@ -60,7 +61,7 @@
 
   </ion-list>
   <div padding>
-    <ion-button class="btnLoging" expand="block"  (click)="go()" >Confirmar</ion-button>
+    <ion-button class="btnLoging" expand="block"  (click)="go()">Crear tiquete</ion-button>
 
   </div>
 
