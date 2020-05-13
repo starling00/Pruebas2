@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, Platform } from '@ionic/angular';
 
 declare var google;
 
@@ -12,7 +12,7 @@ declare var google;
 
 export class AgenciesMapsPage implements OnInit {
 
-  @ViewChild('slides', {static: true}) slides: IonSlides;
+  @ViewChild('slides', { static: true }) slides: IonSlides;
 
   map = null;
   currentPosition = {
@@ -21,18 +21,30 @@ export class AgenciesMapsPage implements OnInit {
   };
   blueDot = null;
   bestOptionsAgencies = [
-    {name: 'Lito Perez', clientes: 20, lat: 9.976337, lng: -84.839159},
-    {name: 'Centro de Puntarenas', clientes: 2, lat: 9.976835, lng: -84.832266},
-    {name: 'BAC Credomatic', clientes: 15, lat: 9.977691, lng: -84.828158}
+    { name: 'Lito Perez', clientes: 20, lat: 9.976337, lng: -84.839159 },
+    { name: 'Centro de Puntarenas', clientes: 2, lat: 9.976835, lng: -84.832266 },
+    { name: 'BAC Credomatic', clientes: 15, lat: 9.977691, lng: -84.828158 }
   ];
+  sliderConfig = {
+    spaceBetween: 10,
+    centeredSlides: true,
+    slidesPerView: 1.4
+  };
+  marker = new google.maps.Marker({
+    position: null,
+    draggable: false,
+    map: null,
+    animation: google.maps.Animation.DROP,
+  });
+  showingAgencies = false;
 
-  sliderConfig={
-    spaceBetween:10,
-    centeredSlides:true,
-    slidesPerView: 1.8
+
+  constructor(private geolocation: Geolocation, public platform: Platform) {
+    if (platform.width() >= 800) {
+      this.sliderConfig.slidesPerView = 2.4;
+      this.sliderConfig.spaceBetween = 20;
+    }
   }
-
-  constructor(private geolocation: Geolocation) { }
 
   async ngOnInit() {
     await this.getInitialPosition();
@@ -65,8 +77,12 @@ export class AgenciesMapsPage implements OnInit {
       center: this.currentPosition,
       zoom: 17,
       disableDefaultUI: true,
+      disableDoubleClickZoom: true,
       zoomControl: false,
+      scrollwheel: false,
       scaleControl: false,
+      keyboardShortcuts: false,
+      clickableIcons: false,
     });
 
     google.maps.event.addListenerOnce(this.map, 'idle', () => {
@@ -83,18 +99,49 @@ export class AgenciesMapsPage implements OnInit {
         strokeColor: '#1A73E8',
         strokeOpacity: 0.5,
       },
-      draggable: true,
+      draggable: false,
       map: this.map
     });
 
     this.watchPosition();
   }
 
-  slideChanged(){
-    this.slides.getActiveIndex().then(data=>{
-      console.log(data)
-    })
+  slideChanged() {
+    this.slides.getActiveIndex().then(index => {
+      const latlng = { lat: this.bestOptionsAgencies[index].lat, lng: this.bestOptionsAgencies[index].lng };
+      this.deleteMarker();
+      this.setMarker(latlng)
+      this.locateOnMap(latlng);
+    });
   }
 
+  setMarker(position) {
+    this.marker.setPosition(position);
+    this.marker.setAnimation(google.maps.Animation.DROP);
+    this.marker.setMap(this.map);
+  }
+
+  deleteMarker() {
+    this.marker.setMap(null);
+  }
+
+  locateOnMap(position) {
+    this.map.panTo(position);
+  }
+
+  showAgencies(event) {
+    this.showingAgencies = !this.showingAgencies;
+    const container: HTMLElement = document.getElementById('slider-container');
+    event.target.classList.toggle('slide-fwd-top');
+    event.target.classList.toggle('slide-bck-bottom');
+    container.classList.toggle('scale-down-ver-bottom');
+    container.classList.toggle('scale-up-ver-bottom');
+    if (this.showingAgencies) {
+      this.slideChanged();
+    } else {
+      this.deleteMarker();
+      this.locateOnMap(this.currentPosition);
+    }
+  }
 
 }

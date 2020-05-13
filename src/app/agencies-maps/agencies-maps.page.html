@@ -9,12 +9,25 @@
 
 <ion-content>
   <div id="map"></div>
-  <div id="slider-container">
-    <ion-slides [options]="sliderConfig" id="slides" #slides (ionSlideDidChange)="slideChanged()">
-      <ion-slide *ngFor="let agency of bestOptionsAgencies" class="slide">
-        <ion-text>{{agency.name}}</ion-text>
-        <ion-text>{{agency.clientes}}</ion-text>
-      </ion-slide>
-    </ion-slides>
+  <div id="container">
+    <ion-icon name="locate" id="location" (click)="locateOnMap(this.currentPosition)"></ion-icon>
+    <ion-button shape="round" #button id="button" class="slide-bck-bottom" (click)="showAgencies($event)">Ver Agencias</ion-button>
+    <div id="slider-container" class="scale-down-ver-bottom">
+      <ion-slides [options]="sliderConfig" id="slides" #slides (ionSlideDidChange)="slideChanged()">
+        <ion-slide *ngFor="let agency of bestOptionsAgencies" class="slide">
+          <ion-card no-margin text-left class="card">
+            <ion-card-header>
+              <ion-card-subtitle class="card-subtitle">Agencia</ion-card-subtitle>
+              <ion-card-title class="card-title">{{agency.name}}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              Founded in 1829 on an isthmus between Lake Monona and Lake Mendota, Madison was named the capital of the
+              Wisconsin Territory in 1836.<br>
+              Cantidad de clientes en espera: {{agency.clientes}}
+            </ion-card-content>
+          </ion-card>
+        </ion-slide>
+      </ion-slides>
+    </div>
   </div>
 </ion-content>
