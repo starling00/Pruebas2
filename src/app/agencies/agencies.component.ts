@@ -25,6 +25,10 @@ export class AgenciesComponent implements OnInit {
       this.router.navigateByUrl('/offices');
 
   }
+
+  openMap(){
+    this.router.navigateByUrl('/agencies-maps');
+  }
   
 
   async presentLoadingDefault() {

@@ -36,6 +36,9 @@ export class AgenciesMapsPage implements OnInit {
     map: null,
     animation: google.maps.Animation.DROP,
   });
+  infoWindow = new google.maps.InfoWindow({
+    content: null,
+  });
   showingAgencies = false;
 
 
@@ -110,7 +113,9 @@ export class AgenciesMapsPage implements OnInit {
     this.slides.getActiveIndex().then(index => {
       const latlng = { lat: this.bestOptionsAgencies[index].lat, lng: this.bestOptionsAgencies[index].lng };
       this.deleteMarker();
-      this.setMarker(latlng)
+      this.infoWindow.close();
+      this.setMarker(latlng);
+      this.setContentToInfoWindow(latlng);
       this.locateOnMap(latlng);
     });
   }
@@ -142,6 +147,25 @@ export class AgenciesMapsPage implements OnInit {
       this.deleteMarker();
       this.locateOnMap(this.currentPosition);
     }
+  }
+
+  setContentToInfoWindow(position) {
+    const content = `
+    <div class="info_window">
+      <img src="https://www.larepublica.net/storage/images/2019/12/11/20191211142642.hangar-plazas.jpg" class="info_window--img">
+      <div class="info_window--info">
+        <h6>nombre de la agencia</h6>
+        <p>Direccion: hola mundo, Honduras</p>
+        <p>Telefono: +88 8888 8888</p>
+        <p>Distancia: 20km</p>
+      </div>
+    </div>`;
+    this.infoWindow.setContent(content);
+    this.infoWindow.open(this.map, this.marker);
+  }
+
+  animationTextChange(){
+
   }
 
 }

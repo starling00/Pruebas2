@@ -29,6 +29,22 @@
     position: absolute; top:0; bottom:0; left: 0; right: 0;
   }
 
+  .info_window{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    // background-color: blue;
+    width: 100%;
+  }
+
+  .info_window--img{
+    width: 100%;
+  }
+
+  .info_window--info{
+    width: 100%;
+  }
+
   .secondary{
     color: white !important;
     text-align: center !important;

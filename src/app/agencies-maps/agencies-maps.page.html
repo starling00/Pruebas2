@@ -1,13 +1,20 @@
 <ion-header>
   <ion-toolbar class="topMenu">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-back-button defaultHref="/agencies"></ion-back-button>
     </ion-buttons>
     <ion-title>Agencias</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <!-- <div class="info_window">
+    <img src="https://www.larepublica.net/storage/images/2019/12/11/20191211142642.hangar-plazas.jpg" class="info_window--img">
+    <div class="info_window--info">
+      <h3>nombre de la agencia</h3>
+      <p>descripcion con algunas lineas que nos puedan dar un poco de volumen para llenar y satisfacer las necesidades del cliente con informacion pertinente para el mismo.</p>
+    </div>
+  </div> -->
   <div id="map"></div>
   <div id="container">
     <ion-icon name="locate" id="location" (click)="locateOnMap(this.currentPosition)"></ion-icon>
