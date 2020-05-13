@@ -32,20 +32,22 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OfficesComponent } from './offices/offices.component';
 import { GenerateMeetingComponent } from './generate-meeting/generate-meeting.component';
 import { MeetingComponent } from './meeting/meeting.component';
+import { LoginPage } from './login/login.page';
+import { AgenciesComponent } from './agencies/agencies.component';
 
 @NgModule({
-  declarations: [AppComponent, ModalPagePage, ModalNotificationPage, HeartrateComponent, OfficesComponent, GenerateMeetingComponent, MeetingComponent],
-  entryComponents: [ModalPagePage,ModalNotificationPage],
-  imports: [BrowserModule,BrowserAnimationsModule, IonicModule.forRoot(), NgxChartsModule, AppRoutingModule,FormsModule,HttpClientModule,AutoCompleteModule,IonicStorageModule.forRoot()],
+  declarations: [AppComponent, ModalPagePage, ModalNotificationPage, HeartrateComponent, OfficesComponent, GenerateMeetingComponent, MeetingComponent, AgenciesComponent],
+  entryComponents: [ModalPagePage, ModalNotificationPage],
+  imports: [BrowserModule, BrowserAnimationsModule, IonicModule.forRoot(), NgxChartsModule, AppRoutingModule, FormsModule, HttpClientModule, AutoCompleteModule, IonicStorageModule.forRoot()],
   providers: [
     StatusBar,
     SplashScreen,
-    
+
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    CrudService,UtilsService, StorageService, UtilStorageService,
-    BeaconService,IBeacon, BLE, Toast, QRScanner, LocalNotifications,
-    SeePeoplePage, Geolocation
+    CrudService, UtilsService, StorageService, UtilStorageService,
+    BeaconService, IBeacon, BLE, Toast, QRScanner, LocalNotifications,
+    SeePeoplePage, Geolocation, LoginPage
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

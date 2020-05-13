@@ -7,51 +7,63 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="card-background-page">
- 
-    <ion-grid >
-    <ion-row>
-      <ion-col>
-        <div>
+<ion-content padding>
+<ion-card-content>
+  <ion-title class="header-title">Crear Tiquete</ion-title>
+<br>
+  <ion-list >
+    <ion-item>
+      <ion-label>Agencia</ion-label>
+          <ion-select placeholder="Selecione la oficina" #C (ionChange)="GenerateServices(C.value)">
+            <ion-select-option *ngFor="let ofi of offices" [value]="ofi.id">{{ofi.name}}</ion-select-option>
+           
+            
+          </ion-select>
 
-          <ion-card >
-            <img src="assets/img/rect931.png"/>
-            <div class="card-title">Oficinas</div>
-           <!-- <div class="card-subtitle">Escoja mae</div>-->
-          </ion-card>
-        </div>
-      </ion-col>
-   
-    </ion-row>
-  </ion-grid>
-   
-    <p class="text1">Seleccione la oficina:</p>
+    </ion-item>
+
     <br>
-    <ion-card-content >
-    <ion-list >
-      <ion-card *ngFor="let ofi of offices">
-        <ion-card-header>
-          <ion-card-title>
-          {{ofi.name}}
-        </ion-card-title>
-        </ion-card-header>
-        <ion-grid>
-        <ion-row>
-          <ion-col>
-            <div></div>
-          </ion-col>
-          <ion-col col-6>
-            <div> 
-               <ion-button class="btnServices" (click)="goServices(ofi.id)">Ver<ion-icon name="arrow-forward"></ion-icon></ion-button>
-            </div>
-          </ion-col>
-          <ion-col>
-            <div></div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+    <ion-item>
+      <ion-label>Tipo de cliente</ion-label>
+          <ion-select placeholder="Seleccione el tipo de cliente">
+            <ion-select-option value="01">Cliente frecuente</ion-select-option>
+            <ion-select-option value="02">Cliente natural</ion-select-option>
+            <ion-select-option value="03">Cliente asociado</ion-select-option>
+            
+          </ion-select>
+
+    </ion-item>
+    <br>
+
+    <ion-item>
+      <ion-label>Área de visita</ion-label>
+          <ion-select placeholder="Seleccione Plataforma">
+            <ion-select-option value="01">Caja</ion-select-option>
+            <ion-select-option value="02">Servicios</ion-select-option>
+            <ion-select-option value="03">Negocios</ion-select-option>
+            
+          </ion-select>
+
+    </ion-item>
+    <br>
+    <ion-item>
+      <ion-label>Servicios</ion-label>
+          <ion-select  placeholder="Seleccione servicio" #S (ionChange)="getSelectedServiceId(S.value)">
+            <ion-select-option *ngFor="let ts of ticketServices" [value]="ts.id">{{ts.name}}</ion-select-option>
+            
+        
+          </ion-select>
+
+    </ion-item>
+    <br>
    
-    </ion-card>
-    </ion-list>
-  </ion-card-content>
+    
+
+  </ion-list>
+  <div padding>
+    <ion-button class="btnLoging" expand="block"  (click)="go()">Crear tiquete</ion-button>
+
+  </div>
+
+</ion-card-content>
 </ion-content>

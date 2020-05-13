@@ -1,64 +1,64 @@
 <ion-header>
-    <ion-toolbar class="topMenu">
-        <ion-buttons slot="start">
-            <ion-menu-button></ion-menu-button>
-          </ion-buttons>
-      <ion-title>Summit</ion-title>
-    </ion-toolbar>
-   
-  </ion-header>
+  <ion-toolbar class="topMenu">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Ficohsa</ion-title>
+  </ion-toolbar>
+
+</ion-header>
 
 
-  
-  <ion-content class="ion-padding center">
-      <ion-card-content>
-          <ion-title class="title">Tiquete</ion-title>
-          <br>
-          <ion-list class="line-input">
 
-            <!--<ion-item>
-              <ion-icon name="person" slot="end"></ion-icon>
-           
-            <ion-input [(ngModel)]="ticketName" readonly="true"></ion-input>
-          </ion-item>-->
-          <br>
-            <ion-item>
-                <ion-icon name="pricetag" slot="end"></ion-icon>
-              <ion-input [(ngModel)]="ticketNumber" readonly="true" style="
+<ion-content class="ion-padding center">
+  <ion-card-content >
+
+    <div class="logo">
+      <img src="assets/img/Ficohsa_logo.png" alt="Logo del banco de ficohsa">
+
+    </div>
+
+    <ion-list class="line-input">
+      <ion-item class="centerItem">
+        <ion-input [(ngModel)]="ticketUbi" readonly="true"></ion-input>
+      </ion-item>
+      <ion-item class="centerItem"> 
+        <ion-input [(ngModel)]="ticketDesti" readonly="true"></ion-input>
+      </ion-item>
+      <ion-item class="centerItem">
+        <ion-input [(ngModel)]="ticketNumber" readonly="true" style="
               font-weight: bold;
-              font-size: xx-large;
-          "></ion-input>
-             
-            </ion-item>
-            <br>
-            <ion-item>
-              <ion-icon name="people" slot="end"></ion-icon>
-            <ion-input [(ngModel)]="ticketPosition" readonly="true"></ion-input>
-           
-          </ion-item>
-          <br>
-            <ion-item>
-             
-              <ion-icon name="pin" slot="end"></ion-icon>
-              <ion-input [(ngModel)]="ticketUbi" readonly="true"></ion-input>
-            
-            </ion-item>
-            <br>
-            <ion-item>
-              <ion-icon name="paper-plane" slot="end"></ion-icon>
-              <ion-input [(ngModel)]="ticketDesti" readonly="true"></ion-input> 
-             
-            </ion-item>
-            <br>
-        
-          </ion-list>
-        </ion-card-content>
-        
-       
-          <!--<ion-button color="primary" (click)="QR()">scanner</ion-button>-->
-    </ion-content>
+              font-size: xx-large;"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-progress-bar color="primary" [value]="maxProgressBar"></ion-progress-bar>
+        <!--<ion-button class="btnLoging" expand="block" (click)="progress()">Progress</ion-button> -->
+      </ion-item>
+      <ion-item class="centerItem">
+        <ion-input [(ngModel)]="ticketPosition" readonly="true"></ion-input>
+      </ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col col-6>
+            <div>
+              <ion-button (click)="salir()" color="primary">Cancelar </ion-button>
+            </div>
+          </ion-col>
+          <ion-col col-6>
+            <div>
+              <ion-button (click)="postponeTicket()" color="primary">Posponer </ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    
+    </ion-list>
+  </ion-card-content>
 
-    <ion-tabs >
+  <!--<ion-button color="primary" (click)="QR()">scanner</ion-button>-->
+</ion-content>
+
+<!-- <ion-tabs >
       <ion-tab-bar>
         <ion-tab-button (click)="activeTicket()">Servicios
           <ion-icon name="apps"></ion-icon>
@@ -70,4 +70,4 @@
               <ion-icon name="exit"></ion-icon>
           </ion-tab-button>
       </ion-tab-bar>
-  </ion-tabs>
+  </ion-tabs>-->
