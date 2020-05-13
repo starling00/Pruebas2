@@ -165,7 +165,7 @@ export class AgenciesMapsPage implements OnInit {
   }
 
   animationTextChange(){
-
+    
   }
 
 }
