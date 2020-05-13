@@ -7,8 +7,8 @@ import { MeetingComponent } from './meeting/meeting.component';
 import { AgenciesComponent } from './agencies/agencies.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)},
+  { path: '', redirectTo: 'prelogin', pathMatch: 'full' },
+  { path: 'prelogin', loadChildren: () => import('./prelogin/prelogin.module').then( m => m.PreloginPageModule)},
   { path: 'menu', loadChildren: './menu/menu.module#MenuPageModule' },
   
   { path: 'see-people', loadChildren: './see-people/see-people.module#SeePeoplePageModule' },
@@ -19,6 +19,9 @@ const routes: Routes = [
   { path: 'gen-meeting', component: GenerateMeetingComponent },
   { path: 'meeting', component: MeetingComponent },
   {path: 'agencies', component:AgenciesComponent},
+  //{ path: 'prelogin', loadChildren: './prelogin/prelogin.module#PreloginPageModule' },
+  { path:'login', loadChildren:'./login/login.module#LoginPageModule'},
+
 
  
 ];

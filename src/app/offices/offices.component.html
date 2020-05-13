@@ -3,7 +3,12 @@
       <ion-buttons slot="start">
         <ion-back-button defaultHref="/"></ion-back-button>
       </ion-buttons>
-    <ion-title>Summit</ion-title>
+    <ion-title>
+      <div class="logo">
+        <img src="assets/img/fb.png" alt="Logo del banco de ficohsa">
+  
+      </div>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,7 +18,7 @@
 <br>
   <ion-list >
     <ion-item>
-      <ion-label>Agencia</ion-label>
+      <ion-label position="floating" >Agencia</ion-label>
           <ion-select placeholder="Selecione la oficina" #C (ionChange)="GenerateServices(C.value)">
             <ion-select-option *ngFor="let ofi of offices" [value]="ofi.id">{{ofi.name}}</ion-select-option>
            
@@ -24,11 +29,12 @@
 
     <br>
     <ion-item>
-      <ion-label>Tipo de cliente</ion-label>
+      <ion-label position="floating">Tipo de cliente</ion-label>
           <ion-select placeholder="Seleccione el tipo de cliente">
-            <ion-select-option value="01">Cliente frecuente</ion-select-option>
-            <ion-select-option value="02">Cliente natural</ion-select-option>
-            <ion-select-option value="03">Cliente asociado</ion-select-option>
+            <ion-select-option value="01">Cliente Emprendedor</ion-select-option>
+            <ion-select-option value="02">Cliente Natural</ion-select-option>
+            <ion-select-option value="03">Cliente Preferencial</ion-select-option>
+            <ion-select-option value="03">Cliente Corporativo</ion-select-option>
             
           </ion-select>
 
@@ -36,7 +42,7 @@
     <br>
 
     <ion-item>
-      <ion-label>Área de visita</ion-label>
+      <ion-label position="floating">Área de visita</ion-label>
           <ion-select placeholder="Seleccione Plataforma">
             <ion-select-option value="01">Caja</ion-select-option>
             <ion-select-option value="02">Servicios</ion-select-option>
@@ -47,7 +53,7 @@
     </ion-item>
     <br>
     <ion-item>
-      <ion-label>Servicios</ion-label>
+      <ion-label position="floating">Servicios</ion-label>
           <ion-select  placeholder="Seleccione servicio" #S (ionChange)="getSelectedServiceId(S.value)">
             <ion-select-option *ngFor="let ts of ticketServices" [value]="ts.id">{{ts.name}}</ion-select-option>
             
