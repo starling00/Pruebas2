@@ -1,5 +1,5 @@
 .topMenu{
-    --background: #125eab;
+    --background: var(--ion-color-primary);
     --color: #fff;
     text-align: left;
 }
@@ -19,7 +19,7 @@
 
 .btnServices{
     margin-top: 1%;
-    --background: #125eab;
+    --background: var(--ion-color-primary);
 }
 .card-background-page {
 
