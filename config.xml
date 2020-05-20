@@ -6,6 +6,7 @@
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
+    <allow-navigation href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
     <allow-intent href="sms:*" />

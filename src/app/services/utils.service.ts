@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class UtilsService {
   params  = {
+    officeInfo:"",
     serverurl : "",
     registerurl: "",
     loginurl:"" ,
@@ -58,6 +59,7 @@ export class UtilsService {
       searchdirection:""
    }
   constructor() { 
+    var localizationAPI = 'http://18.224.108.194/orchestra_mapas/api/';
     var newserverURL = 'http://35.222.165.70/summit/api/';
     //var ticketsURL = 'https://35.222.165.70/summitOrchestraTicket/api/';
     var ticketsURL = 'http://35.222.165.70/ticketstse/api/';
@@ -109,7 +111,7 @@ export class UtilsService {
     var mapwizeurl = "https://api.mapwize.io/v1/";
     var apikey= "?api_key=439578d65ac560a55bb586feaa299bf7";
     this.mapwizeParams.searchdirection = mapwizeurl+ "directions"+apikey;
-
+    this.params.officeInfo = localizationAPI+"orchestra_offices/officeslocalization";
     this.params.ticketCreate = ticketsURL+"orchestra_createTicket";
     this.params.ticketServices = ticketsURL+"orchestra_services";
     this.params.ticketStatus = ticketsURL+"orchestra_ticketStatus";

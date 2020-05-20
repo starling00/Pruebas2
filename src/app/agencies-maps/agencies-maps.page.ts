@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { IonSlides, Platform } from '@ionic/angular';
+import { LocalizationService } from '../services/localization.service';
+import { async } from '@angular/core/testing';
 
 declare var google;
 
@@ -20,16 +22,7 @@ export class AgenciesMapsPage implements OnInit {
     lng: -88.028020
   };
   blueDot = null;
-  bestOptionsAgencies = [
-    { name: 'Lito Perez', clientes: 20, lat: 9.976337, lng: -84.839159 },
-    { name: 'Centro de Puntarenas', clientes: 2, lat: 9.976835, lng: -84.832266 },
-    { name: 'BAC Credomatic', clientes: 15, lat: 9.977691, lng: -84.828158 }
-  ];
-  sliderConfig = {
-    spaceBetween: 10,
-    centeredSlides: true,
-    slidesPerView: 1.4
-  };
+  bestOptionsAgencies = [];
   marker = new google.maps.Marker({
     position: null,
     draggable: false,
@@ -42,16 +35,13 @@ export class AgenciesMapsPage implements OnInit {
   showingAgencies = false;
 
 
-  constructor(private geolocation: Geolocation, public platform: Platform) {
-    if (platform.width() >= 800) {
-      this.sliderConfig.slidesPerView = 2.4;
-      this.sliderConfig.spaceBetween = 20;
-    }
+  constructor(private geolocation: Geolocation, public platform: Platform, private service: LocalizationService) {
   }
 
   async ngOnInit() {
     await this.getInitialPosition();
     this.loadMap();
+    this.getOffices();
   }
 
   async getInitialPosition() {
@@ -59,7 +49,7 @@ export class AgenciesMapsPage implements OnInit {
     this.currentPosition = {
       lat: coords.latitude,
       lng: coords.longitude
-    }
+    };
   }
 
   watchPosition() {
@@ -105,17 +95,38 @@ export class AgenciesMapsPage implements OnInit {
       draggable: false,
       map: this.map
     });
-
     this.watchPosition();
+  }
+
+  sliderConfig() {
+    if (window.innerWidth >= 1400) {
+      return {
+        spaceBetween: 20,
+        slidesPerView: 3.4,
+        centeredSlides: true
+      };
+    } else if (window.innerWidth >= 860 && window.innerWidth < 1400) {
+      return{
+        spaceBetween: 10,
+        slidesPerView: 2.4,
+        centeredSlides: true
+      };
+    } else {
+      return{
+        spaceBetween: 10,
+        slidesPerView: 1.4,
+        centeredSlides: true
+      };
+    }
   }
 
   slideChanged() {
     this.slides.getActiveIndex().then(index => {
-      const latlng = { lat: this.bestOptionsAgencies[index].lat, lng: this.bestOptionsAgencies[index].lng };
+      const latlng = { lat: this.bestOptionsAgencies[index].latitude, lng: this.bestOptionsAgencies[index].longitude };
       this.deleteMarker();
       this.infoWindow.close();
       this.setMarker(latlng);
-      this.setContentToInfoWindow(latlng);
+      this.setContentToInfoWindow(index);
       this.locateOnMap(latlng);
     });
   }
@@ -149,23 +160,29 @@ export class AgenciesMapsPage implements OnInit {
     }
   }
 
-  setContentToInfoWindow(position) {
+  setContentToInfoWindow(slideIndex) {
+    const currentCard = this.bestOptionsAgencies[slideIndex];
     const content = `
     <div class="info_window">
       <img src="https://www.larepublica.net/storage/images/2019/12/11/20191211142642.hangar-plazas.jpg" class="info_window--img">
       <div class="info_window--info">
-        <h6>nombre de la agencia</h6>
-        <p>Direccion: hola mundo, Honduras</p>
+        <h6>${currentCard.name}</h6>
+        <p>Direccion: ${currentCard.address1}, ${currentCard.city}</p>
         <p>Telefono: +88 8888 8888</p>
-        <p>Distancia: 20km</p>
+        <p>algun dato</p>
       </div>
     </div>`;
     this.infoWindow.setContent(content);
     this.infoWindow.open(this.map, this.marker);
   }
 
-  animationTextChange(){
-    
+  getOffices() {
+    this.service.getOffices(this.currentPosition).subscribe(data => {
+      Object.keys(data).map((indice) => {
+        this.bestOptionsAgencies.push(data[indice]);
+      });
+      console.log(this.bestOptionsAgencies);
+    });
   }
 
 }
