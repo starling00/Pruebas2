@@ -8,11 +8,27 @@ import { UtilStorageService } from '../services/util-storage.service';
 import { Router } from '@angular/router';
 import { Toast } from '@ionic-native/toast/ngx';
 import { FormGroup, FormBuilder, Validators,ReactiveFormsModule} from '@angular/forms';
+import {trigger,state,style,animate,transition} from '@angular/animations'
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
+  animations:[
+trigger('fadein',[
+  state('void', style({opacity: 0})),
+  transition('void=>*',[
+    style({opacity:0}),
+    animate('900ms 100ms ease-out', style({opacity: 1}))
+  ])
+]),
+trigger('slidelefttitle',[
+  transition('void=>*',[
+    style({opacity: 0, transform: 'translateX(150%)'}),
+    animate('900ms 300ms ease-out',style({transform:'translateX(0%)', opacity: 1},))
+  ])
+])
+  ]
 })
 export class LoginPage implements OnInit {
   

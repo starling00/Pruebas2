@@ -1,25 +1,25 @@
 
 <ion-header >
     <ion-toolbar class="topMenu" >
-        <ion-title>Bienvenidos</ion-title>
+        <ion-title>FICOTICKET</ion-title>
       </ion-toolbar>
 </ion-header>
  
-<ion-content class="" padding>
+<ion-content @slidelefttitle class="" padding>
   <div class="logo">
-        <img src="assets/img/ficohsa.png" alt="Logo del banco de ficohsa" > 
+        <img src="assets/img/fico.png" alt="Logo del banco de ficohsa" > 
           
       </div>
+      <p class="text1">Asegúrate de digitar correctamente tu número 
+        de identificación para que puedas gozar de tus beneficios.
+      </p>
       <form [formGroup]="myForm" >
       <ion-list>
-
         <ion-item>
-          <ion-icon name="person" slot="end"></ion-icon>
+          <ion-icon class="iconP" name="person" slot="end"></ion-icon>
           <ion-label position="floating">Cédula:</ion-label>
           <ion-input formControlName="cedula" type="text"  pattern="^[1-9]\d{4}\d{4}$"></ion-input>
         </ion-item>
-       
-      
       </ion-list>
     </form>
       <br> <br>

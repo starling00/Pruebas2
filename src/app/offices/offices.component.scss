@@ -1,7 +1,7 @@
 .topMenu{
-    --background: #125eab;
+    --background: var(--ion-color-primary);
     --color: #fff;
-    text-align: right;
+    text-align: left;
 }
 
 .center{
@@ -19,7 +19,7 @@
 
 .btnServices{
     margin-top: 1%;
-    --background: #125eab;
+    --background: var(--ion-color-primary);
 }
 .card-background-page {
 
@@ -57,10 +57,16 @@
   font-weight: bold;
 }
 ion-card-content{
-  --background:#EFEEEE;
+  background:#fff;
   border:  1px solid rgba(255,255,255,0.20);
   border-radius: 12px;
   box-shadow: -6px -6px 26px 0 rgba(255,255,255,0.83);
   box-shadow: 6px 6px 16px 0 rgba(217,210,200,0.51);
 
+}
+ion-content{
+  --background: #eaeaea;
+}
+.logo{
+  max-width: 39%;
 }
