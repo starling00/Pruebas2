@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { IonSlides, Platform } from '@ionic/angular';
 import { LocalizationService } from '../services/localization.service';
-import { async } from '@angular/core/testing';
 
 declare var google;
 
@@ -33,6 +32,7 @@ export class AgenciesMapsPage implements OnInit {
     content: null,
   });
   showingAgencies = false;
+  watcher;
 
 
   constructor(private geolocation: Geolocation, public platform: Platform, private service: LocalizationService) {
@@ -53,13 +53,17 @@ export class AgenciesMapsPage implements OnInit {
   }
 
   watchPosition() {
-    this.geolocation.watchPosition({ enableHighAccuracy: true }).subscribe(resp => {
+    this.watcher = this.geolocation.watchPosition({ enableHighAccuracy: true }).subscribe(resp => {
       this.currentPosition = {
         lat: resp.coords.latitude,
         lng: resp.coords.longitude
       };
       this.blueDot.setPosition(this.currentPosition);
     });
+  }
+
+  ionViewWillLeave(){
+    this.watcher.unsubscribe();
   }
 
   loadMap() {
