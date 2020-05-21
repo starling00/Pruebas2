@@ -166,7 +166,7 @@ ion-header {
 	.topMenu {
 		--background: #125eab;
 		--color: #fff;
-		text-align: center;
+		text-align: right;
 	}
 }
 
@@ -182,3 +182,7 @@ ion-header {
 // 	color: blue;
 // 	--ionicon-stroke-width: 16px;
 // }
+
+.logo{
+	max-width: 39%;
+  }

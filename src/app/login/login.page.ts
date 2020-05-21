@@ -7,7 +7,7 @@ import { StorageService } from '../services/storage.service';
 import { UtilStorageService } from '../services/util-storage.service';
 import { Router } from '@angular/router';
 import { Toast } from '@ionic-native/toast/ngx';
-import { FormGroup, FormBuilder, Validators,ReactiveFormsModule} from '@angular/forms';
+import { FormGroup, FormBuilder, Validators,ReactiveFormsModule, FormControl} from '@angular/forms';
 import {trigger,state,style,animate,transition} from '@angular/animations'
 
 @Component({
@@ -70,17 +70,25 @@ export class LoginPage implements OnInit {
         this.router.navigateByUrl('/menu/first/tabs/tab2');
       }
     }, 1000);*/
+    this.cleanForm();
   }
 
  private createMyForm() {
     return this.formBuilder.group({
      
-     cedula: ['', Validators.required],
+     cedula: ['', [Validators.required, Validators.maxLength(9)]],
      
     });
   }
-
-
+  validation_messages = {
+    'cedula': [
+        { type: 'required', message: 'Digite la cédula' },
+        { type: 'pattern', message: 'Cédula no valida' }
+      ],
+    }
+cleanForm(){
+  this.myForm.controls['cedula'].setValue('');
+}
   alert(msg: string) {
     this.toast.show(msg, '5000', 'center').subscribe(
       toast => {

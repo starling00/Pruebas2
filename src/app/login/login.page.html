@@ -18,10 +18,18 @@
         <ion-item>
           <ion-icon class="iconP" name="person" slot="end"></ion-icon>
           <ion-label position="floating">Cédula:</ion-label>
-          <ion-input formControlName="cedula" type="text"  pattern="^[1-9]\d{4}\d{4}$"></ion-input>
+          <ion-input formControlName="cedula" type="text"   pattern="^[1-9]\d{4}\d{4}$" clearInput></ion-input>
         </ion-item>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.cedula">
+            <div class="error-message" *ngIf="myForm.get('cedula').hasError(validation.type)">
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
       </ion-list>
-    </form>
+      
       <br> <br>
-   <ion-button class="btnLoging" expand="block" (click)="login()">Continuar<ion-icon name="log-in"></ion-icon></ion-button>
-</ion-content>
+   <ion-button class="btnLoging" expand="block" [disabled]="!myForm.valid" (click)="login()">Continuar<ion-icon name="log-in"></ion-icon></ion-button>
+  </form>
+  </ion-content>
