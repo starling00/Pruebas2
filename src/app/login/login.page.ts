@@ -82,8 +82,8 @@ export class LoginPage implements OnInit {
   }
   validation_messages = {
     'cedula': [
-        { type: 'required', message: 'Digite la cédula' },
-        { type: 'pattern', message: 'Cédula no valida' }
+        
+        { type: 'pattern', message: 'Cédula no válida' }
       ],
     }
 cleanForm(){

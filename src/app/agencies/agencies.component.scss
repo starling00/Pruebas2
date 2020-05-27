@@ -1,20 +1,4 @@
-.line-input {
-    margin-bottom: 0!important;
-    ion-item {
-        --border-color: transparent!important;
-        --highlight-height: 0;
-        border-radius: 20px;
-        border: 1px solid #575756;
-        &.item-has-focus {
-            border: 1px solid var(--ion-color-primary);
-        }
-        ion-label {
-            color: #807e7e!important;
-            font-weight: 300;
-            font-size: 1rem!important;
-        }
-    }
-}
+
 .topMenu{
     --background: #005aaa;
     --color: #fff;
@@ -23,7 +7,7 @@
 .logo{
     text-align: center;
     width: 172px;
-    margin: 36px auto
+    margin: 10px auto
 }
 .btnLoging{
     --background: #005aaa;
@@ -42,7 +26,8 @@
       font-size: 1.0em;
       width: 100%;
       font-weight: bold;
-      color: #fff;
+      --color: #fff !important;
+      margin-top: -6px
     }
     .card-subtitle {
       font-size: 1.0em;
@@ -59,13 +44,36 @@
     -moz-box-shadow: 2px 2px 5px #999;
   } 
   .text1{
-      text-align: center;
+      text-align: justify;
       font-size: 16px;
+     padding: 20px;
+      
   }
+  .text2{
+    text-align:center;
+    font-size: 16px;
+    margin-top: -20px;
+}
   .card-content-ios {
      padding-left: 0px;
     padding-right: 0px;
   }
   ion-content{
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+  .colorF{
+    color: var(--ion-color-primary);;
+  }
+  .colorCards{
+    --background: #32afcc;
+  }
+  ion-card-header{
+    padding: 10px;
+    text-align: center;
+  }
+  ion-card-subtitle{
+    color: #fff;
+  }
+  hr{
+    background-color: #fff;
   }

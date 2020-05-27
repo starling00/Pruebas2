@@ -54,11 +54,55 @@ ion-card-content{
     --background: #eaeaea;
   }
 
-  .logo{
-    text-align: center;
-    width: 172px;
-    margin: 4px auto
-}
+  
+    .logo{
+        max-width: 39%;
+      }
+
 .centerItem{
     text-align: center;
+    font-weight: bold;
 }
+.centerItem2{
+    text-align: center;
+    font-weight: bold;
+    color: var(--ion-color-primary);
+}
+.imagenTiquete{
+    background-image: url('../../assets/img/ticket.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.card-background-page {
+
+    ion-card {
+      position: relative;
+      text-align: center;
+      box-shadow: none;
+    }
+  
+    .card-title {
+        position: absolute;
+        top: 6%;
+        font-size: 1.4em;
+        width: 100%;
+        font-weight: bold;
+        color: #32afcc;
+    }
+  
+    .card-subtitle {
+        font-size: 2em;
+        position: absolute;
+        top: 43%;
+        width: 100%;
+        color: #32afcc;
+        font-weight: bold;
+    }
+  
+  }
+  hr{
+    background-color: #32afcc;
+    width: 131px;
+    height: 2px;
+  }

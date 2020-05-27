@@ -36,8 +36,8 @@ import { LoginPage } from './login/login.page';
 import { AgenciesComponent } from './agencies/agencies.component';
 
 @NgModule({
-  declarations: [AppComponent, ModalPagePage, ModalNotificationPage, HeartrateComponent, OfficesComponent, GenerateMeetingComponent, MeetingComponent, AgenciesComponent],
-  entryComponents: [ModalPagePage, ModalNotificationPage],
+  declarations: [AppComponent, ModalNotificationPage, HeartrateComponent, OfficesComponent, GenerateMeetingComponent, MeetingComponent, AgenciesComponent],
+  entryComponents: [ ModalNotificationPage],
   imports: [BrowserModule, BrowserAnimationsModule, IonicModule.forRoot(), NgxChartsModule, AppRoutingModule, FormsModule, HttpClientModule, AutoCompleteModule, IonicStorageModule.forRoot()],
   providers: [
     StatusBar,

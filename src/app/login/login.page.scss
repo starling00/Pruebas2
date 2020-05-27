@@ -3,7 +3,7 @@
     ion-item {
         --border-color: transparent!important;
         --highlight-height: 0;
-        border-radius: 20px;
+        border-radius: 5px;
         border: 1px solid #575756;
         &.item-has-focus {
             border: 1px solid var(--ion-color-primary);
@@ -28,6 +28,8 @@
 }
 .btnLoging{
     --background: #32afcc;
+    margin-top: -23px;
+    height: 55px;
 }
 
 .card-background-page {
@@ -77,3 +79,11 @@
     font-size: 14px;
     text-align: center;
   }
+
+  
+
+
+.ios .label-floating.sc-ion-label-ios-h {
+   
+    transform:none;
+}

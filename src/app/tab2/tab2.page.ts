@@ -156,7 +156,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
       this.createdTicket = resp;
       if(!this.createdTicket){
-        this.ticketNumber = "No hay tiquete";
+        this.ticketNumber = "No hay ticket";
       }else if(this.createdTicket){
         this.ticketNumber = this.createdTicket.ticketNumber;
         this.setVibration();
@@ -185,7 +185,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     this.storeService.localGet(this.localParam.localParam.ticketStatus).then((resp) => {
       this.ticketStatus = resp;
       if(!this.ticketStatus){
-        this.ticketUbi = "No se ha creado un tiquete";
+        this.ticketUbi = "No se ha creado un ticket";
       }else if(this.ticketStatus){
         this.ticketUbi = this.ticketStatus.currentServiceName;
       }
@@ -199,7 +199,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     this.storeService.localGet(this.localParam.localParam.ticketStatus).then((resp) => {
       this.ticketStatus = resp;
       if(!this.ticketStatus){
-        this.ticketDesti = "No se ha creado un tiquete";
+        this.ticketDesti = "No se ha creado un ticket";
       }else if(this.ticketStatus){
         this.ticketDesti = this.ticketStatus.queueName;
       }
@@ -213,7 +213,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     this.storeService.localGet(this.localParam.localParam.ticketStatus).then((resp) => {
       this.ticketStatus = resp;
       if(!this.ticketStatus){
-        this.ticketPosition = "No se ha creado un tiquete";
+        this.ticketPosition = "No se ha creado un ticket";
       }else if(this.ticketStatus){
         this.ticketPosition = "Su posición es: "+this.ticketStatus.position;
         this.maxProgressBar = 1/this.ticketStatus.position;
@@ -495,10 +495,12 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
   async popUpActiveTicket() {
     this.ticketPopUp = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
       header: '¡Ficoticket Generado!',
       subHeader: '',
       message:
-        'Te estaremos notificando según se aproxime tu llamado.',
+      '<img class="my-custom-class" src="assets/img/check.png"></img><br> <br>Te estaremos notificando según se aproxime tu llamado.',
+       
       buttons: [{
         text: 'OK',
         role: 'OK',
@@ -533,7 +535,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       header: '¿Desea salir?',
       subHeader: '',
       message:
-        'Si tiene un tiquete activo se perderá',
+        'Si tiene un ticket activo se perderá',
       buttons: [{
         text: 'Sí',
         role: 'OK',
@@ -555,16 +557,18 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
   async cancelledTicket() {
     let cancelledPopUp = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
       header: 'Ficoticket',
       subHeader: '',
       message:
-        'Has cancelado el ticket generado, te invitamos a seguir utilizando nuestro servicio de Ficoticket.',
+      '<img class="my-custom-class" src="assets/img/cancel.png"></img><br> <br><h6>Has cancelado el ticket generado</h6>Te invitamos a seguir utilizando nuestro servicio de Ficoticket.',
+      
       buttons: [{
         text: 'OK',
         role: 'OK',
         handler: () => {
           this.storage.clear();
-          this.router.navigateByUrl('/login');
+          this.router.navigateByUrl('/modal-page');
         }
       },
       ]

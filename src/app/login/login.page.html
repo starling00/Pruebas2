@@ -14,10 +14,10 @@
         de identificación para que puedas gozar de tus beneficios.
       </p>
       <form [formGroup]="myForm" >
-      <ion-list>
+      <ion-list class="line-input">
         <ion-item>
           <ion-icon class="iconP" name="person" slot="end"></ion-icon>
-          <ion-label position="floating">Cédula:</ion-label>
+          <ion-label position="floating">Tarjeta de identidad:</ion-label>
           <ion-input formControlName="cedula" type="text"   pattern="^[1-9]\d{4}\d{4}$" clearInput></ion-input>
         </ion-item>
         <div class="validation-errors">
