@@ -34,11 +34,11 @@ import { GenerateMeetingComponent } from './generate-meeting/generate-meeting.co
 import { MeetingComponent } from './meeting/meeting.component';
 import { LoginPage } from './login/login.page';
 import { AgenciesComponent } from './agencies/agencies.component';
-
+import {TermsConditionsPageModule} from  './terms-conditions/terms-conditions.module';
 @NgModule({
   declarations: [AppComponent, ModalNotificationPage, HeartrateComponent, OfficesComponent, GenerateMeetingComponent, MeetingComponent, AgenciesComponent],
   entryComponents: [ ModalNotificationPage],
-  imports: [BrowserModule, BrowserAnimationsModule, IonicModule.forRoot(), NgxChartsModule, AppRoutingModule, FormsModule, HttpClientModule, AutoCompleteModule, IonicStorageModule.forRoot()],
+  imports: [BrowserModule, BrowserAnimationsModule, IonicModule.forRoot(), NgxChartsModule, AppRoutingModule, FormsModule, HttpClientModule, AutoCompleteModule,TermsConditionsPageModule, IonicStorageModule.forRoot()],
   providers: [
     StatusBar,
     SplashScreen,

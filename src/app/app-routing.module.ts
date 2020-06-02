@@ -53,7 +53,8 @@ const routes: Routes = [
   {path: 'agencies', component:AgenciesComponent},
   { path: 'agencies-maps', loadChildren: './agencies-maps/agencies-maps.module#AgenciesMapsPageModule' },
   //{ path: 'prelogin', loadChildren: './prelogin/prelogin.module#PreloginPageModule' },
-  { path:'login', loadChildren:'./login/login.module#LoginPageModule'},
+  { path:'login', loadChildren:'./login/login.module#LoginPageModule'},  { path: 'terms-conditions', loadChildren: './terms-conditions/terms-conditions.module#TermsConditionsPageModule' },
+
 
 
 ];

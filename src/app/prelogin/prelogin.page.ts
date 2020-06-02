@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ActionSheetController } from '@ionic/angular';
-
+import { AlertController, ActionSheetController, ModalController } from '@ionic/angular';
+import { PopoverController} from '@ionic/angular'
+import {} from '../terms-conditions/terms-conditions.module';
+import { TermsConditionsPage } from '../terms-conditions/terms-conditions.page';
 @Component({
   selector: 'app-prelogin',
   templateUrl: './prelogin.page.html',
@@ -12,11 +14,26 @@ export class PreloginPage implements OnInit {
 
   constructor(private router: Router,
     private alertCtrl: AlertController,
-    public actionSheetController: ActionSheetController,) { }
+    public actionSheetController: ActionSheetController, private popover: PopoverController,
+    public modalController: ModalController) { }
 
   ngOnInit() {
    // this. presentAlert();
   }
+//crea el popover
+CreatePopOver(){
+this.popover.create({component:TermsConditionsPage,showBackdrop:false}).then((popoverElement)=>{
+  popoverElement.present();
+})
+}
+
+async presentModal() {
+  const modal = await this.modalController.create({
+    component: TermsConditionsPage,
+    cssClass: 'my-custom-class'
+  });
+  return await modal.present();
+}
 
   login() {
     this.router.navigateByUrl('/login');
@@ -66,4 +83,6 @@ export class PreloginPage implements OnInit {
     });
     await alert.present();
   }
+
+
 }//fin d la class
