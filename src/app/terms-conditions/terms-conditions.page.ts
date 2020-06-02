@@ -28,9 +28,9 @@ dismiss() {
 }
 login() {
  // this.ClosePopover();
- 
+ this.dismiss();
   this.router.navigateByUrl('/login');
-  this.dismiss();
+
 }
 
 }//fin de la clase

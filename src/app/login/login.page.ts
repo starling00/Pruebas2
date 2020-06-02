@@ -19,7 +19,7 @@ trigger('fadein',[
   state('void', style({opacity: 0})),
   transition('void=>*',[
     style({opacity:0}),
-    animate('900ms 100ms ease-out', style({opacity: 1}))
+    animate('900ms 300ms ease-out', style({opacity: 1}))
   ])
 ]),
 trigger('slidelefttitle',[
