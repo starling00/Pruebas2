@@ -62,7 +62,7 @@ export class UtilsService {
     var localizationAPI = 'http://18.224.108.194/orchestra_mapas/api/';
     var newserverURL = 'http://18.224.108.194/summit/api/';
     //var ticketsURL = 'https://35.222.165.70/summitOrchestraTicket/api/';
-    var ticketsURL = 'https://13.58.166.253/ficoTickets/api/';
+    var ticketsURL = 'http://13.58.166.253/ficoTickets/api/';
     //var ticketsURL = 'http://localhost:56673/api/';
     this.params.serverurl = newserverURL;
     this.params.registerurl = newserverURL+"register";

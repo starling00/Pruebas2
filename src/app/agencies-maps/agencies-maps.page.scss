@@ -77,12 +77,12 @@ ion-content {
 
 	#button {
 		margin: 0;
-		color: #125eab;
+		color: #fff;
 		display: flex;
 		align-self: center;
 		width: fit-content;
 		position: absolute;
-		--background: white;
+		--background: #005aaa;
 		z-index: 4;
 		-webkit-transform: translateZ(10px);
 		transform: translateZ(10px);
@@ -166,7 +166,7 @@ ion-header {
 	.topMenu {
 		--background: #125eab;
 		--color: #fff;
-		text-align: right;
+		text-align: center;
 	}
 }
 

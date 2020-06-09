@@ -96,7 +96,9 @@ cleanForm(){
       }
     );
   }
-
+log(){
+  this.router.navigateByUrl('/agencies02');
+}
   login() {
 
     //this.getBeconsPoints();
@@ -191,6 +193,8 @@ cleanForm(){
       console.error(err);
     });
   }
-  
+  link(){
+    window.location.href='https://www.ficohsa.com/';
+  }
 
 }// fin de la class

@@ -5,7 +5,7 @@
       </ion-toolbar>
 </ion-header>
  
-<ion-content @fadein class="" padding>
+<ion-content @fadein  padding>
   <div class="logo">
         <img src="assets/img/fico.png" alt="Logo del banco de ficohsa" > 
           
@@ -32,4 +32,10 @@
       <br> <br>
    <ion-button class="btnLoging" expand="block" [disabled]="!myForm.valid" (click)="login()">Continuar<ion-icon name="log-in"></ion-icon></ion-button>
   </form>
+  <br>
+
+  <div (click)="link()" class="">
+    <img src="assets/img/Interbanc.jpg" alt="Markting" > 
+  </div>
+  <!--<ion-button class="btnLoging" expand="block"(click)="log()">Continuar<ion-icon name="log-in"></ion-icon></ion-button>-->
   </ion-content>
