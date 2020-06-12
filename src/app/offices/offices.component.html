@@ -19,7 +19,7 @@
   <ion-list >
     <ion-item>
       <ion-label position="floating" >Agencia</ion-label>
-          <ion-select [(ngModel)]="officeId" placeholder="Selecione la oficina" #C (ionChange)="GenerateServices(C.value)">
+          <ion-select [value]="officeId" placeholder="Selecione la oficina" #C (ionChange)="GenerateServices(C.value)">
             <ion-select-option *ngFor="let ofi of offices" [value]="ofi.id">{{ofi.name}}</ion-select-option>
            
             

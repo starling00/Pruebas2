@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UtilsService } from '../services/utils.service';
 import { CrudService } from '../services/crud.service';
 import { StorageService } from '../services/storage.service';
 import { UtilStorageService } from '../services/util-storage.service';
-import { MenuController, LoadingController } from '@ionic/angular';
+import { MenuController, LoadingController, IonSelect } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -13,6 +13,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./offices.component.scss'],
 })
 export class OfficesComponent implements OnInit {
+
+  @ViewChild('C', {static: true}) officesList: IonSelect;
 
   urlId: any;
   ticketServices: any;
@@ -45,13 +47,15 @@ export class OfficesComponent implements OnInit {
     const navigationState = this.router.getCurrentNavigation().extras.state;
     if (
       navigationState !== undefined && navigationState !== null &&
-      navigationState.id !== undefined && navigationState.id !== null
-      ) {
-      this.officeId = navigationState.id;
+      navigationState.data.id !== undefined && navigationState.data.id !== null
+    ) {
+      setTimeout(() => {
+        this.officesList.value = navigationState.data.id;
+      }, 1000);
     }
   }
 
-  getOffices(){
+  getOffices() {
     this.service.get('http://13.58.166.253/ficoTickets/api/orchestra_services/offices').subscribe((resp) => {
       this.offices = resp;
       console.log(this.offices);
