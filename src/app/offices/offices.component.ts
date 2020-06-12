@@ -7,6 +7,12 @@ import { UtilStorageService } from '../services/util-storage.service';
 import { MenuController, LoadingController, IonSelect } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
+export interface parameters {
+  level: String,
+  custom1: String,
+  crossSelling: String
+}
+
 @Component({
   selector: 'app-offices',
   templateUrl: './offices.component.html',
@@ -15,6 +21,11 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class OfficesComponent implements OnInit {
 
   @ViewChild('C', {static: true}) officesList: IonSelect;
+  UserModel: parameters = {
+    level: '',
+    custom1: '',
+    crossSelling: ''
+  }
 
   urlId: any;
   ticketServices: any;
@@ -23,6 +34,7 @@ export class OfficesComponent implements OnInit {
   createdTicket: any;
   officeId: any;
   serviceId: any;
+  selectedClient: any;
 
   constructor(
     private router: Router,
@@ -55,10 +67,10 @@ export class OfficesComponent implements OnInit {
     }
   }
 
-  getOffices() {
-    this.service.get('http://13.58.166.253/ficoTickets/api/orchestra_services/offices').subscribe((resp) => {
+  getOffices(){
+    this.service.saveTicket(this.params.params.ticketOffices, null).subscribe((resp) => {
       this.offices = resp;
-      console.log(this.offices);
+      //console.log(this.offices);
     }, (err) => {
       console.error(err);
     });
@@ -79,19 +91,27 @@ export class OfficesComponent implements OnInit {
       this.ticketStatus = resp;
       this.storeService.localSave(this.localParam.localParam.ticketStatus, this.ticketStatus);
 
-      console.log(this.ticketStatus);
+      //console.log(this.ticketStatus);
     }, (err) => {
       console.error(err);
     });
   }
 
-  createTicket() {
-    this.service.saveTicket(this.params.params.ticketCreate + '/serviceId/' + this.serviceId + '/officeId/' + this.officeId, null).subscribe((resp) => {
+  createTicket(){
+    this.UserModel.level = this.selectedClient;
+    this.UserModel.custom1 = "Starling Meneses";
+    this.UserModel.crossSelling = "Prueba";
+
+    let parameters = {"parameters": this.UserModel}
+    //console.log(parameters);
+    this.storeService.localSave(this.localParam.localParam.userModel, parameters);
+    
+    this.service.saveTicket(this.params.params.ticketCreate+'/serviceId/'+this.serviceId+'/officeId/'+this.officeId, parameters).subscribe((resp) => {
       this.createdTicket = resp;
       this.storeService.localSave(this.localParam.localParam.createdTicket, this.createdTicket);
 
       this.getTicketStatus(this.createdTicket.visitId);
-      console.log(this.createdTicket);
+      //console.log(this.createdTicket);
     }, (err) => {
       console.error(err);
     });
@@ -103,7 +123,7 @@ export class OfficesComponent implements OnInit {
       this.ticketServices = resp;
       this.storeService.localSave(this.localParam.localParam.ticketServices, this.ticketServices);
 
-      console.log(this.ticketServices);
+      //console.log(this.ticketServices);
     }, (err) => {
       console.error(err);
     });
