@@ -23,7 +23,7 @@
     "@angular/router": "~8.1.2",
     "@ionic-native/ble": "^5.15.1",
     "@ionic-native/core": "^5.0.0",
-    "@ionic-native/geolocation": "^5.24.0",
+    "@ionic-native/geolocation": "^5.26.0",
     "@ionic-native/ibeacon": "^5.15.1",
     "@ionic-native/local-notifications": "^5.17.0",
     "@ionic-native/qr-scanner": "^5.16.0",

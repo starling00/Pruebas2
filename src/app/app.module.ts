@@ -34,11 +34,12 @@ import { GenerateMeetingComponent } from './generate-meeting/generate-meeting.co
 import { MeetingComponent } from './meeting/meeting.component';
 import { LoginPage } from './login/login.page';
 import { AgenciesComponent } from './agencies/agencies.component';
-
+import {TermsConditionsPageModule} from  './terms-conditions/terms-conditions.module';
+import{ Agencies02PageModule} from './agencies02/agencies02.module'
 @NgModule({
-  declarations: [AppComponent, ModalPagePage, ModalNotificationPage, HeartrateComponent, OfficesComponent, GenerateMeetingComponent, MeetingComponent, AgenciesComponent],
-  entryComponents: [ModalPagePage, ModalNotificationPage],
-  imports: [BrowserModule, BrowserAnimationsModule, IonicModule.forRoot(), NgxChartsModule, AppRoutingModule, FormsModule, HttpClientModule, AutoCompleteModule, IonicStorageModule.forRoot()],
+  declarations: [AppComponent, ModalNotificationPage, HeartrateComponent, OfficesComponent, GenerateMeetingComponent, MeetingComponent, AgenciesComponent],
+  entryComponents: [ ModalNotificationPage],
+  imports: [BrowserModule, BrowserAnimationsModule, IonicModule.forRoot(), NgxChartsModule, AppRoutingModule, FormsModule, HttpClientModule, AutoCompleteModule,TermsConditionsPageModule, IonicStorageModule.forRoot()],
   providers: [
     StatusBar,
     SplashScreen,
@@ -46,7 +47,7 @@ import { AgenciesComponent } from './agencies/agencies.component';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     CrudService, UtilsService, StorageService, UtilStorageService,
     BeaconService, IBeacon, BLE, Toast, QRScanner, LocalNotifications,
-    SeePeoplePage, Geolocation, LoginPage
+    SeePeoplePage, Geolocation, LoginPage,Agencies02PageModule
   ],
   bootstrap: [AppComponent]
 })

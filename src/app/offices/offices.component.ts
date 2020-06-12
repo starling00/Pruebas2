@@ -51,8 +51,8 @@ export class OfficesComponent implements OnInit {
     }
   }
 
-  getOffices() {
-    this.service.get('http://35.222.165.70/ticketstse/api/orchestra_services/offices').subscribe((resp) => {
+  getOffices(){
+    this.service.get('http://13.58.166.253/ficoTickets/api/orchestra_services/offices').subscribe((resp) => {
       this.offices = resp;
       console.log(this.offices);
     }, (err) => {

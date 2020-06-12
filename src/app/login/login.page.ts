@@ -7,7 +7,7 @@ import { StorageService } from '../services/storage.service';
 import { UtilStorageService } from '../services/util-storage.service';
 import { Router } from '@angular/router';
 import { Toast } from '@ionic-native/toast/ngx';
-import { FormGroup, FormBuilder, Validators,ReactiveFormsModule} from '@angular/forms';
+import { FormGroup, FormBuilder, Validators,ReactiveFormsModule, FormControl} from '@angular/forms';
 import {trigger,state,style,animate,transition} from '@angular/animations'
 
 @Component({
@@ -19,13 +19,13 @@ trigger('fadein',[
   state('void', style({opacity: 0})),
   transition('void=>*',[
     style({opacity:0}),
-    animate('900ms 100ms ease-out', style({opacity: 1}))
+    animate('900ms 300ms ease-out', style({opacity: 1}))
   ])
 ]),
 trigger('slidelefttitle',[
   transition('void=>*',[
     style({opacity: 0, transform: 'translateX(150%)'}),
-    animate('900ms 300ms ease-out',style({transform:'translateX(0%)', opacity: 1},))
+    animate('900ms  ease-out',style({transform:'translateX(0%)', opacity: 1},))
   ])
 ])
   ]
@@ -70,17 +70,25 @@ export class LoginPage implements OnInit {
         this.router.navigateByUrl('/menu/first/tabs/tab2');
       }
     }, 1000);*/
+    this.cleanForm();
   }
 
  private createMyForm() {
     return this.formBuilder.group({
      
-     cedula: ['', Validators.required],
+     cedula: ['', [Validators.required, Validators.maxLength(9)]],
      
     });
   }
-
-
+  validation_messages = {
+    'cedula': [
+        
+        { type: 'pattern', message: 'Cédula no válida' }
+      ],
+    }
+cleanForm(){
+  this.myForm.controls['cedula'].setValue('');
+}
   alert(msg: string) {
     this.toast.show(msg, '5000', 'center').subscribe(
       toast => {
@@ -88,7 +96,9 @@ export class LoginPage implements OnInit {
       }
     );
   }
-
+log(){
+  this.router.navigateByUrl('/agencies02');
+}
   login() {
 
     //this.getBeconsPoints();
@@ -183,6 +193,8 @@ export class LoginPage implements OnInit {
       console.error(err);
     });
   }
-  
+  link(){
+    window.location.href='https://www.ficohsa.com/';
+  }
 
 }// fin de la class

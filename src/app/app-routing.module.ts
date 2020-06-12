@@ -54,6 +54,9 @@ const routes: Routes = [
   { path: 'agencies-maps', loadChildren: './agencies-maps/agencies-maps.module#AgenciesMapsPageModule' },
   //{ path: 'prelogin', loadChildren: './prelogin/prelogin.module#PreloginPageModule' },
   { path:'login', loadChildren:'./login/login.module#LoginPageModule'},
+  { path: 'terms-conditions', loadChildren: './terms-conditions/terms-conditions.module#TermsConditionsPageModule' },
+  { path: 'agencies02', loadChildren: './agencies02/agencies02.module#Agencies02PageModule' },
+
 
 
 ];
