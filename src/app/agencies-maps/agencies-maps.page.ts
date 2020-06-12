@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, DoCheck, } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { IonSlides, Platform } from '@ionic/angular';
+import { IonSlides, Platform, } from '@ionic/angular';
 import { LocalizationService } from '../services/localization.service';
+import { Router } from '@angular/router';
 
 declare var google;
 
@@ -11,7 +12,7 @@ declare var google;
   styleUrls: ['./agencies-maps.page.scss'],
 })
 
-export class AgenciesMapsPage implements OnInit {
+export class AgenciesMapsPage implements OnInit, DoCheck {
 
   @ViewChild('slides', { static: true }) slides: IonSlides;
 
@@ -34,14 +35,30 @@ export class AgenciesMapsPage implements OnInit {
   showingAgencies = false;
   watcher;
 
+  buttonElement: HTMLElement;
+  sliderElement: HTMLElement;
 
-  constructor(private geolocation: Geolocation, public platform: Platform, private service: LocalizationService) {
+  constructor(
+    private geolocation: Geolocation,
+    public platform: Platform,
+    private service: LocalizationService,
+    private router: Router
+    ) {
   }
 
   async ngOnInit() {
     await this.getInitialPosition();
     this.loadMap();
     this.getOffices();
+  }
+
+  ngDoCheck() {
+    if (this.bestOptionsAgencies.length !== 0) {
+      if (this.buttonElement === undefined || this.buttonElement === null) {
+        this.buttonElement = document.getElementById('button');
+        this.sliderElement = document.getElementById('slider-container');
+      }
+    }
   }
 
   async getInitialPosition() {
@@ -62,7 +79,7 @@ export class AgenciesMapsPage implements OnInit {
     });
   }
 
-  ionViewWillLeave(){
+  ionViewWillLeave() {
     this.watcher.unsubscribe();
   }
 
@@ -100,6 +117,15 @@ export class AgenciesMapsPage implements OnInit {
       map: this.map
     });
     this.watchPosition();
+
+    this.map.addListener('drag', () => {
+      if (this.infoWindow.map != null) {
+        this.showAgencies();
+        this.infoWindow.close();
+      } else if (this.showingAgencies) {
+        this.showAgencies();
+      }
+    });
   }
 
   sliderConfig() {
@@ -110,13 +136,13 @@ export class AgenciesMapsPage implements OnInit {
         centeredSlides: true
       };
     } else if (window.innerWidth >= 860 && window.innerWidth < 1400) {
-      return{
+      return {
         spaceBetween: 10,
         slidesPerView: 2.4,
         centeredSlides: true
       };
     } else {
-      return{
+      return {
         spaceBetween: 10,
         slidesPerView: 1.4,
         centeredSlides: true
@@ -149,18 +175,34 @@ export class AgenciesMapsPage implements OnInit {
     this.map.panTo(position);
   }
 
-  showAgencies(event) {
+  locateMe() {
+    this.map.panTo(this.currentPosition);
+    this.showingAgencies = false;
+    this.buttonElement.classList.remove('slide-fwd-top');
+    this.buttonElement.classList.add('slide-bck-bottom');
+    this.sliderElement.classList.remove('scale-up-ver-bottom');
+    this.sliderElement.classList.add('scale-down-ver-bottom');
+    if (this.infoWindow.map != null) {
+      this.infoWindow.close();
+    }
+  }
+
+  toggleButton() {
+    this.buttonElement.classList.toggle('slide-fwd-top');
+    this.buttonElement.classList.toggle('slide-bck-bottom');
+  }
+
+  toggleAgencies() {
+    this.sliderElement.classList.toggle('scale-down-ver-bottom');
+    this.sliderElement.classList.toggle('scale-up-ver-bottom');
+  }
+
+  showAgencies() {
     this.showingAgencies = !this.showingAgencies;
-    const container: HTMLElement = document.getElementById('slider-container');
-    event.target.classList.toggle('slide-fwd-top');
-    event.target.classList.toggle('slide-bck-bottom');
-    container.classList.toggle('scale-down-ver-bottom');
-    container.classList.toggle('scale-up-ver-bottom');
+    this.toggleButton();
+    this.toggleAgencies();
     if (this.showingAgencies) {
       this.slideChanged();
-    } else {
-      this.deleteMarker();
-      this.locateOnMap(this.currentPosition);
     }
   }
 
@@ -170,20 +212,35 @@ export class AgenciesMapsPage implements OnInit {
     <div class="info_window">
       <img src="https://www.larepublica.net/storage/images/2019/12/11/20191211142642.hangar-plazas.jpg" class="info_window--img">
       <div class="info_window--info">
-        <h6>${currentCard.name}</h6>
         <p>Direccion: ${currentCard.address1}, ${currentCard.city}</p>
         <p>Telefono: +88 8888 8888</p>
         <p>algun dato</p>
       </div>
+      <button id="routeButton">Ruta</button>
+      <button id="ticketButton">Ticket</button>
     </div>`;
     this.infoWindow.setContent(content);
     this.infoWindow.open(this.map, this.marker);
+    setTimeout(() => {
+      document.getElementById('routeButton').addEventListener('click', () => { console.log('hace click en route'); });
+      document.getElementById('ticketButton').addEventListener('click', () => { this.getTicket(); });
+    }, 500);
+  }
+
+  getTicket() {
+    this.slides.getActiveIndex().then(index => {
+      const id = this.bestOptionsAgencies[index].id;
+      console.log(id);
+      this.router.navigate(['/offices'], { state: { data: { id } } });
+    });
+    console.log('entra al get ticket');
+
   }
 
   getOffices() {
-    this.service.getOffices(this.currentPosition).subscribe(data => {
-      Object.keys(data).map((indice) => {
-        this.bestOptionsAgencies.push(data[indice]);
+    this.service.getOffices(this.currentPosition).toPromise().then(res => {
+      Object.keys(res).map((indice) => {
+        this.bestOptionsAgencies.push(res[indice]);
       });
       console.log(this.bestOptionsAgencies);
     });

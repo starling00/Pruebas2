@@ -1,4 +1,7 @@
 ion-content {
+	// height: 100%;
+	--overflow: hidden;
+
 	#container {
 		display: flex;
 		flex-flow: column wrap;

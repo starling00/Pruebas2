@@ -17,8 +17,8 @@
   </div> -->
   <div id="map"></div>
   <div id="container">
-    <ion-icon name="locate" id="location" (click)="locateOnMap(this.currentPosition)"></ion-icon>
-    <ion-button shape="round" #button id="button" class="slide-bck-bottom" (click)="showAgencies($event)">Ver Agencias</ion-button>
+    <ion-icon name="locate" id="location" (click)="locateMe()"></ion-icon>
+    <ion-button *ngIf="bestOptionsAgencies.length!=0" shape="round" id="button" class="slide-bck-bottom" (click)="showAgencies()">Ver Agencias</ion-button>
     <div id="slider-container" class="scale-down-ver-bottom">
       <ion-slides [options]="sliderConfig()" id="slides" #slides (ionSlideDidChange)="slideChanged()">
         <ion-slide *ngFor="let agency of bestOptionsAgencies" class="slide">

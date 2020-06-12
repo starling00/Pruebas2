@@ -27,24 +27,31 @@ export class OfficesComponent implements OnInit {
     private params: UtilsService,
     private service: CrudService,
     private storeService: StorageService,
-    private localParam: UtilStorageService, 
+    private localParam: UtilStorageService,
     public menuCtrl: MenuController,
     public loadingCtrl: LoadingController,
-  ) { 
+  ) {
     this.menuCtrl.enable(false);
-    
+
   }
 
-  ngAfterViewInit(){
-    
+  ngAfterViewInit() {
+
   }
 
   ngOnInit() {
     this.presentLoadingDefault();
     this.getOffices();
+    const navigationState = this.router.getCurrentNavigation().extras.state;
+    if (
+      navigationState !== undefined && navigationState !== null &&
+      navigationState.id !== undefined && navigationState.id !== null
+      ) {
+      this.officeId = navigationState.id;
+    }
   }
 
-  getOffices(){
+  getOffices() {
     this.service.get('http://35.222.165.70/ticketstse/api/orchestra_services/offices').subscribe((resp) => {
       this.offices = resp;
       console.log(this.offices);
@@ -53,9 +60,9 @@ export class OfficesComponent implements OnInit {
     });
   }
 
-  goServices(id){
+  goServices(id) {
     this.storeService.localSave(this.localParam.localParam.ticketOffice, id);
-    this.router.navigateByUrl('/heart-rate/'+id);
+    this.router.navigateByUrl('/heart-rate/' + id);
   }
 
   customActionSheetOptions: any = {
@@ -63,8 +70,8 @@ export class OfficesComponent implements OnInit {
     subHeader: 'Select your favorite color'
   };
 
-  getTicketStatus(visitId){
-    this.service.get(this.params.params.ticketStatus+'/'+visitId).subscribe((resp) => {
+  getTicketStatus(visitId) {
+    this.service.get(this.params.params.ticketStatus + '/' + visitId).subscribe((resp) => {
       this.ticketStatus = resp;
       this.storeService.localSave(this.localParam.localParam.ticketStatus, this.ticketStatus);
 
@@ -74,8 +81,8 @@ export class OfficesComponent implements OnInit {
     });
   }
 
-  createTicket(){
-    this.service.saveTicket(this.params.params.ticketCreate+'/serviceId/'+this.serviceId+'/officeId/'+this.officeId, null).subscribe((resp) => {
+  createTicket() {
+    this.service.saveTicket(this.params.params.ticketCreate + '/serviceId/' + this.serviceId + '/officeId/' + this.officeId, null).subscribe((resp) => {
       this.createdTicket = resp;
       this.storeService.localSave(this.localParam.localParam.createdTicket, this.createdTicket);
 
@@ -85,10 +92,10 @@ export class OfficesComponent implements OnInit {
       console.error(err);
     });
   }
- 
-  GenerateServices(id){
+
+  GenerateServices(id) {
     this.officeId = id;
-    this.service.saveTicket(this.params.params.ticketServices+'/'+id, null).subscribe((resp) => {
+    this.service.saveTicket(this.params.params.ticketServices + '/' + id, null).subscribe((resp) => {
       this.ticketServices = resp;
       this.storeService.localSave(this.localParam.localParam.ticketServices, this.ticketServices);
 
@@ -98,7 +105,7 @@ export class OfficesComponent implements OnInit {
     });
   }
 
-  getSelectedServiceId(id){
+  getSelectedServiceId(id) {
     this.serviceId = id;
   }
 
