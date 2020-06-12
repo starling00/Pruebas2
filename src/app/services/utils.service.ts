@@ -52,7 +52,10 @@ export class UtilsService {
     gatewaybeacons:"",
     ticketCreate:"",
     ticketServices:"",
-    ticketStatus:""
+    ticketStatus:"",
+    ticketOffices:"",
+    deleteTicket:"",
+    postPoneTicket:""
    };
 
    mapwizeParams = {
@@ -61,8 +64,8 @@ export class UtilsService {
   constructor() { 
     var localizationAPI = 'http://18.224.108.194/orchestra_mapas/api/';
     var newserverURL = 'http://18.224.108.194/summit/api/';
-    //var ticketsURL = 'https://35.222.165.70/summitOrchestraTicket/api/';
-    var ticketsURL = 'http://13.58.166.253/ficoTickets/api/';
+    //var ticketsURL = 'http://13.58.166.253/ficoTickets/api/';
+    var ticketsURL = 'http://172.23.12.144/orchestra/api/';
     //var ticketsURL = 'http://localhost:56673/api/';
     this.params.serverurl = newserverURL;
     this.params.registerurl = newserverURL+"register";
@@ -115,6 +118,9 @@ export class UtilsService {
     this.params.ticketCreate = ticketsURL+"orchestra_createTicket";
     this.params.ticketServices = ticketsURL+"orchestra_services";
     this.params.ticketStatus = ticketsURL+"orchestra_ticketStatus";
+    this.params.ticketOffices = ticketsURL+"orchestra_offices";
+    this.params.deleteTicket = ticketsURL+"orchestra_tickets/deleteTicket";
+    this.params.postPoneTicket = ticketsURL+"orchestra_tickets/postponeTicket";
   }//fin de bob
 
 

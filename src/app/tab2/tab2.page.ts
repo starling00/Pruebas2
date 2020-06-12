@@ -44,10 +44,14 @@ export class Tab2Page implements OnInit, AfterViewInit {
   interval;
   generatedServices: any;
   stopPopUp = false;
+  stopPositionPopUp = false;
   popUp: any;
+  positionPopUp: any;
   ticketPopUp: any;
   exitPopUp: any;
   maxProgressBar: number = 0;
+  postPoneTicketInfo: any;
+  lastPosition: any;
 
   constructor(private services: CrudService,
     private params: UtilsService,
@@ -117,7 +121,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       this.generatedServices = resp;
       this.storeService.localSave(this.localParam.localParam.ticketServices, this.generatedServices);
 
-      console.log(this.generatedServices);
+      //console.log(this.generatedServices);
     }, (err) => {
       console.error(err);
     });
@@ -187,7 +191,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       if(!this.ticketStatus){
         this.ticketUbi = "No se ha creado un ticket";
       }else if(this.ticketStatus){
-        this.ticketUbi = this.ticketStatus.currentServiceName;
+        this.ticketUbi = this.ticketStatus[0].currentServiceName;
       }
     }, (err) => {
       console.error(err);
@@ -201,7 +205,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       if(!this.ticketStatus){
         this.ticketDesti = "No se ha creado un ticket";
       }else if(this.ticketStatus){
-        this.ticketDesti = this.ticketStatus.queueName;
+        this.ticketDesti = this.ticketStatus[0].queueName;
       }
     }, (err) => {
       console.error(err);
@@ -215,8 +219,8 @@ export class Tab2Page implements OnInit, AfterViewInit {
       if(!this.ticketStatus){
         this.ticketPosition = "No se ha creado un ticket";
       }else if(this.ticketStatus){
-        this.ticketPosition = "Su posición es: "+this.ticketStatus.position;
-        this.maxProgressBar = 1/this.ticketStatus.position;
+        this.ticketPosition = "Su posición es: "+this.ticketStatus[0].positionInQueue;
+        this.maxProgressBar = 1/this.ticketStatus[0].positionInQueue;
       }
     }, (err) => {
       console.error(err);
@@ -229,40 +233,46 @@ export class Tab2Page implements OnInit, AfterViewInit {
       this.createdTicket = resp;
       if(this.createdTicket){
         let visitId = this.createdTicket.visitId;
-        let checksum = this.createdTicket.checksum;
-        let officeId = this.createdTicket.branchId;
-        this.services.get(this.params.params.ticketStatus+'/visitId/'+visitId+'/checksum/'+checksum+'/officeId/'+officeId).subscribe((resp) => {
+
+        this.services.get(this.params.params.ticketStatus+'/'+visitId).subscribe((resp) => {
           this.refreshedTicket = resp;
           this.storeService.localSave(this.localParam.localParam.ticketStatus, this.refreshedTicket);
-          this.ticketPosition = "Su posición es: "+this.refreshedTicket.position;
+
+          let positionInQueue = this.refreshedTicket[0].positionInQueue;
+          if(this.lastPosition != positionInQueue){
+            this.stopPositionPopUp = false;
+            this.lastPosition = positionInQueue;
+          }
+          this.ticketPosition = "Su posición es: "+positionInQueue;
           
-          this.maxProgressBar = 1/this.refreshedTicket.position;
-        
-          let calledFrom = this.refreshedTicket.servicePointName;
-          if(this.refreshedTicket.position == null){
+          this.maxProgressBar = 1/positionInQueue;
+          this.positionUpdated(positionInQueue);
+          let calledFrom = this.refreshedTicket[0].servicePointName;
+
+          if(positionInQueue == null){
             this.ticketPosition = "Su posición es: "+0;
             if (!this.stopPopUp) {
               //this.stopPopUp = true;
               if(this.popUp == null){
-                this.presentAlert(calledFrom);
-                
+                this.presentAlert(calledFrom);               
                 this.setVibration();
-               
               }else if(this.popUp != null){
                 this.popUp.dismiss();
                 this.presentAlert(calledFrom);
               }
             }
           }
-          this.ticketNumber = this.refreshedTicket.ticketId;
+          this.ticketNumber = this.refreshedTicket[0].ticketId;
           //this.ticketDesti = this.refreshedTicket.queueName;
-          console.log(this.refreshedTicket);
+          //console.log(this.refreshedTicket);
         }, (err) => {
           if(err.status == 404){
             this.storage.remove("created-ticket");
             this.storage.remove("ticket-status");
             this.ticketNumber = "Atendido";
             this.ticketPosition = "Atendido";
+            this.ticketUbi = "Atendido";
+            this.ticketDesti = "Atendido";
 
           }
         });
@@ -275,20 +285,98 @@ export class Tab2Page implements OnInit, AfterViewInit {
   timer() {
     this.interval = setInterval(() => {
       this.refreshTicket();
-    }, 8000);
+    }, 5000);
   }
 
+  //Muestra un popup cada vez que se actualiza la posicion en la fila a partir de la posicion 5
+  positionUpdated(positionInQueue){
+    if(positionInQueue == null){
+      positionInQueue = 0;
+    }
+    if(positionInQueue <= 5){
+      if (!this.stopPositionPopUp) {
+        //this.stopPopUp = true;
+        if(this.positionPopUp == null){
+          this.alertPositionInQueue(positionInQueue);             
+          this.setVibration();
+        }else if(this.positionPopUp != null){
+          this.positionPopUp.dismiss();
+          this.alertPositionInQueue(positionInQueue);
+        }
+      }
+    }
+  }
+
+  getTicketStatus(visitId){
+    this.services.get(this.params.params.ticketStatus+'/'+visitId).subscribe((resp) => {
+      let ticketStatus = resp;
+      this.storeService.localSave(this.localParam.localParam.ticketStatus, ticketStatus);
+
+      //console.log(this.ticketStatus);
+    }, (err) => {
+      console.error(err);
+    });
+  }
+
+  //Posponer tiquete
   postponeTicket(){
+    this.presentLoadingDefault();
+    this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
+      this.postPoneTicketInfo = resp;
+      let serviceId = this.postPoneTicketInfo.serviceId;
+      let visitId = this.postPoneTicketInfo.visitId;
+      let queueId = this.postPoneTicketInfo.queueId;
+      let officeId = this.postPoneTicketInfo.branchId;
 
+      this.storeService.localGet(this.localParam.localParam.userModel).then((resp) => {
+        let userModel = resp;
+
+        this.services.saveTicket(this.params.params.postPoneTicket+"/services/"+serviceId+"/branches/"+officeId+"/ticket/"+visitId+"/queue/"+queueId, userModel).subscribe((resp) => {
+          let newTicket = resp;
+          this.storeService.localSave(this.localParam.localParam.createdTicket, newTicket);
+
+          this.getTicketStatus(visitId);
+          this.postPonedTicket();
+        }, (err) => {
+          console.error(err);
+        });
+      }, (err) => {
+        console.error(err);
+      });
+
+    }, (err) => {
+      console.error(err);
+    });
   }
 
+  //Cancelar el tiquete
   salir(){
     this.popUpExit();
   }
 
+  cancelTicket(){
+    this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
+      let createdTicket = resp;
+      let visitId = createdTicket.visitId;
+      let queueId = createdTicket.queueId;
+      let officeId = createdTicket.branchId;
+      let serviceId = createdTicket.serviceId;
+
+      this.services.delete(this.params.params.deleteTicket+"/services/"+serviceId+"/branches/"+officeId+"/ticket/"+visitId+"/queueId/"+queueId).subscribe((resp) => {
+
+        this.cancelledTicket();
+        
+      }, (err) => {
+        console.error(err);
+      });
+    }, (err) => {
+      console.error(err);
+    });
+  }
+
   setVibration() {
     navigator.vibrate([500, 500, 500]);
-    console.log("Esta vibrando");
+    //console.log("Esta vibrando");
   }
 
   go(id) {
@@ -315,7 +403,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   getBeaconsPointLocal() {
     this.storeService.localGet(this.localParam.localParam.gatewaybeacons).then((resp) => {
       this.beaconsPoints = resp;
-      console.log(this.beaconsPoints);
+      //console.log(this.beaconsPoints);
     }, (err) => {
       console.error(err);
     });
@@ -342,7 +430,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   getAsociatedAlerts() {
     //let asociatedId = [];
     let id;
-    console.log(this.asociatedId);
+    //console.log(this.asociatedId);
     for (let i = 0; i < this.asociatedId.length; i++) {
       id = this.asociatedId[i];
       //asociatedId.push(id);
@@ -476,21 +564,43 @@ export class Tab2Page implements OnInit, AfterViewInit {
   async presentAlert(calledFrom) {
     this.alertTi();
     this.popUp = await this.alertCtrl.create({
-      header: 'Es su turno:',
+      cssClass: 'my-custom-class',
+      header: 'Ficoticket',
       subHeader: '',
       message:
-        'Usted está siendo llamado de la ventanilla: ' + calledFrom,
+        '<img class="my-custom-class" src="assets/img/unticket.png"></img><br> <br> Usted está siendo llamado, pasar a la ventanilla: ' + calledFrom,
       buttons: [{
         text: 'OK',
         role: 'OK',
         handler: () => {
-          console.log('you clicked me');
+          //console.log('you clicked me');
           this.stopPopUp = true;
         }
       },
       ]
     });
     await this.popUp.present();
+  }
+
+  //Popup de la posicion del cliente
+  async alertPositionInQueue(positionInQueue) {
+    this.positionPopUp = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Ficoticket:',
+      subHeader: '',
+      message:
+        '<img class="my-custom-class" src="assets/img/tickets3.png"></img><br> <br> Faltan ' + positionInQueue + ' tickets para su llamado.',
+      buttons: [{
+        text: 'OK',
+        role: 'OK',
+        handler: () => {
+          //console.log('you clicked me');
+          this.stopPositionPopUp = true;
+        }
+      },
+      ]
+    });
+    await this.positionPopUp.present();
   }
 
   async popUpActiveTicket() {
@@ -540,14 +650,15 @@ export class Tab2Page implements OnInit, AfterViewInit {
         text: 'Sí',
         role: 'OK',
         handler: () => {
-          this.cancelledTicket();
+          this.cancelTicket();
+          
         }
       },
       {
         text: 'No',
         role: 'cancel',
         handler: () => {
-          console.log('Cancelar');
+          //console.log('Cancelar');
         }
       },
       ]
@@ -574,5 +685,25 @@ export class Tab2Page implements OnInit, AfterViewInit {
       ]
     });
     await cancelledPopUp.present();
+  }
+
+  async postPonedTicket() {
+    let postPonedPopUp = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Ficoticket',
+      subHeader: '',
+      message:
+      '<img class="my-custom-class" src="assets/img/newticket.png"></img><br> <br>Has generado nuevo ticket exitosamente',
+      
+      buttons: [{
+        text: 'OK',
+        role: 'OK',
+        handler: () => {
+          
+        }
+      },
+      ]
+    });
+    await postPonedPopUp.present();
   }
 }//fin de la classs tab2
