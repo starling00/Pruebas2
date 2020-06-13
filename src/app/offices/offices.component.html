@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar class="topMenu">
       <ion-buttons slot="start">
-        <ion-back-button defaultHref="/"></ion-back-button>
+        <ion-back-button class="back" defaultHref="/"></ion-back-button>
       </ion-buttons>
     <ion-title>
       <div class="logo">
@@ -14,7 +14,7 @@
 
 <ion-content padding>
 <ion-card-content>
-  <ion-title class="header-title">Seleccione las opciones:</ion-title>
+  <h2 class="header-title">Seleccione las opciones:</h2>
 <br>
   <ion-list >
     <ion-item>
@@ -31,9 +31,9 @@
     <ion-item>
       <ion-label position="floating">Tipo de cliente</ion-label>
           <ion-select placeholder="Seleccione el tipo de cliente" [(ngModel)]="selectedClient">
-            <ion-select-option value="Cliente Emprendedor">Cliente Emprendedor</ion-select-option>
+            <ion-select-option value="Cliente Emprendedor">Cliente Emprendedor(Pyme)</ion-select-option>
             <ion-select-option value="Cliente Natural">Cliente Natural</ion-select-option>
-            <ion-select-option value="Cliente Preferencial">Cliente Preferencial </ion-select-option>
+            <ion-select-option value="Cliente Preferencial">Cliente Preferencial(3 era edad, embarazada, persona con capacidades especiales) </ion-select-option>
             <ion-select-option value="Cliente Corporativo">Cliente Corporativo</ion-select-option>
             
           </ion-select>

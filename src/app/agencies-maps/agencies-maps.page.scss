@@ -167,7 +167,7 @@ ion-content {
 
 ion-header {
 	.topMenu {
-		--background: #125eab;
+		--background: #005aaa;
 		--color: #fff;
 		text-align: center;
 	}
@@ -188,4 +188,8 @@ ion-header {
 
 .logo{
 	max-width: 39%;
+  }
+  .ios .back{
+	position: inherit;
+    color: white;
   }

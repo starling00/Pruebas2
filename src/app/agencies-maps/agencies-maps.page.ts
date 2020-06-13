@@ -216,8 +216,20 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
         <p>Telefono: +88 8888 8888</p>
         <p>algun dato</p>
       </div>
-      <button id="routeButton">Ruta</button>
-      <button id="ticketButton">Ticket</button>
+      <button id="routeButton" style="
+      height: 31px;
+      width: 83px;
+      border-radius: 7px;
+      background-color: 005aaa;
+      background-color: #005aaa;
+      color: white;">Ruta</button>
+      <button id="ticketButton" style="
+      height: 31px;
+      width: 83px;
+      border-radius: 7px;
+      background-color: 005aaa;
+      background-color: #005aaa;
+      color: white;">Ticket</button>
     </div>`;
     this.infoWindow.setContent(content);
     this.infoWindow.open(this.map, this.marker);
