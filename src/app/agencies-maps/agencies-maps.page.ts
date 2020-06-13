@@ -233,7 +233,7 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
       console.log(id);
       this.router.navigate(['/offices'], { state: { data: { id } } });
     });
-    console.log('entra al get ticket');
+    // console.log('entra al get ticket');
 
   }
 
