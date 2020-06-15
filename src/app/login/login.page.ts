@@ -63,6 +63,14 @@ export class LoginPage implements OnInit {
     
   }
 
+slides=[
+{
+  img:'assets/img/Interbanc.jpg'
+},{
+img:'assets/img/unnamed.jpg'
+}
+]
+
   ngOnInit() {
     //this.getUserLogged();
     /*setTimeout(() => {

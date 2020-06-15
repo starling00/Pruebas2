@@ -35,7 +35,11 @@
   <br>
 
   <div (click)="link()" class="">
-    <img src="assets/img/Interbanc.jpg" alt="Markting" > 
+  <ion-slides pager="true">
+<ion-slide *ngFor='let slide of slides' >
+<img [src]="slide.img" alt="">
+</ion-slide>
+  </ion-slides> 
   </div>
   <!--<ion-button class="btnLoging" expand="block"(click)="log()">Continuar<ion-icon name="log-in"></ion-icon></ion-button>-->
   </ion-content>
