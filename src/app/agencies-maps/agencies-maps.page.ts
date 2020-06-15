@@ -216,20 +216,8 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
         <p>Telefono: +88 8888 8888</p>
         <p>algun dato</p>
       </div>
-      <button id="routeButton" style="
-      height: 31px;
-      width: 83px;
-      border-radius: 7px;
-      background-color: 005aaa;
-      background-color: #005aaa;
-      color: white;">Ruta</button>
-      <button id="ticketButton" style="
-      height: 31px;
-      width: 83px;
-      border-radius: 7px;
-      background-color: 005aaa;
-      background-color: #005aaa;
-      color: white;">Ticket</button>
+      <button id="routeButton">Ruta</button>
+      <button id="ticketButton">Solicitar Ticket</button>
     </div>`;
     this.infoWindow.setContent(content);
     this.infoWindow.open(this.map, this.marker);
@@ -245,7 +233,7 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
       console.log(id);
       this.router.navigate(['/offices'], { state: { data: { id } } });
     });
-    console.log('entra al get ticket');
+    // console.log('entra al get ticket');
 
   }
 
