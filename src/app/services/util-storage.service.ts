@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class UtilStorageService {
   localParam = {
     userLogged:"",
+    userName:"",
     alerts:"",
     alertsId:"",
     gatewaybeacons:"",
@@ -20,6 +21,7 @@ export class UtilStorageService {
 
   constructor() { 
     this.localParam.userLogged = "user-logged";
+    this.localParam.userName = "user-name";
     this.localParam.alerts = "alert-amount";
     this.localParam.alertsId = "alerts-id";
     this.localParam.gatewaybeacons = "gatewaybeacons";
