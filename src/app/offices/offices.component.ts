@@ -32,6 +32,7 @@ export class OfficesComponent implements OnInit {
   offices: any;
   ticketStatus: any;
   createdTicket: any;
+  userInfo: any;
   officeId: any;
   serviceId: any;
   selectedClient: any;
@@ -56,6 +57,7 @@ export class OfficesComponent implements OnInit {
   ngOnInit() {
     this.presentLoadingDefault();
     this.getOffices();
+    this.getUserId();
     const navigationState = this.router.getCurrentNavigation().extras.state;
     if (
       navigationState !== undefined && navigationState !== null &&
@@ -65,6 +67,24 @@ export class OfficesComponent implements OnInit {
         this.officesList.value = navigationState.data.id;
       }, 1000);
     }
+  }
+
+  getUserId(){
+    this.storeService.localGet(this.localParam.localParam.userLogged).then((resp) => {
+      let userId = resp;
+      this.getUserInfo(userId);
+    }, (err) => {
+      console.error(err);
+    });
+  }
+
+  getUserInfo(id){
+    this.service.get(this.params.params.userInfo +'/'+ id).subscribe((resp) => {
+      this.userInfo = resp;
+      //console.log(this.userInfo);
+    }, (err) => {
+      console.error(err);
+    });
   }
 
   getOffices(){
@@ -98,9 +118,9 @@ export class OfficesComponent implements OnInit {
   }
 
   createTicket(){
-    this.UserModel.level = this.selectedClient;
-    this.UserModel.custom1 = "Starling Meneses";
-    this.UserModel.crossSelling = "Prueba";
+    this.UserModel.level = this.userInfo.level;
+    this.UserModel.custom1 = this.userInfo.custom1 + '/vip level '+ this.userInfo.level;
+    this.UserModel.crossSelling = this.userInfo.crossSelling;
 
     let parameters = {"parameters": this.UserModel}
     //console.log(parameters);

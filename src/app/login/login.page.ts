@@ -46,7 +46,8 @@ export class LoginPage implements OnInit {
   personAlert: any;
   bellAlert: number = 0;
   myForm: FormGroup;
-  
+  images: any;
+  showImage: any;
 
   constructor(private storage: Storage,
     private storeService: StorageService,
@@ -79,12 +80,13 @@ img:'assets/img/unnamed.jpg'
       }
     }, 1000);*/
     this.cleanForm();
+    this.getImages();
   }
 
  private createMyForm() {
     return this.formBuilder.group({
      
-     cedula: ['', [Validators.required, Validators.maxLength(9)]],
+     cedula: ['', [Validators.required, Validators.maxLength(13)]],
      
     });
   }
@@ -108,24 +110,23 @@ log(){
   this.router.navigateByUrl('/agencies02');
 }
   login() {
-
-    //this.getBeconsPoints();
-    this.router.navigateByUrl('/agencies');
-
-    /*this.service.get(this.params.params.staffurl + "/asocieted/cid/" + this.cedula).subscribe((resp) => {
+    this.service.saveTicket(this.params.params.userInfo +'/'+ this.cedula, null).subscribe((resp) => {
 
       this.userdata = resp;
-
-      this.storeService.localSave(this.localParam.localParam.userLogged, this.userdata);
-      //this.storeService.localSave(this.localParam.localParam.alerts, 10);
-      this.getAsociatedAlerts();
-      
-
-      console.log(this.userdata);
+      //console.log(this.userdata);
+      if(this.userdata == true){
+        this.storeService.localSave(this.localParam.localParam.userLogged, this.cedula);
+        this.router.navigateByUrl('/agencies02');
+      }else{
+        this.storeService.localSave(this.localParam.localParam.userLogged, this.cedula);
+        this.router.navigateByUrl('/agencies');
+      }
     }, (err) => {
       console.error(err);
-      this.alert(JSON.stringify(err));
-    });*/
+      if(err.status == 404){
+
+      }
+    });
   }
 
   meetings(){
@@ -203,6 +204,16 @@ log(){
   }
   link(){
     window.location.href='https://www.ficohsa.com/';
+  }
+
+  getImages(){
+    this.service.get('https://localhost:44323/api/Marketing_info').subscribe((resp) => {
+      this.images= resp;
+      //console.log(this.images);
+
+    }, (err) => {
+      console.error(err);
+    });
   }
 
 }// fin de la class

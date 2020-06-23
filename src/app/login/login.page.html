@@ -18,7 +18,7 @@
         <ion-item>
           <ion-icon class="iconP" name="person" slot="end"></ion-icon>
           <ion-label position="floating">Tarjeta de identidad:</ion-label>
-          <ion-input formControlName="cedula" type="text"   pattern="^[1-9]\d{4}\d{4}$" clearInput></ion-input>
+          <ion-input formControlName="cedula" type="text" [(ngModel)]="cedula" pattern="^[0-9]\d{12}$" clearInput></ion-input>
         </ion-item>
         <div class="validation-errors">
           <ng-container *ngFor="let validation of validation_messages.cedula">
@@ -34,12 +34,14 @@
   </form>
   <br>
 
-  <div (click)="link()" class="">
-  <ion-slides pager="true">
-<ion-slide *ngFor='let slide of slides' >
-<img [src]="slide.img" alt="">
-</ion-slide>
-  </ion-slides> 
+  <div class="">
+    <ion-slides pager="true">
+      <ion-slide *ngFor='let img of images' >
+        <a [href]="img.Link">
+          <img [src]="img.FileData" alt="">
+        </a>
+      </ion-slide>
+    </ion-slides> 
   </div>
   <!--<ion-button class="btnLoging" expand="block"(click)="log()">Continuar<ion-icon name="log-in"></ion-icon></ion-button>-->
   </ion-content>
