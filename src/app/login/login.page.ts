@@ -71,7 +71,14 @@ slides=[
 img:'assets/img/unnamed.jpg'
 }
 ]
-
+slideOpts = {
+  initialSlide: 1,
+  autoplay: true,
+        speed: 1000,
+        zoom: {
+          maxRatio: 5
+        }
+};
   ngOnInit() {
     //this.getUserLogged();
     /*setTimeout(() => {
