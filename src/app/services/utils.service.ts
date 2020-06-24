@@ -63,8 +63,8 @@ export class UtilsService {
       searchdirection:""
    }
   constructor() { 
-    // var localizationAPI = 'http://18.224.108.194/orchestra_mapas/api/';
-    var localizationAPI = 'http://172.23.12.144/orchestra/api/';
+    var localizationAPI = 'http://13.59.31.150/orchestra_mapas/api/';
+    // var localizationAPI = 'http://172.23.12.144/orchestra/api/';
     var newserverURL = 'http://18.224.108.194/summit/api/';
     //var ticketsURL = 'http://13.58.166.253/ficoTickets/api/';
     var ticketsURL = 'http://172.23.12.144/orchestra/api/';
@@ -116,7 +116,7 @@ export class UtilsService {
     var mapwizeurl = "https://api.mapwize.io/v1/";
     var apikey= "?api_key=439578d65ac560a55bb586feaa299bf7";
     this.mapwizeParams.searchdirection = mapwizeurl+ "directions"+apikey;
-    this.params.officeInfo = localizationAPI+"orchestra_offices/officelocationbycoords";
+    this.params.officeInfo = localizationAPI+"orchestra_offices/officeslocalization";
     this.params.ticketCreate = ticketsURL+"orchestra_createTicket";
     this.params.ticketServices = ticketsURL+"orchestra_services";
     this.params.ticketStatus = ticketsURL+"orchestra_ticketStatus";
