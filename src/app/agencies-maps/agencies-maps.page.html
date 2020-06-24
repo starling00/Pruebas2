@@ -3,21 +3,11 @@
     <ion-buttons slot="start">
       <ion-back-button class="back" defaultHref="/agencies"></ion-back-button>
     </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-button color="success" (click)="getRoute()">Route</ion-button>
-    </ion-buttons>
     <ion-title>Agencias</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- <div class="info_window">
-    <img src="https://www.larepublica.net/storage/images/2019/12/11/20191211142642.hangar-plazas.jpg" class="info_window--img">
-    <div class="info_window--info">
-      <h3>nombre de la agencia</h3>
-      <p>descripcion con algunas lineas que nos puedan dar un poco de volumen para llenar y satisfacer las necesidades del cliente con informacion pertinente para el mismo.</p>
-    </div>
-  </div> -->
   <div id="map"></div>
   <div id="container">
     <ion-icon name="locate" id="location" (click)="locateMe()"></ion-icon>
@@ -27,13 +17,14 @@
         <ion-slide *ngFor="let agency of bestOptionsAgencies" class="slide">
           <ion-card class="ion-no-margin ion-text-left card">
             <ion-card-header class="ion-no-padding">
-              <ion-card-subtitle class="card-subtitle">Agencia</ion-card-subtitle>
+              <ion-card-subtitle class="card-subtitle">{{agency.distance}}Km</ion-card-subtitle>
               <ion-card-title class="card-title">{{agency.name}}</ion-card-title>
             </ion-card-header>
             <ion-card-content class="ion-no-padding">
-              <p>Distancia: {{agency.distance}}</p>
-              <p>Caja: 3 personas antes</p>
-              <p>Algunos datos perturbadores</p>
+              <p>Caja: quedan 2 personas</p>
+              <p>Plataforma: quedan 10 personas</p>
+              <p>Servicios: quedan 50 personas</p>
+              <p>Información: quedan 7 personas</p>
             </ion-card-content>
           </ion-card>
         </ion-slide>

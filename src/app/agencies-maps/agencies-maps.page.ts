@@ -32,7 +32,11 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
   infoWindow = new google.maps.InfoWindow({
     content: null,
   });
-  polyline = new google.maps.Polyline({map: null});
+  polyline = new google.maps.Polyline({
+    map: null,
+    strokeColor: '#1a73e8',
+    visible: false
+  });
   showingAgencies = false;
   watcher;
 
@@ -158,6 +162,7 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
       this.setMarker(latlng);
       this.setContentToInfoWindow(index);
       this.locateOnMap(latlng);
+      this.polyline.setVisible(false);
     });
   }
 
@@ -213,9 +218,9 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
     <div class="info_window">
       <img src="https://www.larepublica.net/storage/images/2019/12/11/20191211142642.hangar-plazas.jpg" class="info_window--img">
       <div class="info_window--info">
-        <p>Direccion: ${currentCard.address1}, ${currentCard.city}</p>
-        <p>Telefono: +88 8888 8888</p>
-        <p>algun dato</p>
+        <p>Direccion: ${currentCard.address1}, ${currentCard.city}<br>
+        Telefono: +88 8888 8888<br>
+        Horario: 9am - 5pm</p>
       </div>
       <button id="routeButton">Ruta</button>
       <button id="ticketButton">Solicitar Ticket</button>
@@ -223,26 +228,51 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
     this.infoWindow.setContent(content);
     this.infoWindow.open(this.map, this.marker);
     setTimeout(() => {
-      document.getElementById('routeButton').addEventListener('click', () => { this.getRoute(); });
+      document.getElementById('routeButton').addEventListener('click', () => { this.showRoute({
+        latitude: currentCard.latitude,
+        longitude: currentCard.longitude
+      }, currentCard); });
       document.getElementById('ticketButton').addEventListener('click', () => { this.getTicket(); });
     }, 500);
   }
 
-  getRoute(agenciePosition = {lat: 9.976813, lng: -84.836160}) {
-    const routeQuery = `${this.currentPosition.lat},${this.currentPosition.lng}:${agenciePosition.lat},${agenciePosition.lng}`;
+  showRoute({latitude: lat, longitude: lng}, card){
+    const routeQuery = `${this.currentPosition.lat},${this.currentPosition.lng}:${lat},${lng}`;
+    if (card.path) {
+      console.log('entro sin pedir');
+      this.polyline.setMap(this.map);
+      this.polyline.setPath(card.path);
+      this.map.fitBounds(card.bounds, {bottom: 60});
+    } else {
+      console.log('entro para pedir');
+      this.getRoute(routeQuery, card);
+    }
+    this.showAgencies();
+    this.polyline.setVisible(true);
+    this.infoWindow.map = null;
+    this.infoWindow.close();
+  }
+
+  getRoute(routeQuery, card) {
     this.service.getRoute(routeQuery)
     .toPromise().then( (data: any) => {
-      const bounds = new google.maps.LatLngBounds();
-      const googleArray = new google.maps.MVCArray();
+
       const pathArray = data.routes[0].legs[0].points;
+      const googleArray = new google.maps.MVCArray();
+      const bounds = new google.maps.LatLngBounds();
+
       pathArray.forEach((point: any) => {
         const latLng = new google.maps.LatLng(point.latitude, point.longitude);
         googleArray.push(latLng);
         bounds.extend(latLng);
       });
+      // -------------------------- //
+      card.bounds = bounds;
+      card.path = googleArray;
+      console.log(card);
       this.polyline.setMap(this.map);
       this.polyline.setPath(googleArray);
-      this.map.fitBounds(bounds);
+      this.map.fitBounds(bounds, {bottom: 60});
     }).catch(error => console.error(error));
   }
 
@@ -251,8 +281,6 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
       const id = this.bestOptionsAgencies[index].id;
       this.router.navigate(['/offices'], { state: { data: { id } } });
     });
-    // console.log('entra al get ticket');
-
   }
 
   getOffices() {
@@ -261,7 +289,7 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
         this.bestOptionsAgencies.push(res[indice]);
       });
       console.log(this.bestOptionsAgencies);
-    });
+    }).catch(error => console.error(error));
   }
 
 }

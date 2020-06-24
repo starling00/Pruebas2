@@ -62,7 +62,7 @@ export class UtilsService {
       searchdirection:""
    }
   constructor() { 
-    var localizationAPI = 'http://18.224.108.194/orchestra_mapas/api/';
+    var localizationAPI = 'http://13.59.31.150/orchestra_mapas/api/';
     // var localizationAPI = 'http://172.23.12.144/orchestra/api/';
     var newserverURL = 'http://18.224.108.194/summit/api/';
     //var ticketsURL = 'http://13.58.166.253/ficoTickets/api/';
