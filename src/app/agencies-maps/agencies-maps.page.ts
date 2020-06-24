@@ -32,6 +32,7 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
   infoWindow = new google.maps.InfoWindow({
     content: null,
   });
+  polyline = new google.maps.Polyline({map: null});
   showingAgencies = false;
   watcher;
 
@@ -91,9 +92,8 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
       center: this.currentPosition,
       zoom: 17,
       disableDefaultUI: true,
-      disableDoubleClickZoom: true,
       zoomControl: false,
-      scrollwheel: false,
+      scrollwheel: true,
       scaleControl: false,
       keyboardShortcuts: false,
       clickableIcons: false,
@@ -177,6 +177,7 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
 
   locateMe() {
     this.map.panTo(this.currentPosition);
+    this.map.setZoom(17);
     this.showingAgencies = false;
     this.buttonElement.classList.remove('slide-fwd-top');
     this.buttonElement.classList.add('slide-bck-bottom');
@@ -222,15 +223,32 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
     this.infoWindow.setContent(content);
     this.infoWindow.open(this.map, this.marker);
     setTimeout(() => {
-      document.getElementById('routeButton').addEventListener('click', () => { console.log('hace click en route'); });
+      document.getElementById('routeButton').addEventListener('click', () => { this.getRoute(); });
       document.getElementById('ticketButton').addEventListener('click', () => { this.getTicket(); });
     }, 500);
+  }
+
+  getRoute(agenciePosition = {lat: 9.976813, lng: -84.836160}) {
+    const routeQuery = `${this.currentPosition.lat},${this.currentPosition.lng}:${agenciePosition.lat},${agenciePosition.lng}`;
+    this.service.getRoute(routeQuery)
+    .toPromise().then( (data: any) => {
+      const bounds = new google.maps.LatLngBounds();
+      const googleArray = new google.maps.MVCArray();
+      const pathArray = data.routes[0].legs[0].points;
+      pathArray.forEach((point: any) => {
+        const latLng = new google.maps.LatLng(point.latitude, point.longitude);
+        googleArray.push(latLng);
+        bounds.extend(latLng);
+      });
+      this.polyline.setMap(this.map);
+      this.polyline.setPath(googleArray);
+      this.map.fitBounds(bounds);
+    }).catch(error => console.error(error));
   }
 
   getTicket() {
     this.slides.getActiveIndex().then(index => {
       const id = this.bestOptionsAgencies[index].id;
-      console.log(id);
       this.router.navigate(['/offices'], { state: { data: { id } } });
     });
     // console.log('entra al get ticket');
