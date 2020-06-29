@@ -156,7 +156,10 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
 
   slideChanged() {
     this.slides.getActiveIndex().then(index => {
-      const latlng = { lat: this.bestOptionsAgencies[index].latitude, lng: this.bestOptionsAgencies[index].longitude };
+      const latlng = { 
+        lat: parseFloat(this.bestOptionsAgencies[index].latitude), 
+        lng: parseFloat(this.bestOptionsAgencies[index].longitude) 
+      };
       this.deleteMarker();
       this.infoWindow.close();
       this.setMarker(latlng);
@@ -229,8 +232,8 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
     this.infoWindow.open(this.map, this.marker);
     setTimeout(() => {
       document.getElementById('routeButton').addEventListener('click', () => { this.showRoute({
-        latitude: currentCard.latitude,
-        longitude: currentCard.longitude
+        latitude: parseFloat(currentCard.latitude),
+        longitude: parseFloat(currentCard.longitude)
       }, currentCard); });
       document.getElementById('ticketButton').addEventListener('click', () => { this.getTicket(); });
     }, 500);
