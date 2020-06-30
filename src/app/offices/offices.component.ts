@@ -30,12 +30,16 @@ export class OfficesComponent implements OnInit {
   urlId: any;
   ticketServices: any;
   offices: any;
+  services: any;
   ticketStatus: any;
   createdTicket: any;
   userInfo: any;
   officeId: any;
   serviceId: any;
-  selectedClient: any;
+  clientServices: any;
+  areaDisable = true;
+  clientDisable = true;
+  servDisable = true;
 
   constructor(
     private router: Router,
@@ -88,9 +92,8 @@ export class OfficesComponent implements OnInit {
   }
 
   getOffices(){
-    this.service.saveTicket(this.params.params.ticketOffices, null).subscribe((resp) => {
+    this.service.getTicket('https://cors-anywhere.herokuapp.com/http://129.213.35.98:8011/orchestra_offices').subscribe((resp) => {
       this.offices = resp;
-      //console.log(this.offices);
     }, (err) => {
       console.error(err);
     });
@@ -107,26 +110,29 @@ export class OfficesComponent implements OnInit {
   };
 
   getTicketStatus(visitId) {
-    this.service.get(this.params.params.ticketStatus + '/' + visitId).subscribe((resp) => {
+    this.service.getTicket('https://cors-anywhere.herokuapp.com/http://129.213.35.98:8011/orchestra_obtenetticketStatus/orchestra_ticketStatus/'+visitId).subscribe((resp) => {
       this.ticketStatus = resp;
       this.storeService.localSave(this.localParam.localParam.ticketStatus, this.ticketStatus);
-
-      //console.log(this.ticketStatus);
     }, (err) => {
       console.error(err);
     });
   }
 
   createTicket(){
-    this.UserModel.level = this.userInfo.level;
+    /*this.UserModel.level = this.userInfo.level;
     this.UserModel.custom1 = this.userInfo.custom1 + '/vip level '+ this.userInfo.level;
-    this.UserModel.crossSelling = this.userInfo.crossSelling;
+    this.UserModel.crossSelling = this.userInfo.crossSelling;*/
+    this.UserModel.level = 'VIP Level 6';
+    this.UserModel.custom1 = '---';
+    this.UserModel.crossSelling = 'Extra@#@---#@#Prestamo@#@---#@#Intra@#@---#@#Segunda Tarjeta@#@---#@#Apertura de Cuentas@#@---#@#Tarjeta de Debito@#@---#@#PilTurbo@#@---#@#Aumento de Limite TC@#@---#@#Otros (TC Adicionales, Seguros)@#@---#@#';
 
     let parameters = {"parameters": this.UserModel}
     //console.log(parameters);
     this.storeService.localSave(this.localParam.localParam.userModel, parameters);
     
-    this.service.saveTicket(this.params.params.ticketCreate+'/serviceId/'+this.serviceId+'/officeId/'+this.officeId, parameters).subscribe((resp) => {
+    this.service.saveTicket(
+      'https://cors-anywhere.herokuapp.com/http://129.213.35.98:8011/orchestra_createTicket/orchestra_createTicket/serviceId/'+this.serviceId+'/officeId/'+this.officeId, parameters)
+      .subscribe((resp) => {
       this.createdTicket = resp;
       this.storeService.localSave(this.localParam.localParam.createdTicket, this.createdTicket);
 
@@ -139,11 +145,16 @@ export class OfficesComponent implements OnInit {
 
   GenerateServices(id) {
     this.officeId = id;
-    this.service.saveTicket(this.params.params.ticketServices + '/' + id, null).subscribe((resp) => {
+    this.service.getTicket('https://cors-anywhere.herokuapp.com/http://129.213.35.98:8011/orchestra_services/orchestra_services/officeId/'+id).subscribe((resp) => {
       this.ticketServices = resp;
+      //this.services = this.ticketServices;
+      //this.clientServices = this.services;
       this.storeService.localSave(this.localParam.localParam.ticketServices, this.ticketServices);
 
-      //console.log(this.ticketServices);
+      if(this.offices){
+        this.areaDisable = false;
+      }
+
     }, (err) => {
       console.error(err);
     });
@@ -151,6 +162,22 @@ export class OfficesComponent implements OnInit {
 
   getSelectedServiceId(id) {
     this.serviceId = id;
+  }
+
+  selectedArea(area){
+    this.services = this.ticketServices.filter(x => x.name.includes(area));
+    
+    if(this.areaDisable == false){
+      this.clientDisable = false;
+    }
+  }
+
+  selectedClient(client){
+    this.clientServices = this.services.filter(x => x.name.includes(client));
+
+    if(this.services && this.clientServices){
+      this.servDisable = false;
+    }
   }
 
   go() {

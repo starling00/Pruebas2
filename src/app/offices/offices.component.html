@@ -29,33 +29,30 @@
 
     <br>
     <ion-item>
-      <ion-label position="floating">Tipo de cliente</ion-label>
-          <ion-select placeholder="Seleccione el tipo de cliente" [(ngModel)]="selectedClient">
-            <ion-select-option value="Cliente Emprendedor">Cliente Emprendedor(Pyme)</ion-select-option>
-            <ion-select-option value="Cliente Natural">Cliente Natural</ion-select-option>
-            <ion-select-option value="Cliente Preferencial">Cliente Preferencial(3 era edad, embarazada, persona con capacidades especiales) </ion-select-option>
-            <ion-select-option value="Cliente Corporativo">Cliente Corporativo</ion-select-option>
+      <ion-label position="floating">Área de visita</ion-label>
+          <ion-select placeholder="Seleccione Plataforma" #A (ionChange)="selectedArea(A.value)" [disabled]="areaDisable">
+            <ion-select-option value="Caja">Caja</ion-select-option>
+            <ion-select-option value="Servicios">Servicios</ion-select-option>
+            <ion-select-option value="Negocios">Negocios</ion-select-option>
             
           </ion-select>
 
     </ion-item>
     <br>
-
     <ion-item>
-      <ion-label position="floating">Área de visita</ion-label>
-          <ion-select placeholder="Seleccione Plataforma">
-            <ion-select-option value="01">Caja</ion-select-option>
-            <ion-select-option value="02">Servicios</ion-select-option>
-            <ion-select-option value="03">Negocios</ion-select-option>
-            
+      <ion-label position="floating">Tipo de cliente</ion-label>
+          <ion-select placeholder="Seleccione el tipo de cliente" #T (ionChange)="selectedClient(T.value)" [disabled]="clientDisable">
+            <ion-select-option value="Emprendedor">Cliente Emprendedor(Pyme)</ion-select-option>
+            <ion-select-option value="Natural">Cliente Natural</ion-select-option>
+            <ion-select-option value="Preferencial">Cliente Preferencial(3 era edad, embarazada, persona con capacidades especiales) </ion-select-option>
+            <ion-select-option value="Corporativo">Cliente Corporativo</ion-select-option>
           </ion-select>
-
     </ion-item>
     <br>
     <ion-item>
       <ion-label position="floating">Servicios</ion-label>
-          <ion-select  placeholder="Seleccione servicio" #S (ionChange)="getSelectedServiceId(S.value)">
-            <ion-select-option *ngFor="let ts of ticketServices" [value]="ts.id">{{ts.name}}</ion-select-option>
+          <ion-select  placeholder="Seleccione servicio" #S (ionChange)="getSelectedServiceId(S.value)" [disabled]="servDisable">
+            <ion-select-option *ngFor="let serv of clientServices" [value]="serv.serviceId">{{serv.name}}</ion-select-option>
             
         
           </ion-select>

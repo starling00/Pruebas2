@@ -37,19 +37,14 @@ export class CrudService {
   }
   //Metodo get con header para probar los tiquetes
   getTicket(url) {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Auth-token': 'd0516eee-a32d-11e5-bf7f-feff819cdc9f',
-      'Authorization': 'Basic c3VwZXJhZG1pbjp1bGFu'
-    });
-    /*const httpOptions = {
-      headers: new HttpHeaders({
-        'Auth-token': 'd0516eee-a32d-11e5-bf7f-feff819cdc9f',
-        'Authorization': 'Basic c3VwZXJhZG1pbjp1bGFu',
-        'Content-Type':  'application/json'
-      })
-    };*/
-    return this.http.get(url, { headers: headers });
+    let header = new HttpHeaders();
+    header = header.append('Access-Control-Allow-Headers', '*');
+    header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');
+    header = header.append('Access-Control-Allow-Origin', '*');
+    header = header.append('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    header = header.append('Cache-Control', 'no-cache');
+
+    return this.http.get(url, { headers: header });
   }
 
   getAgencies(url, data: any) {
@@ -61,11 +56,25 @@ export class CrudService {
   }
 
   saveTicket(url, data: any) {
-    return this.http.post(url, data, { headers: {} });
+    let header = new HttpHeaders();
+    header = header.append('Access-Control-Allow-Origin', '*');
+    header = header.append('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    header = header.append('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+    header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');
+    header = header.append('Cache-Control', 'no-cache');
+
+    return this.http.post(url, data, { headers: header });
   }
 
   delete(url){
-    return this.http.delete(url, { headers: {} });
+    let header = new HttpHeaders();
+    header = header.append('Access-Control-Allow-Origin', '*');
+    header = header.append('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
+    header = header.append('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+    header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');
+    header = header.append('Cache-Control', 'no-cache');
+
+    return this.http.delete(url, { headers: header });
   }
 
   xmlHttpPostRequest(url, formData: FormData) {

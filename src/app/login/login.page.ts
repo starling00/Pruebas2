@@ -117,7 +117,8 @@ log(){
   this.router.navigateByUrl('/agencies02');
 }
   login() {
-    this.service.saveTicket(this.params.params.userInfo +'/'+ this.cedula, null).subscribe((resp) => {
+    this.router.navigateByUrl('/agencies');
+    /*this.service.saveTicket(this.params.params.userInfo +'/'+ this.cedula, null).subscribe((resp) => {
 
       this.userdata = resp;
       //console.log(this.userdata);
@@ -133,7 +134,7 @@ log(){
       if(err.status == 404){
 
       }
-    });
+    });*/
   }
 
   meetings(){
