@@ -40,6 +40,7 @@ export class OfficesComponent implements OnInit {
   areaDisable = true;
   clientDisable = true;
   servDisable = true;
+  selectedOffice: any;
 
   constructor(
     private router: Router,
@@ -131,7 +132,7 @@ export class OfficesComponent implements OnInit {
     this.storeService.localSave(this.localParam.localParam.userModel, parameters);
     
     this.service.saveTicket(
-      'https://cors-anywhere.herokuapp.com/http://129.213.35.98:8011/orchestra_createTicket/orchestra_createTicket/serviceId/'+this.serviceId+'/officeId/'+this.officeId, parameters)
+      'https://cors-anywhere.herokuapp.com/http://129.213.35.98:8011/orchestra_createTicket/orchestra_createTicket/serviceId/'+this.serviceId+'/officeId/'+this.selectedOffice.id, parameters)
       .subscribe((resp) => {
       this.createdTicket = resp;
       this.storeService.localSave(this.localParam.localParam.createdTicket, this.createdTicket);
@@ -143,13 +144,13 @@ export class OfficesComponent implements OnInit {
     });
   }
 
-  GenerateServices(id) {
-    this.officeId = id;
-    this.service.getTicket('https://cors-anywhere.herokuapp.com/http://129.213.35.98:8011/orchestra_services/orchestra_services/officeId/'+id).subscribe((resp) => {
+  GenerateServices() {
+    this.service.getTicket('https://cors-anywhere.herokuapp.com/http://129.213.35.98:8011/orchestra_services/orchestra_services/officeId/'+this.selectedOffice.id).subscribe((resp) => {
       this.ticketServices = resp;
       //this.services = this.ticketServices;
       //this.clientServices = this.services;
       this.storeService.localSave(this.localParam.localParam.ticketServices, this.ticketServices);
+      this.storeService.localSave(this.localParam.localParam.officeName, this.selectedOffice.name);
 
       if(this.offices){
         this.areaDisable = false;

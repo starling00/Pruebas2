@@ -52,6 +52,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   maxProgressBar: number = 0;
   postPoneTicketInfo: any;
   lastPosition: any;
+  officeName: any;
 
   constructor(private services: CrudService,
     private params: UtilsService,
@@ -186,12 +187,12 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
   //Metodo para poner la ubicacion del tiquete
   getTicketUbi() {
-    this.storeService.localGet(this.localParam.localParam.ticketStatus).then((resp) => {
-      this.ticketStatus = resp;
-      if(!this.ticketStatus){
+    this.storeService.localGet(this.localParam.localParam.officeName).then((resp) => {
+      this.officeName = resp;
+      if(!this.officeName){
         this.ticketUbi = "No se ha creado un ticket";
-      }else if(this.ticketStatus){
-        this.ticketUbi = this.ticketStatus[0].currentServiceName;
+      }else if(this.officeName){
+        this.ticketUbi = this.officeName;
       }
     }, (err) => {
       console.error(err);
@@ -205,7 +206,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       if(!this.ticketStatus){
         this.ticketDesti = "No se ha creado un ticket";
       }else if(this.ticketStatus){
-        this.ticketDesti = this.ticketStatus[0].queueName;
+        this.ticketDesti = this.ticketStatus[0].currentServiceName;
       }
     }, (err) => {
       console.error(err);
@@ -243,8 +244,8 @@ export class Tab2Page implements OnInit, AfterViewInit {
             this.stopPositionPopUp = false;
             this.lastPosition = positionInQueue;
           }
-          this.ticketUbi = this.refreshedTicket[0].currentServiceName;
-          this.ticketDesti = this.refreshedTicket[0].queueName;
+          this.ticketUbi = this.officeName;
+          this.ticketDesti = this.refreshedTicket[0].currentServiceName;
           this.ticketPosition = "Su posición es: "+positionInQueue;
           
           this.maxProgressBar = 1/positionInQueue;
@@ -574,7 +575,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       message:
         '<img class="my-custom-class" src="assets/img/unticket.png"></img><br> <br> Usted está siendo llamado, pasar a la ventanilla: ' + calledFrom,
       buttons: [{
-        text: 'OK',
+        text: 'Aceptar',
         role: 'OK',
         handler: () => {
           //console.log('you clicked me');
@@ -595,7 +596,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       message:
         '<img class="my-custom-class" src="assets/img/tickets3.png"></img><br> <br> Faltan ' + positionInQueue + ' tickets para su llamado.',
       buttons: [{
-        text: 'OK',
+        text: 'Aceptar',
         role: 'OK',
         handler: () => {
           //console.log('you clicked me');
@@ -616,7 +617,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       '<img class="my-custom-class" src="assets/img/check.png"></img><br> <br>Te estaremos notificando según se aproxime tu llamado.',
        
       buttons: [{
-        text: 'OK',
+        text: 'Aceptar',
         role: 'OK',
         handler: () => {
           
@@ -679,7 +680,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       '<img class="my-custom-class" src="assets/img/cancel.png"></img><br> <br><h6>Has cancelado el ticket generado</h6>Te invitamos a seguir utilizando nuestro servicio de Ficoticket.',
       
       buttons: [{
-        text: 'OK',
+        text: 'Aceptar',
         role: 'OK',
         handler: () => {
           this.storage.clear();
@@ -700,7 +701,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       '<img class="my-custom-class" src="assets/img/newticket.png"></img><br> <br>Has generado nuevo ticket exitosamente',
       
       buttons: [{
-        text: 'OK',
+        text: 'Aceptar',
         role: 'OK',
         handler: () => {
           

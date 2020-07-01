@@ -97,3 +97,25 @@
   p{
     color:#999999;
   }
+
+  .progress-bar-determinate{
+    --buffer-background: #d1d1d1;
+    --progress-background: #999999;
+    height: 20px !important; 
+  }
+
+  .alert-radio-label.sc-ion-alert-md {
+    white-space: pre-wrap !important;
+    margin: auto;
+  }
+  .alert-radio-label.sc-ion-alert-ios {
+    white-space: pre-wrap !important;
+    margin: auto;
+  }
+
+  .item .sc-ion-label-md-h{
+    white-space: pre-wrap !important;
+  }
+  .item .sc-ion-label-ios-h{
+    white-space: pre-wrap !important;
+  }
