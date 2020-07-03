@@ -37,14 +37,10 @@ export class CrudService {
   }
   //Metodo get con header para probar los tiquetes
   getTicket(url) {
-    let header = new HttpHeaders();
-    header = header.append('Access-Control-Allow-Headers', '*');
-    header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');
-    header = header.append('Access-Control-Allow-Origin', '*');
-    header = header.append('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
-    header = header.append('Cache-Control', 'no-cache');
+    /*let header = new HttpHeaders();
+    header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');*/
 
-    return this.http.get(url, { headers: header });
+    return this.http.get(url, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
   }
 
   getAgencies(url, data: any) {
@@ -56,25 +52,17 @@ export class CrudService {
   }
 
   saveTicket(url, data: any) {
-    let header = new HttpHeaders();
-    header = header.append('Access-Control-Allow-Origin', '*');
-    header = header.append('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
-    header = header.append('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
-    header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');
-    header = header.append('Cache-Control', 'no-cache');
+    /*let header = new HttpHeaders();
+    header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');*/
 
-    return this.http.post(url, data, { headers: header });
+    return this.http.post(url, data, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
   }
 
   delete(url){
-    let header = new HttpHeaders();
-    header = header.append('Access-Control-Allow-Origin', '*');
-    header = header.append('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
-    header = header.append('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
-    header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');
-    header = header.append('Cache-Control', 'no-cache');
+    /*let header = new HttpHeaders();
+    header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');*/
 
-    return this.http.delete(url, { headers: header });
+    return this.http.delete(url, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
   }
 
   xmlHttpPostRequest(url, formData: FormData) {

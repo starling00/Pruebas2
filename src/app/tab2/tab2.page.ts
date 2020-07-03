@@ -252,7 +252,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
           this.positionUpdated(positionInQueue);
           let calledFrom = this.refreshedTicket[0].servicePointName;
 
-          if(positionInQueue == null){
+          if(positionInQueue == ""){
             this.ticketPosition = "Su posición es: "+0;
             if (!this.stopPopUp) {
               //this.stopPopUp = true;
@@ -262,6 +262,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
               }else if(this.popUp != null){
                 this.popUp.dismiss();
                 this.presentAlert(calledFrom);
+                this.setVibration();
               }
             }
           }
