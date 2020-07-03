@@ -579,7 +579,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
         text: 'Aceptar',
         role: 'OK',
         handler: () => {
-          //console.log('you clicked me');
+          this.router.navigateByUrl('/modal-page');
           this.stopPopUp = true;
         }
       },
