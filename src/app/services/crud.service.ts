@@ -40,8 +40,7 @@ export class CrudService {
     /*let header = new HttpHeaders();
     header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');*/
 
-    return this.http.get(url, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==',
-    'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': '*'} });
+    return this.http.get(url, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
   }
 
   getAgencies(url, data: any) {
@@ -56,16 +55,14 @@ export class CrudService {
     /*let header = new HttpHeaders();
     header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');*/
 
-    return this.http.post(url, data, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==', 
-    'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': '*'} });
+    return this.http.post(url, data, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
   }
 
   delete(url){
     /*let header = new HttpHeaders();
     header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');*/
 
-    return this.http.delete(url, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==', 
-    'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': '*'} });
+    return this.http.delete(url, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
   }
 
   xmlHttpPostRequest(url, formData: FormData) {

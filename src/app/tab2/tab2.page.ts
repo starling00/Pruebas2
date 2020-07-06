@@ -235,7 +235,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       if(this.createdTicket){
         let visitId = this.createdTicket.visitId;
 
-        this.services.getTicket('https://cors-anywhere.herokuapp.com/http://129.213.35.98:8011/orchestra_obtenetticketStatus/orchestra_ticketStatus/'+visitId).subscribe((resp) => {
+        this.services.getTicket('https://cdservices.ficohsa.com:9023/orchestra_obtenetticketStatus/orchestra_ticketStatus/'+visitId).subscribe((resp) => {
           this.refreshedTicket = resp;
           this.storeService.localSave(this.localParam.localParam.ticketStatus, this.refreshedTicket);
 
@@ -312,7 +312,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   getTicketStatus(visitId){
-    this.services.getTicket('https://cors-anywhere.herokuapp.com/http://129.213.35.98:8011/orchestra_obtenetticketStatus/orchestra_ticketStatus/'+visitId).subscribe((resp) => {
+    this.services.getTicket('https://cdservices.ficohsa.com:9023/orchestra_obtenetticketStatus/orchestra_ticketStatus/'+visitId).subscribe((resp) => {
       let ticketStatus = resp;
       this.storeService.localSave(this.localParam.localParam.ticketStatus, ticketStatus);
 
@@ -336,7 +336,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
         let userModel = resp;
 
         this.services.saveTicket(
-          'https://cors-anywhere.herokuapp.com/http://129.213.35.98:8011/orchestra_postpone_tickets/postponeTicket/services/'+serviceId+'/branches/'+officeId+'/ticket/'+visitId+'/queue/'+queueId, userModel).subscribe((resp) => {
+          'https://cdservices.ficohsa.com:9023/orchestra_postpone_tickets/postponeTicket/services/'+serviceId+'/branches/'+officeId+'/ticket/'+visitId+'/queue/'+queueId, userModel).subscribe((resp) => {
           let newTicket = resp;
           this.storeService.localSave(this.localParam.localParam.createdTicket, newTicket[0]);
 
@@ -368,7 +368,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       let serviceId = createdTicket.serviceId;
 
       this.services.delete(
-        'https://cors-anywhere.herokuapp.com/http://129.213.35.98:8011/orchestra_delete_ticket/deleteTicket/services/'+serviceId+'/branches/'+officeId+'/ticket/'+visitId+'/queueId/'+queueId).subscribe((resp) => {
+        'https://cdservices.ficohsa.com:9023/orchestra_delete_ticket/deleteTicket/services/'+serviceId+'/branches/'+officeId+'/ticket/'+visitId+'/queueId/'+queueId).subscribe((resp) => {
 
         this.cancelledTicket();
         
