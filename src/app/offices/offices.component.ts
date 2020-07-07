@@ -40,6 +40,7 @@ export class OfficesComponent implements OnInit {
   areaDisable = true;
   clientDisable = true;
   servDisable = true;
+  createDisable = true;
   selectedOffice: any;
 
   constructor(
@@ -163,6 +164,9 @@ export class OfficesComponent implements OnInit {
 
   getSelectedServiceId(id) {
     this.serviceId = id;
+    if(this.serviceId){
+      this.createDisable = false;
+    }
   }
 
   selectedArea(area){

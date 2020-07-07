@@ -20,7 +20,7 @@
     <ion-item>
       <ion-label position="floating" >Agencia</ion-label>
           <ion-select [value]="officeId" placeholder="Selecione la oficina" #C (ionChange)="GenerateServices()"
-           cancelText="Cancelar" okText="Aceptar" [(ngModel)]="selectedOffice">
+          interface="popover" [(ngModel)]="selectedOffice">
             <ion-select-option *ngFor="let ofi of offices" [value]="ofi">
               {{ofi.name}}
             </ion-select-option>
@@ -34,7 +34,7 @@
     <ion-item>
       <ion-label position="floating">Área de visita</ion-label>
           <ion-select placeholder="Seleccione Plataforma" #A (ionChange)="selectedArea(A.value)" [disabled]="areaDisable"
-          cancelText="Cancelar" okText="Aceptar">
+          interface="popover">
             <ion-select-option value="Caja">Caja</ion-select-option>
             <ion-select-option value="Servicios">Servicios</ion-select-option>
             <ion-select-option value="Negocios">Negocios</ion-select-option>
@@ -57,7 +57,7 @@
     <ion-item>
       <ion-label position="floating">Servicios</ion-label>
           <ion-select  placeholder="Seleccione servicio" #S (ionChange)="getSelectedServiceId(S.value)" 
-          [disabled]="servDisable" cancelText="Cancelar" okText="Aceptar">
+          [disabled]="servDisable" interface="popover">
             <ion-select-option *ngFor="let serv of clientServices" [value]="serv.serviceId">{{serv.name}}</ion-select-option>
             
         
@@ -70,7 +70,7 @@
 
   </ion-list>
   <div padding>
-    <ion-button class="btnLoging" expand="block"  (click)="go()">Crear ticket</ion-button>
+    <ion-button class="btnLoging" expand="block"  (click)="go()" [disabled]="createDisable">Crear ticket</ion-button>
 
   </div>
 

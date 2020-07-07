@@ -240,16 +240,16 @@ export class Tab2Page implements OnInit, AfterViewInit {
           this.storeService.localSave(this.localParam.localParam.ticketStatus, this.refreshedTicket);
 
           let positionInQueue = this.refreshedTicket[0].positionInQueue;
-          if(this.lastPosition != positionInQueue){
+          if(this.lastPosition != positionInQueue && positionInQueue != ""){
             this.stopPositionPopUp = false;
             this.lastPosition = positionInQueue;
+            this.positionUpdated(positionInQueue);
           }
           this.ticketUbi = this.officeName;
           this.ticketDesti = this.refreshedTicket[0].currentServiceName;
           this.ticketPosition = "Su posición es: "+positionInQueue;
           
           this.maxProgressBar = 1/positionInQueue;
-          this.positionUpdated(positionInQueue);
           let calledFrom = this.refreshedTicket[0].servicePointName;
 
           if(positionInQueue == ""){
@@ -303,9 +303,12 @@ export class Tab2Page implements OnInit, AfterViewInit {
         if(this.positionPopUp == null){
           this.alertPositionInQueue(positionInQueue);             
           this.setVibration();
+          this.stopPositionPopUp = true;
         }else if(this.positionPopUp != null){
           this.positionPopUp.dismiss();
           this.alertPositionInQueue(positionInQueue);
+          this.setVibration();
+          this.stopPositionPopUp = true;
         }
       }
     }
@@ -383,6 +386,12 @@ export class Tab2Page implements OnInit, AfterViewInit {
   setVibration() {
     navigator.vibrate([500, 500, 500]);
     //console.log("Esta vibrando");
+  }
+
+  delay(){
+    setTimeout(() => {
+      this.router.navigateByUrl('/modal-page');
+    }, 300000);
   }
 
   go(id) {
@@ -574,16 +583,17 @@ export class Tab2Page implements OnInit, AfterViewInit {
       header: 'Ficoticket',
       subHeader: '',
       message:
-        '<img class="my-custom-class" src="assets/img/unticket.png"></img><br> <br> Usted está siendo llamado, pasar a la ventanilla: ' + calledFrom,
+        '<img class="my-custom-class" src="assets/img/unticket.png"></img><br> <br> Su ticket número '+this.ticketNumber+' está siendo llamado, pasar a la ventanilla: ' + calledFrom,
       buttons: [{
         text: 'Aceptar',
         role: 'OK',
         handler: () => {
-          this.router.navigateByUrl('/modal-page');
           this.stopPopUp = true;
+          this.delay();
         }
       },
-      ]
+      ],
+      backdropDismiss: false
     });
     await this.popUp.present();
   }
