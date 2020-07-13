@@ -80,12 +80,6 @@ slideOpts = {
         }
 };
   ngOnInit() {
-    //this.getUserLogged();
-    /*setTimeout(() => {
-      if(this.person.person != null){
-        this.router.navigateByUrl('/menu/first/tabs/tab2');
-      }
-    }, 1000);*/
     this.cleanForm();
     this.getImages();
   }
@@ -169,47 +163,6 @@ log(){
     });
   }
 
-  //Metodo que saca las alertas, si sale null es porque alguno no tiene alertas y viene null
-  getAsociatedAlerts(){
-    let asociatedId = [];
-    let id;
-    for(let i = 0; i < this.userdata.asocietedpeople.length; i++){
-      id = this.userdata.asocietedpeople[i].id;
-      asociatedId.push(id);
-      this.storeService.localSave(this.localParam.localParam.alertsId, asociatedId);
-      this.service.get(this.params.params.beaconurl+"/tracker/person/alert/"+id).subscribe((resp) => {
-        this.personAlert = resp;
-        if(this.personAlert.alerts.length < 1){
-          for(let x = 0; x < this.personAlert.alerts.length; x++){
-            if(this.personAlert.alerts[i].isResolved == false){
-              this.bellAlert ++;
-              this.storeService.localSave(this.localParam.localParam.alerts, this.bellAlert);
-            }
-          }
-        }else if(this.personAlert.alerts.isResolved == false){
-          this.bellAlert ++;
-          this.storeService.localSave(this.localParam.localParam.alerts, this.bellAlert);
-        }
-      }, (err) => {
-        console.error(err);
-      });
-      
-    }
-  }
-
-  //Extrae todos los beacons relacionados al un punto
-
-  getBeconsPoints() {
-
-    this.service.get(this.params.params.gatewaybeacons+"/shortid").subscribe((resp) => {
-      this.beaconsPoints= resp;
-      this.storeService.localSave(this.localParam.localParam.gatewaybeacons, this.beaconsPoints);
-      //console.log(this.beaconsPoints);
-    }, (err) => {
-      this.alert( "Error:Contacte al adminstrador del sistema");
-      console.error(err);
-    });
-  }
   link(){
     window.location.href='https://www.ficohsa.com/';
   }

@@ -187,7 +187,7 @@ export class OfficesComponent implements OnInit {
 
   go() {
     this.createTicket();
-    this.router.navigateByUrl('/menu/first/tabs/tab2');
+    this.router.navigateByUrl('/ticket');
   }
 
   async presentLoadingDefault() {
