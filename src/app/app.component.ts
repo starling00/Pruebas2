@@ -27,9 +27,11 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      cordova.plugins.backgroundMode.enable();
-      cordova.plugins.backgroundMode.disableBatteryOptimizations();
-      cordova.plugins.backgroundMode.setDefaults({ silent: true });
+      if (this.platform.is('cordova')) {
+        cordova.plugins.backgroundMode.enable();
+        cordova.plugins.backgroundMode.disableBatteryOptimizations();
+        cordova.plugins.backgroundMode.setDefaults({ silent: true });
+      }
       
       this.platform.backButton.subscribeWithPriority(9999, () => {
         document.addEventListener('backbutton', function (event) {

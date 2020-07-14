@@ -53,6 +53,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   postPoneTicketInfo: any;
   lastPosition: any;
   officeName: any;
+  createdDate: any;
 
   constructor(private services: CrudService,
     private params: UtilsService,
@@ -81,12 +82,14 @@ export class Tab2Page implements OnInit, AfterViewInit {
       });
     });
 
-    cordova.plugins.backgroundMode.on('activate', () => {
-      cordova.plugins.foregroundService.start('Ficoticket', 'Ficoticket se encuentra activo', 'myicon', 3);
-      cordova.plugins.backgroundMode.disableWebViewOptimizations();
-      
-      this.timer();
-    });
+    if (this.platform.is('cordova')) {
+      cordova.plugins.backgroundMode.on('activate', () => {
+        cordova.plugins.foregroundService.start('Ficoticket', 'Ficoticket se encuentra activo', 'myicon', 3);
+        cordova.plugins.backgroundMode.disableWebViewOptimizations();
+        
+        this.timer();
+      });
+    }
   }
 
   ngOnInit() {
@@ -101,6 +104,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       this.getTicketUbi();
       this.getTicketDesti();
       this.getTicketPosition();
+      this.createdTicketTime();
       this.timer();
     }, 4000);
   }
@@ -116,6 +120,29 @@ export class Tab2Page implements OnInit, AfterViewInit {
       message: msg,
       buttons: ['OK']
     }).then(alert => alert.present());
+  }
+
+  createdTicketTime(){
+    let d = new Date(),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear(),
+        hour = d.getHours(),
+        minutes = d.getMinutes().toString();
+
+    let ampm = hour >= 12 ? 'pm' : 'am';
+        hour = hour % 12;
+        hour = hour ? hour : 12; // the hour '0' should be '12'
+        minutes = minutes < '10' ? '0'+minutes : minutes;
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+    if (minutes.length < 2)
+        minutes = '0' + minutes;
+
+    this.createdDate = day+'-'+month+'-'+year+' a las: '+hour+':'+minutes+' '+ampm;
   }
 
   //Metodo para el numero del tiquete
