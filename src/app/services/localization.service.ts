@@ -40,7 +40,7 @@ interface OptionsParamsQuery {
 export class LocalizationService {
 
   private headers = new HttpHeaders({
-    'Content-Type': 'application/json'
+    'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='
   });
 
   private microsoftKey = 'QpcZJJ-GPOF5U5GwbMcq8Qb9kRCCFwQzyzOPM0wPR_k';
@@ -55,7 +55,7 @@ export class LocalizationService {
       "latitude": lat,
       "longitude": lng
     };
-    return this.http.post(this.utils.params.officeInfo, body, { headers: this.headers });
+    return this.http.post(`https://cdservices.ficohsa.com:9023/orchestra_offices/officeslocalization`, body, {headers: this.headers});
   }
 
   getRoute(routeQuery) {
@@ -67,6 +67,10 @@ export class LocalizationService {
         computeBestOrder: true,
     });
     return this.http.get(this.urlApi + routeQuery + optionsParams );
+  }
+
+  getOffice(officeId){
+    return this.http.get(`https://cdservices.ficohsa.com:9023/orchestra/orchestra_offices/servicesWaiting/${officeId}`, {headers: this.headers});
   }
 
   convertParamsToQuery(options: OptionsParamsQuery): string {

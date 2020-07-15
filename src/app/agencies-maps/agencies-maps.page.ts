@@ -219,7 +219,6 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
     const currentCard = this.bestOptionsAgencies[slideIndex];
     const content = `
     <div class="info_window">
-      <img src="https://www.larepublica.net/storage/images/2019/12/11/20191211142642.hangar-plazas.jpg" class="info_window--img">
       <div class="info_window--info">
         <p>Direccion: ${currentCard.address1}, ${currentCard.city}<br>
         Telefono: +88 8888 8888<br>
@@ -290,9 +289,19 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
     this.service.getOffices(this.currentPosition).toPromise().then(res => {
       Object.keys(res).map((indice) => {
         this.bestOptionsAgencies.push(res[indice]);
+        this.getServicesPerOffice(indice);
       });
       console.log(this.bestOptionsAgencies);
     }).catch(error => console.error(error));
+  }
+
+  getServicesPerOffice(officeId){
+    this.service.getOffice(officeId).toPromise().then((services) =>{
+      if (services !== null){
+        console.log(services);
+        
+      }
+    })
   }
 
 }
