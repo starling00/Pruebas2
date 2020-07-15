@@ -54,6 +54,8 @@ export class Tab2Page implements OnInit, AfterViewInit {
   lastPosition: any;
   officeName: any;
   createdDate: any;
+  cancelDisable = false;
+  postPoneDisable = false;
 
   constructor(private services: CrudService,
     private params: UtilsService,
@@ -450,6 +452,8 @@ export class Tab2Page implements OnInit, AfterViewInit {
         role: 'OK',
         handler: () => {
           this.stopPopUp = true;
+          this.cancelDisable = true;
+          this.postPoneDisable = true;
           this.delay();
         }
       },
