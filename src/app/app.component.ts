@@ -28,10 +28,25 @@ export class AppComponent {
       this.splashScreen.hide();
 
       if (this.platform.is('cordova')) {
+        cordova.plugins.backgroundMode.setDefaults({ 
+          title: 'Ficoticket',
+          text: '¡Ficoticket se encuentra activo!',
+          hidden: false,
+          silent: false,
+          sticky: true,
+          resume: false,
+          foreground: true,
+          lockscreen: true,
+         });
+
         cordova.plugins.backgroundMode.enable();
         cordova.plugins.backgroundMode.disableBatteryOptimizations();
-        cordova.plugins.backgroundMode.setDefaults({ silent: true });
+        cordova.plugins.backgroundMode.on('activate', () => {
+          cordova.plugins.backgroundMode.disableWebViewOptimizations(); 
+        });
       }
+
+      //Notification.requestPermission();
       
       this.platform.backButton.subscribeWithPriority(9999, () => {
         document.addEventListener('backbutton', function (event) {

@@ -86,10 +86,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
     if (this.platform.is('cordova')) {
       cordova.plugins.backgroundMode.on('activate', () => {
-        cordova.plugins.foregroundService.start('Ficoticket', 'Ficoticket se encuentra activo', 'myicon', 3);
-        cordova.plugins.backgroundMode.disableWebViewOptimizations();
-        
-        this.timer();
+        cordova.plugins.backgroundMode.disableWebViewOptimizations(); 
       });
     }
   }
@@ -526,7 +523,6 @@ alertPosition(){
   title: 'Aviso',
   text: 'Su posición en la fila se ha modificado',
   priority: 2,
-  trigger: { at: new Date(new Date().getTime() + 100) },
   foreground: true,
   lockscreen: true,
   vibrate: true,

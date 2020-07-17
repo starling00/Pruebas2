@@ -23,7 +23,7 @@ export class ModalPagePage implements OnInit, AfterViewInit{
   }
 
   finalScreen(){
-    this.router.navigateByUrl('/login');
+    navigator['app'].exitApp();
   }
   link(){
     window.location.href='www.google.com';
