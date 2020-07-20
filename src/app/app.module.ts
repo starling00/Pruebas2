@@ -26,6 +26,7 @@ import { LoginPage } from './login/login.page';
 import { AgenciesComponent } from './agencies/agencies.component';
 import {TermsConditionsPageModule} from  './terms-conditions/terms-conditions.module';
 import{ Agencies02PageModule} from './agencies02/agencies02.module';
+import { Vibration } from '@ionic-native/vibration/ngx';
 
 @NgModule({
   declarations: [AppComponent, OfficesComponent, AgenciesComponent],
@@ -38,7 +39,7 @@ import{ Agencies02PageModule} from './agencies02/agencies02.module';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     CrudService, UtilsService, StorageService, UtilStorageService,
     Toast, LocalNotifications,
-    Geolocation, LoginPage,Agencies02PageModule
+    Geolocation, LoginPage,Agencies02PageModule, Vibration
   ],
   bootstrap: [AppComponent]
 })
