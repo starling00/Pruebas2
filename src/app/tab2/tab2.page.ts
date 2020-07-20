@@ -9,6 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { Vibration } from '@ionic-native/vibration/ngx';
 
 declare var cordova;
 
@@ -68,7 +69,8 @@ export class Tab2Page implements OnInit, AfterViewInit {
     public loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     public menuCtrl: MenuController,
-    private storage: Storage) 
+    private storage: Storage,
+    private vibration: Vibration) 
     {
       this.menuCtrl.enable(false);
       this.platform.ready().then(() => {
@@ -373,8 +375,11 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   setVibration() {
-    navigator.vibrate([500, 500, 500]);
-    //console.log("Esta vibrando");
+    if (this.platform.is('android')) {
+      navigator.vibrate([500, 500, 500]);
+    }else if(this.platform.is('ios')){
+      this.vibration.vibrate(1000);
+    }
   }
 
   delay(){
