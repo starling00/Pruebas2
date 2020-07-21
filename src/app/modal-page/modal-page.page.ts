@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { ModalController, AlertController, ActionSheetController } from '@ionic/angular';
+import { ModalController, AlertController, ActionSheetController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,6 +14,7 @@ export class ModalPagePage implements OnInit, AfterViewInit{
     private router: Router,
     private alertCtrl: AlertController,
     public actionSheetController: ActionSheetController,
+    public platform: Platform,
     ) { }
 
   ngOnInit() {
@@ -23,7 +24,12 @@ export class ModalPagePage implements OnInit, AfterViewInit{
   }
 
   finalScreen(){
-    this.router.navigateByUrl('/login');
+    if (this.platform.is('android')) {
+      navigator['app'].exitApp();
+    }else{
+      this.router.navigateByUrl('/login');
+    }
+    
   }
   link(){
     window.location.href='www.google.com';

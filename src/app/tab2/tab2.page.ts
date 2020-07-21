@@ -9,6 +9,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { Vibration } from '@ionic-native/vibration/ngx';
 
 declare var cordova;
 
@@ -68,7 +69,8 @@ export class Tab2Page implements OnInit, AfterViewInit {
     public loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     public menuCtrl: MenuController,
-    private storage: Storage) 
+    private storage: Storage,
+    private vibration: Vibration) 
     {
       this.menuCtrl.enable(false);
       this.platform.ready().then(() => {
@@ -86,10 +88,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
     if (this.platform.is('cordova')) {
       cordova.plugins.backgroundMode.on('activate', () => {
-        cordova.plugins.foregroundService.start('Ficoticket', 'Ficoticket se encuentra activo', 'myicon', 3);
-        cordova.plugins.backgroundMode.disableWebViewOptimizations();
-        
-        this.timer();
+        cordova.plugins.backgroundMode.disableWebViewOptimizations(); 
       });
     }
   }
@@ -376,8 +375,11 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   setVibration() {
-    navigator.vibrate([500, 500, 500]);
-    //console.log("Esta vibrando");
+    if (this.platform.is('android')) {
+      navigator.vibrate([500, 500, 500]);
+    }else if(this.platform.is('ios')){
+      this.vibration.vibrate(1000);
+    }
   }
 
   delay(){
@@ -526,7 +528,6 @@ alertPosition(){
   title: 'Aviso',
   text: 'Su posición en la fila se ha modificado',
   priority: 2,
-  trigger: { at: new Date(new Date().getTime() + 100) },
   foreground: true,
   lockscreen: true,
   vibrate: true,
