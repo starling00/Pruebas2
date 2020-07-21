@@ -37,7 +37,7 @@
     "chart.js": "^2.9.3",
     "cordova-android": "^8.1.0",
     "cordova-browser": "6.0.0",
-    "cordova-ios": "^4.5.5",
+    "cordova-ios": "^5.1.1",
     "cordova-plugin-androidx": "^1.0.2",
     "cordova-plugin-androidx-adapter": "^1.1.0",
     "cordova-plugin-background-mode": "git+https://bitbucket.org/TheBosZ/cordova-plugin-run-in-background.git",
@@ -115,9 +115,9 @@
       "cordova-plugin-background-mode": {}
     },
     "platforms": [
-      "ios",
       "browser",
-      "android"
+      "android",
+      "ios"
     ]
   }
 }
