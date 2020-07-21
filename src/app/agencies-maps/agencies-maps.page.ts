@@ -48,7 +48,7 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
     public platform: Platform,
     private service: LocalizationService,
     private router: Router
-    ) {
+  ) {
   }
 
   async ngOnInit() {
@@ -156,9 +156,9 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
 
   slideChanged() {
     this.slides.getActiveIndex().then(index => {
-      const latlng = { 
-        lat: parseFloat(this.bestOptionsAgencies[index].latitude), 
-        lng: parseFloat(this.bestOptionsAgencies[index].longitude) 
+      const latlng = {
+        lat: parseFloat(this.bestOptionsAgencies[index].latitude),
+        lng: parseFloat(this.bestOptionsAgencies[index].longitude)
       };
       this.deleteMarker();
       this.infoWindow.close();
@@ -220,9 +220,8 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
     const content = `
     <div class="info_window">
       <div class="info_window--info">
-        <p>Direccion: ${currentCard.address1}, ${currentCard.city}<br>
-        Telefono: +88 8888 8888<br>
-        Horario: 9am - 5pm</p>
+        <p>Direccion: ${currentCard.addressLine4}, ${currentCard.addressLine5}<br>
+        Horario: Lunes - Viernes,  ${currentCard.openTime} a ${currentCard.closeTime} </p>
       </div>
       <button id="routeButton">Ruta</button>
       <button id="ticketButton">Solicitar Ticket</button>
@@ -230,21 +229,23 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
     this.infoWindow.setContent(content);
     this.infoWindow.open(this.map, this.marker);
     setTimeout(() => {
-      document.getElementById('routeButton').addEventListener('click', () => { this.showRoute({
-        latitude: parseFloat(currentCard.latitude),
-        longitude: parseFloat(currentCard.longitude)
-      }, currentCard); });
+      document.getElementById('routeButton').addEventListener('click', () => {
+        this.showRoute({
+          latitude: parseFloat(currentCard.latitude),
+          longitude: parseFloat(currentCard.longitude)
+        }, currentCard);
+      });
       document.getElementById('ticketButton').addEventListener('click', () => { this.getTicket(); });
     }, 500);
   }
 
-  showRoute({latitude: lat, longitude: lng}, card){
+  showRoute({ latitude: lat, longitude: lng }, card) {
     const routeQuery = `${this.currentPosition.lat},${this.currentPosition.lng}:${lat},${lng}`;
     if (card.path) {
       console.log('entro sin pedir');
       this.polyline.setMap(this.map);
       this.polyline.setPath(card.path);
-      this.map.fitBounds(card.bounds, {bottom: 60});
+      this.map.fitBounds(card.bounds, { bottom: 60 });
     } else {
       console.log('entro para pedir');
       this.getRoute(routeQuery, card);
@@ -257,25 +258,25 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
 
   getRoute(routeQuery, card) {
     this.service.getRoute(routeQuery)
-    .toPromise().then( (data: any) => {
+      .toPromise().then((data: any) => {
 
-      const pathArray = data.routes[0].legs[0].points;
-      const googleArray = new google.maps.MVCArray();
-      const bounds = new google.maps.LatLngBounds();
+        const pathArray = data.routes[0].legs[0].points;
+        const googleArray = new google.maps.MVCArray();
+        const bounds = new google.maps.LatLngBounds();
 
-      pathArray.forEach((point: any) => {
-        const latLng = new google.maps.LatLng(point.latitude, point.longitude);
-        googleArray.push(latLng);
-        bounds.extend(latLng);
-      });
-      // -------------------------- //
-      card.bounds = bounds;
-      card.path = googleArray;
-      console.log(card);
-      this.polyline.setMap(this.map);
-      this.polyline.setPath(googleArray);
-      this.map.fitBounds(bounds, {bottom: 60});
-    }).catch(error => console.error(error));
+        pathArray.forEach((point: any) => {
+          const latLng = new google.maps.LatLng(point.latitude, point.longitude);
+          googleArray.push(latLng);
+          bounds.extend(latLng);
+        });
+        // -------------------------- //
+        card.bounds = bounds;
+        card.path = googleArray;
+        console.log(card);
+        this.polyline.setMap(this.map);
+        this.polyline.setPath(googleArray);
+        this.map.fitBounds(bounds, { bottom: 60 });
+      }).catch(error => console.error(error));
   }
 
   getTicket() {
@@ -288,18 +289,42 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
   getOffices() {
     this.service.getOffices(this.currentPosition).toPromise().then(res => {
       Object.keys(res).map((indice) => {
+        console.log(indice)
         this.bestOptionsAgencies.push(res[indice]);
-        this.getServicesPerOffice(indice);
+        this.getServicesPerOffice(res[indice].id, indice);
       });
       console.log(this.bestOptionsAgencies);
     }).catch(error => console.error(error));
   }
 
-  getServicesPerOffice(officeId){
-    this.service.getOffice(officeId).toPromise().then((services) =>{
-      if (services !== null){
-        console.log(services);
-        
+  getServicesPerOffice(officeId, indice) {
+    let caja = 0;
+    let servicio = 0;
+    let negocio = 0;
+    this.service.getOffice(officeId).toPromise().then((services:[]) => {
+      if (services !== null) {
+        // console.log(services);
+        services.forEach((service:{area, customersWaitingInDefaultQueue}) => {
+          if(service.area === 'Caja'){
+            caja+=service.customersWaitingInDefaultQueue;
+            // console.log(caja);
+          } else if (service.area === 'Servicios') {
+            servicio+=service.customersWaitingInDefaultQueue;
+            // console.log(servicio);
+          } else if (service.area === 'Negocios') {
+            negocio+=service.customersWaitingInDefaultQueue;
+            // console.log(negocio);
+          }
+        });
+
+        this.bestOptionsAgencies[indice] = {
+          ...this.bestOptionsAgencies[indice],
+          customersWaitingInCaja: caja,
+          customersWaitingInServicio: servicio,
+          customersWaitingInNegocio: negocio
+        }
+
+        console.log(this.bestOptionsAgencies);
       }
     })
   }

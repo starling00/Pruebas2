@@ -21,10 +21,10 @@
               <ion-card-title class="card-title">{{agency.name}}</ion-card-title>
             </ion-card-header>
             <ion-card-content class="ion-no-padding">
-              <p>Caja: quedan 2 personas</p>
-              <p>Plataforma: quedan 10 personas</p>
-              <p>Servicios: quedan 50 personas</p>
-              <p>Información: quedan 7 personas</p>
+              <p>Clientes en espera por area.</p>
+              <p>Caja: {{agency.customersWaitingInCaja}}</p>
+              <p>Servicio: {{agency.customersWaitingInServicio}}</p>
+              <p>Negocio: {{agency.customersWaitingInNegocio}}</p>
             </ion-card-content>
           </ion-card>
         </ion-slide>
