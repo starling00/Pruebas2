@@ -26,6 +26,8 @@ export class ModalPagePage implements OnInit, AfterViewInit{
   finalScreen(){
     if (this.platform.is('android')) {
       navigator['app'].exitApp();
+    }else if(this.platform.is('android') && this.platform.is('mobileweb')){
+      this.router.navigateByUrl('/login');
     }else{
       this.router.navigateByUrl('/login');
     }
