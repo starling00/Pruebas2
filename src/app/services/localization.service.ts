@@ -43,7 +43,7 @@ export class LocalizationService {
     'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='
   });
 
-  private microsoftKey = 'QpcZJJ-GPOF5U5GwbMcq8Qb9kRCCFwQzyzOPM0wPR_k';
+  private microsoftKey = 'D7u4dtG3OyO-S5wTY5ucRriJqXAmfO8uO20X2Kk3wl0';
 
   private urlApi = 'https://atlas.microsoft.com/route/directions/json?api-version=1.0&query=';
 
