@@ -57,6 +57,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   createdDate: any;
   cancelDisable = false;
   postPoneDisable = false;
+  exitDelay: any;
 
   constructor(private services: CrudService,
     private params: UtilsService,
@@ -91,6 +92,9 @@ export class Tab2Page implements OnInit, AfterViewInit {
         cordova.plugins.backgroundMode.disableWebViewOptimizations(); 
       });
     }
+
+    this.preventWebBackButton();
+    this.destroyDelay(this.exitDelay);
   }
 
   ngOnInit() {
@@ -123,6 +127,32 @@ export class Tab2Page implements OnInit, AfterViewInit {
     }).then(alert => alert.present());
   }
 
+  //Previene que se pueda volver a la página anterior y se pierda el ticket
+  preventWebBackButton(){
+    if (this.platform.is('android') && this.platform.is('mobileweb')) {
+      history.pushState(null, null, window.top.location.pathname + window.top.location.search);
+      window.addEventListener('popstate', (e) => {
+        e.preventDefault();
+        history.pushState(null, null, window.top.location.pathname + window.top.location.search);
+      });
+    }else if(this.platform.is('ios') && this.platform.is('mobileweb')){
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', function () {
+          history.pushState(null, null, document.URL);
+      });
+    }
+  }
+
+  //Limpia el timeout del delay
+  destroyDelay(exitDelay){
+    if(this.platform.is('mobileweb')){
+      window.onbeforeunload = function(){
+        clearTimeout(exitDelay);
+      };
+    }
+  }
+
+  //Obtiene la fecha y hora
   createdTicketTime(){
     let d = new Date(),
         month = '' + (d.getMonth() + 1),
@@ -335,6 +365,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
           this.storeService.localSave(this.localParam.localParam.createdTicket, newTicket[0]);
 
           this.getTicketStatus(visitId);
+          this.createdTicketTime();
           this.postPonedTicket();
         }, (err) => {
           console.error(err);
@@ -383,7 +414,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   delay(){
-    setTimeout(() => {
+    this.exitDelay = setTimeout(() => {
       this.router.navigateByUrl('/modal-page');
     }, 300000);
   }
