@@ -100,6 +100,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   ngOnInit() {
     //this.GenerateServices();
     this.presentLoadingDefault();
+    clearTimeout(this.exitDelay);
   }
 
   ngAfterViewInit() {
