@@ -116,7 +116,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   ionViewWillLeave(){
-    this.delay();
+    clearTimeout(this.exitDelay);
   }
 
   showAlert(header, sub, msg) {
