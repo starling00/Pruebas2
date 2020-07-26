@@ -94,7 +94,7 @@ export class OfficesComponent implements OnInit {
   }
 
   getOffices(){
-    this.service.getTicket('https://cdservices.ficohsa.com:9023/orchestra_offices').subscribe((resp) => {
+    this.service.getTicket('https://cservices.ficohsa.com/orchestra_offices').subscribe((resp) => {
       this.offices = resp;
     }, (err) => {
       console.error(err);
@@ -112,7 +112,7 @@ export class OfficesComponent implements OnInit {
   };
 
   getTicketStatus(visitId) {
-    this.service.getTicket('https://cdservices.ficohsa.com:9023/orchestra_obtenetticketStatus/orchestra_ticketStatus/'+visitId).subscribe((resp) => {
+    this.service.getTicket('https://cservices.ficohsa.com/orchestra_obtenetticketStatus/orchestra_ticketStatus/'+visitId).subscribe((resp) => {
       this.ticketStatus = resp;
       this.storeService.localSave(this.localParam.localParam.ticketStatus, this.ticketStatus);
     }, (err) => {
@@ -133,7 +133,7 @@ export class OfficesComponent implements OnInit {
     this.storeService.localSave(this.localParam.localParam.userModel, parameters);
     
     this.service.saveTicket(
-      'https://cdservices.ficohsa.com:9023/orchestra_createTicket/orchestra_createTicket/serviceId/'+this.serviceId+'/officeId/'+this.selectedOffice.id, parameters)
+      'https://cservices.ficohsa.com/orchestra_createTicket/orchestra_createTicket/serviceId/'+this.serviceId+'/officeId/'+this.selectedOffice.id, parameters)
       .subscribe((resp) => {
       this.createdTicket = resp;
       this.storeService.localSave(this.localParam.localParam.createdTicket, this.createdTicket);
@@ -146,7 +146,7 @@ export class OfficesComponent implements OnInit {
   }
 
   GenerateServices() {
-    this.service.getTicket('https://cdservices.ficohsa.com:9023/orchestra_services/orchestra_services/officeId/'+this.selectedOffice.id).subscribe((resp) => {
+    this.service.getTicket('https://cservices.ficohsa.com/orchestra_services/orchestra_services/officeId/'+this.selectedOffice.id).subscribe((resp) => {
       this.ticketServices = resp;
       //this.services = this.ticketServices;
       //this.clientServices = this.services;
@@ -171,8 +171,12 @@ export class OfficesComponent implements OnInit {
 
   selectedArea(area){
     this.services = this.ticketServices.filter(x => x.name.includes(area));
-    
-    if(this.areaDisable == false){
+    if(area == "Seguros"){
+      this.clientDisable = true;
+      this.servDisable = false;
+      this.clientServices = this.services;
+    }
+    else if(area != "Seguros" && this.areaDisable == false){
       this.clientDisable = false;
     }
   }

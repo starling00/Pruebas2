@@ -40,7 +40,7 @@ export class CrudService {
     /*let header = new HttpHeaders();
     header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');*/
 
-    return this.http.get(url, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
+    return this.http.get(url, { headers: {'Authorization': 'Basic SE5TVkNGSUNPVElDS0VUOlQxY2tldEYxYzAk'} });
   }
 
   getAgencies(url, data: any) {
@@ -55,14 +55,14 @@ export class CrudService {
     /*let header = new HttpHeaders();
     header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');*/
 
-    return this.http.post(url, data, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
+    return this.http.post(url, data, { headers: {'Authorization': 'Basic SE5TVkNGSUNPVElDS0VUOlQxY2tldEYxYzAk'} });
   }
 
   delete(url){
     /*let header = new HttpHeaders();
     header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');*/
 
-    return this.http.delete(url, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
+    return this.http.delete(url, { headers: {'Authorization': 'Basic SE5TVkNGSUNPVElDS0VUOlQxY2tldEYxYzAk'} });
   }
 
   xmlHttpPostRequest(url, formData: FormData) {
