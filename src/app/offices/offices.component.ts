@@ -171,8 +171,12 @@ export class OfficesComponent implements OnInit {
 
   selectedArea(area){
     this.services = this.ticketServices.filter(x => x.name.includes(area));
-    
-    if(this.areaDisable == false){
+    if(area == "Seguros"){
+      this.clientDisable = true;
+      this.servDisable = false;
+      this.clientServices = this.services;
+    }
+    else if(area != "Seguros" && this.areaDisable == false){
       this.clientDisable = false;
     }
   }
