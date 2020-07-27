@@ -517,6 +517,8 @@ export class Tab2Page implements OnInit, AfterViewInit {
       ]
     });
     await this.positionPopUp.present();
+
+    this.stopPositionPopUp = true;
   }
 
   async popUpActiveTicket() {
