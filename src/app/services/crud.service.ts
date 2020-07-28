@@ -37,10 +37,10 @@ export class CrudService {
   }
   //Metodo get con header para probar los tiquetes
   getTicket(url) {
-    /*let header = new HttpHeaders();
-    header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');*/
+    //Authorization de Produccion: Basic SE5TVkNGSUNPVElDS0VUOlQxY2tldEYxYzAk
+    //Authorization de Desarrollo: Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==
 
-    return this.http.get(url, { headers: {'Authorization': 'Basic SE5TVkNGSUNPVElDS0VUOlQxY2tldEYxYzAk'} });
+    return this.http.get(url, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
   }
 
   getAgencies(url, data: any) {
@@ -52,17 +52,17 @@ export class CrudService {
   }
 
   saveTicket(url, data: any) {
-    /*let header = new HttpHeaders();
-    header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');*/
+    //Authorization de Produccion: Basic SE5TVkNGSUNPVElDS0VUOlQxY2tldEYxYzAk
+    //Authorization de Desarrollo: Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==
 
-    return this.http.post(url, data, { headers: {'Authorization': 'Basic SE5TVkNGSUNPVElDS0VUOlQxY2tldEYxYzAk'} });
+    return this.http.post(url, data, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
   }
 
   delete(url){
-    /*let header = new HttpHeaders();
-    header = header.append('Authorization', 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==');*/
+    //Authorization de Produccion: Basic SE5TVkNGSUNPVElDS0VUOlQxY2tldEYxYzAk
+    //Authorization de Desarrollo: Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==
 
-    return this.http.delete(url, { headers: {'Authorization': 'Basic SE5TVkNGSUNPVElDS0VUOlQxY2tldEYxYzAk'} });
+    return this.http.delete(url, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
   }
 
   xmlHttpPostRequest(url, formData: FormData) {

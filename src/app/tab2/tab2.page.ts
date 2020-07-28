@@ -256,7 +256,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       if(this.createdTicket){
         let visitId = this.createdTicket.visitId;
 
-        this.services.getTicket('https://cservices.ficohsa.com/orchestra_obtenetticketStatus/orchestra_ticketStatus/'+visitId).subscribe((resp) => {
+        this.services.getTicket(this.params.params.ticketStatus+'/'+visitId).subscribe((resp) => {
           this.refreshedTicket = resp;
           this.storeService.localSave(this.localParam.localParam.ticketStatus, this.refreshedTicket);
 
@@ -337,7 +337,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   getTicketStatus(visitId){
-    this.services.getTicket('https://cservices.ficohsa.com/orchestra_obtenetticketStatus/orchestra_ticketStatus/'+visitId).subscribe((resp) => {
+    this.services.getTicket(this.params.params.ticketStatus+'/'+visitId).subscribe((resp) => {
       let ticketStatus = resp;
       this.storeService.localSave(this.localParam.localParam.ticketStatus, ticketStatus);
 
@@ -361,7 +361,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
         let userModel = resp;
 
         this.services.saveTicket(
-          'https://cservices.ficohsa.com/orchestra_postpone_tickets/postponeTicket/services/'+serviceId+'/branches/'+officeId+'/ticket/'+visitId+'/queue/'+queueId, userModel).subscribe((resp) => {
+          this.params.params.postPoneTicket+'/services/'+serviceId+'/branches/'+officeId+'/ticket/'+visitId+'/queue/'+queueId, userModel).subscribe((resp) => {
           let newTicket = resp;
           this.storeService.localSave(this.localParam.localParam.createdTicket, newTicket[0]);
 
@@ -394,7 +394,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       let serviceId = createdTicket.serviceId;
 
       this.services.delete(
-        'https://cservices.ficohsa.com/orchestra_delete_ticket/deleteTicket/services/'+serviceId+'/branches/'+officeId+'/ticket/'+visitId+'/queueId/'+queueId).subscribe((resp) => {
+        this.params.params.deleteTicket+'/services/'+serviceId+'/branches/'+officeId+'/ticket/'+visitId+'/queueId/'+queueId).subscribe((resp) => {
 
         this.cancelledTicket();
         
