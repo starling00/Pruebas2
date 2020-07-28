@@ -42,6 +42,7 @@ export class OfficesComponent implements OnInit {
   servDisable = true;
   createDisable = true;
   selectedOffice: any;
+  createdDate: any;
 
   constructor(
     private router: Router,
@@ -63,6 +64,7 @@ export class OfficesComponent implements OnInit {
   ngOnInit() {
     this.presentLoadingDefault();
     this.getOffices();
+    this.createdTicketTime();
     //this.getUserId();
     const navigationState = this.router.getCurrentNavigation().extras.state;
     if (
@@ -94,7 +96,7 @@ export class OfficesComponent implements OnInit {
   }
 
   getOffices(){
-    this.service.getTicket('https://cservices.ficohsa.com/orchestra_offices').subscribe((resp) => {
+    this.service.getTicket(this.params.params.ticketOffices).subscribe((resp) => {
       this.offices = resp;
     }, (err) => {
       console.error(err);
@@ -112,7 +114,7 @@ export class OfficesComponent implements OnInit {
   };
 
   getTicketStatus(visitId) {
-    this.service.getTicket('https://cservices.ficohsa.com/orchestra_obtenetticketStatus/orchestra_ticketStatus/'+visitId).subscribe((resp) => {
+    this.service.getTicket(this.params.params.ticketStatus+'/'+visitId).subscribe((resp) => {
       this.ticketStatus = resp;
       this.storeService.localSave(this.localParam.localParam.ticketStatus, this.ticketStatus);
     }, (err) => {
@@ -133,7 +135,7 @@ export class OfficesComponent implements OnInit {
     this.storeService.localSave(this.localParam.localParam.userModel, parameters);
     
     this.service.saveTicket(
-      'https://cservices.ficohsa.com/orchestra_createTicket/orchestra_createTicket/serviceId/'+this.serviceId+'/officeId/'+this.selectedOffice.id, parameters)
+      this.params.params.ticketCreate+'/serviceId/'+this.serviceId+'/officeId/'+this.selectedOffice.id, parameters)
       .subscribe((resp) => {
       this.createdTicket = resp;
       this.storeService.localSave(this.localParam.localParam.createdTicket, this.createdTicket);
@@ -146,7 +148,7 @@ export class OfficesComponent implements OnInit {
   }
 
   GenerateServices() {
-    this.service.getTicket('https://cservices.ficohsa.com/orchestra_services/orchestra_services/officeId/'+this.selectedOffice.id).subscribe((resp) => {
+    this.service.getTicket(this.params.params.ticketServices+'/officeId/'+this.selectedOffice.id).subscribe((resp) => {
       this.ticketServices = resp;
       //this.services = this.ticketServices;
       //this.clientServices = this.services;
@@ -192,6 +194,32 @@ export class OfficesComponent implements OnInit {
   go() {
     this.createTicket();
     this.router.navigateByUrl('/ticket');
+  }
+
+  //Obtiene la fecha y hora
+  createdTicketTime(){
+    let d = new Date(),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear(),
+        hour = d.getHours(),
+        minutes = d.getMinutes().toString();
+
+    let ampm = hour >= 12 ? 'pm' : 'am';
+        hour = hour % 12;
+        hour = hour ? hour : 12; // the hour '0' should be '12'
+        minutes = minutes < '10' ? '0'+minutes : minutes;
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+    if (minutes.length < 2)
+        minutes = '0' + minutes;
+
+    this.createdDate = day+'-'+month+'-'+year+' a las: '+hour+':'+minutes+' '+ampm;
+
+    this.storeService.localSave(this.localParam.localParam.ticketDate, this.createdDate);
   }
 
   async presentLoadingDefault() {
