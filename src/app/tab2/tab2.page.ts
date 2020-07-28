@@ -110,7 +110,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       this.getTicketUbi();
       this.getTicketDesti();
       this.getTicketPosition();
-      this.createdTicketTime();
+      this.getTicketTime();
       this.timer();
     }, 4000);
   }
@@ -153,7 +153,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     }
   }
 
-  //Obtiene la fecha y hora
+  //Obtiene la fecha y hora al posponer un ticket
   createdTicketTime(){
     let d = new Date(),
         month = '' + (d.getMonth() + 1),
@@ -175,6 +175,17 @@ export class Tab2Page implements OnInit, AfterViewInit {
         minutes = '0' + minutes;
 
     this.createdDate = day+'-'+month+'-'+year+' a las: '+hour+':'+minutes+' '+ampm;
+    this.storeService.localSave(this.localParam.localParam.ticketDate, this.createdDate);
+  }
+
+  //Obtiene la fecha y hora del ticket creado
+  getTicketTime(){
+    this.storeService.localGet(this.localParam.localParam.ticketDate).then((resp) => {
+      this.createdDate = resp;
+
+    }, (err) => {
+      console.error(err);
+    });
   }
 
   //Metodo para el numero del tiquete
