@@ -24,6 +24,11 @@ enum instructionsType {
   text = '&instructionsType=text'
 }
 
+enum token {
+  prod = 'Basic SE5TVkNGSUNPVElDS0VUOlQxY2tldEYxYzAk',
+  dev = 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='
+}
+
 interface OptionsParamsQuery {
   subscriptionKey: string;
   traffic?: true | false;
@@ -40,12 +45,12 @@ interface OptionsParamsQuery {
 export class LocalizationService {
 
   private headers = new HttpHeaders({
-    'Authorization': 'Basic SE5TVkNGSUNPVElDS0VUOlQxY2tldEYxYzAk'
+    'Authorization': token.dev
   });
 
   private microsoftKey = 'D7u4dtG3OyO-S5wTY5ucRriJqXAmfO8uO20X2Kk3wl0';
 
-  private urlApi = 'https://atlas.microsoft.com/route/directions/json?api-version=1.0&query=';
+  private azureAPI = 'https://atlas.microsoft.com/route/directions/json?api-version=1.0&query=';
 
   constructor(private utils: UtilsService, private http: HttpClient, ) { }
 
@@ -55,7 +60,7 @@ export class LocalizationService {
       "latitude": lat,
       "longitude": lng
     };
-    return this.http.post(`https://cservices.ficohsa.com/orchestra_offices/officeslocalization`, body, {headers: this.headers});
+    return this.http.post(this.utils.params.officeInfo, body, {headers: this.headers});
   }
 
   getRoute(routeQuery) {
@@ -66,11 +71,11 @@ export class LocalizationService {
         traffic: true,
         computeBestOrder: true,
     });
-    return this.http.get(this.urlApi + routeQuery + optionsParams );
+    return this.http.get(this.azureAPI + routeQuery + optionsParams );
   }
 
   getOffice(officeId){
-    return this.http.get(`https://cservices.ficohsa.com/orchestra/orchestra_offices/servicesWaiting/{officeId}/${officeId}`, {headers: this.headers});
+    return this.http.get(this.utils.params.officeQueue+officeId, {headers: this.headers});
   }
 
   convertParamsToQuery(options: OptionsParamsQuery): string {

@@ -14,17 +14,15 @@
     <ion-button *ngIf="bestOptionsAgencies.length!=0" shape="round" id="button" class="slide-bck-bottom" (click)="showAgencies()">Ver Agencias</ion-button>
     <div id="slider-container" class="scale-down-ver-bottom">
       <ion-slides [options]="sliderConfig()" id="slides" #slides (ionSlideDidChange)="slideChanged()">
-        <ion-slide *ngFor="let agency of bestOptionsAgencies" class="slide">
+        <ion-slide *ngFor="let agency of bestOptionsAgencies; let i = index" class="slide">
           <ion-card class="ion-no-margin ion-text-left card">
             <ion-card-header class="ion-no-padding">
-              <ion-card-subtitle class="card-subtitle">{{agency.distance}}Km</ion-card-subtitle>
               <ion-card-title class="card-title">{{agency.name}}</ion-card-title>
+              <ion-card-subtitle class="card-subtitle">Distancia: {{printDistanceMetrics(agency.distance)}}</ion-card-subtitle>
             </ion-card-header>
+            Personas en espera:
             <ion-card-content class="ion-no-padding">
-              <p>Clientes en espera por area.</p>
-              <p>Caja: {{agency.customersWaitingInCaja}}</p>
-              <p>Servicio: {{agency.customersWaitingInServicio}}</p>
-              <p>Negocio: {{agency.customersWaitingInNegocio}}</p>
+              <p *ngFor="let data of agency.servicesQueue">{{data.name}}: {{data.total}}</p>
             </ion-card-content>
           </ion-card>
         </ion-slide>

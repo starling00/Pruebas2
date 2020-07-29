@@ -36,7 +36,7 @@ ion-content {
 	}
 
 	#slides {
-		height: auto;
+		height: 30vh;
 		padding: 15px 0 15px 0;
 		z-index: 2;
 		display: flex;
@@ -44,7 +44,7 @@ ion-content {
 	}
 
 	.slide {
-		height: min-content;
+		height: 100%;
 		box-sizing: border-box;
 		align-self: flex-end;
 	}
@@ -55,6 +55,9 @@ ion-content {
 		overflow: hidden;
 		padding: 5%;
 		width: 100%;
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: space-evenly;
 	}
 
 	.card-subtitle {
@@ -171,6 +174,12 @@ ion-header {
 		--color: #fff;
 		text-align: center;
 	}
+}
+
+ion-card-content{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	overflow: auto;
 }
 
 

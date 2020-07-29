@@ -94,7 +94,7 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
     // create map
     this.map = new google.maps.Map(mapElement, {
       center: this.currentPosition,
-      zoom: 17,
+      zoom: 16,
       disableDefaultUI: true,
       zoomControl: false,
       scrollwheel: true,
@@ -165,6 +165,7 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
       this.setMarker(latlng);
       this.setContentToInfoWindow(index);
       this.locateOnMap(latlng);
+      this.map.setZoom(16);
       this.polyline.setVisible(false);
     });
   }
@@ -185,7 +186,7 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
 
   locateMe() {
     this.map.panTo(this.currentPosition);
-    this.map.setZoom(17);
+    this.map.setZoom(16);
     this.showingAgencies = false;
     this.buttonElement.classList.remove('slide-fwd-top');
     this.buttonElement.classList.add('slide-bck-bottom');
@@ -298,35 +299,25 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
   }
 
   getServicesPerOffice(officeId, indice) {
-    let caja = 0;
-    let servicio = 0;
-    let negocio = 0;
-    this.service.getOffice(officeId).toPromise().then((services:[]) => {
-      if (services !== null) {
-        // console.log(services);
-        services.forEach((service:{area, customersWaitingInDefaultQueue}) => {
-          if(service.area === 'Caja'){
-            caja+=service.customersWaitingInDefaultQueue;
-            // console.log(caja);
-          } else if (service.area === 'Servicios') {
-            servicio+=service.customersWaitingInDefaultQueue;
-            // console.log(servicio);
-          } else if (service.area === 'Negocios') {
-            negocio+=service.customersWaitingInDefaultQueue;
-            // console.log(negocio);
-          }
-        });
-
-        this.bestOptionsAgencies[indice] = {
-          ...this.bestOptionsAgencies[indice],
-          customersWaitingInCaja: caja,
-          customersWaitingInServicio: servicio,
-          customersWaitingInNegocio: negocio
-        }
-
-        console.log(this.bestOptionsAgencies);
+    this.service.getOffice(officeId).toPromise().then(resp => {
+      if (resp != null) {
+        console.log(resp)
+        this.bestOptionsAgencies[indice]['servicesQueue'] = resp['areas'];
       }
-    })
+      console.log(this.bestOptionsAgencies);
+    });
+  }
+
+  printDistanceMetrics(distance:number){
+    // distance = 0.925086732;
+    let rounded = Math.round(distance*1000)/1000;
+    console.log(rounded)
+    if(distance < 1 && distance > 0){
+      rounded = rounded * 1000;
+      console.log(rounded);
+    } else if(distance >= 1){
+      console.log(Math.round(rounded));
+    }
   }
 
 }
