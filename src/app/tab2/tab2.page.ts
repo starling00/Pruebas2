@@ -272,6 +272,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
           this.storeService.localSave(this.localParam.localParam.ticketStatus, this.refreshedTicket);
 
           let positionInQueue = this.refreshedTicket[0].positionInQueue;
+          let currentStatus = this.refreshedTicket[0].currentStatus;
           if(this.lastPosition != positionInQueue && positionInQueue != ""){
             this.stopPositionPopUp = false;
             this.alertSound = false;
@@ -285,7 +286,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
           this.maxProgressBar = 1/positionInQueue;
           let calledFrom = this.refreshedTicket[0].servicePointName;
 
-          if(positionInQueue == ""){
+          if(currentStatus == "CALLED"){
             this.ticketPosition = "Su posición es: "+0;
             if (!this.stopPopUp) {
               //this.stopPopUp = true;
@@ -428,6 +429,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   delay(){
     this.exitDelay = setTimeout(() => {
       this.router.navigateByUrl('/modal-page');
+      this.storage.clear();
     }, 300000);
   }
 
@@ -561,7 +563,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       foreground: true,
       lockscreen: true,
       vibrate: true,
-      sound: this.setSoundOnEntry(),
+      //sound: this.setSoundOnEntry(),
       data: { secret: 'key' }
     });
     this.setVibration();
@@ -576,7 +578,7 @@ alertPosition(){
   foreground: true,
   lockscreen: true,
   vibrate: true,
-  sound: this.setSoundOnEntry(),
+  //sound: this.setSoundOnEntry(),
   data: { secret: 'key' }
   });
   this.setVibration();
