@@ -290,33 +290,30 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
   getOffices() {
     this.service.getOffices(this.currentPosition).toPromise().then(res => {
       Object.keys(res).map((indice) => {
-        console.log(indice)
         this.bestOptionsAgencies.push(res[indice]);
         this.getServicesPerOffice(res[indice].id, indice);
+        this.printDistanceMetrics(indice);
       });
-      console.log(this.bestOptionsAgencies);
     }).catch(error => console.error(error));
   }
 
   getServicesPerOffice(officeId, indice) {
     this.service.getOffice(officeId).toPromise().then(resp => {
       if (resp != null) {
-        console.log(resp)
         this.bestOptionsAgencies[indice]['servicesQueue'] = resp['areas'];
       }
-      console.log(this.bestOptionsAgencies);
     });
   }
 
-  printDistanceMetrics(distance:number){
-    // distance = 0.925086732;
+  printDistanceMetrics(indice){
+    let distance = this.bestOptionsAgencies[indice]['distance'];
     let rounded = Math.round(distance*1000)/1000;
-    console.log(rounded)
     if(distance < 1 && distance > 0){
       rounded = rounded * 1000;
-      console.log(rounded);
+      this.bestOptionsAgencies[indice]['distance'] = rounded + 'm';
     } else if(distance >= 1){
-      console.log(Math.round(rounded));
+      rounded = Math.round(rounded);
+      this.bestOptionsAgencies[indice]['distance'] = rounded + 'Km';
     }
   }
 
