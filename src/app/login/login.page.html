@@ -34,7 +34,7 @@
   </form>
   <br>
 
-  <div class="">
+   <div class="">
     <ion-slides pager="true" [options]="slideOpts">
       <ion-slide *ngFor='let img of images' >
         <a [href]="img.Link">
@@ -43,5 +43,13 @@
       </ion-slide>
     </ion-slides> 
   </div>
+  <!--<div (click)="link()" class="">
+  
+  <ion-slides pager="true"  [options]="slideOpts">
+<ion-slide *ngFor='let slide of slides' >
+<img [src]="slide.img" alt="">
+</ion-slide>
+  </ion-slides> 
+  </div>-->
   <!--<ion-button class="btnLoging" expand="block"(click)="log()">Continuar<ion-icon name="log-in"></ion-icon></ion-button>-->
   </ion-content>

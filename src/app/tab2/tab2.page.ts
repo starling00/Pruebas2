@@ -1,7 +1,7 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { CrudService } from '../services/crud.service';
 import { UtilsService } from '../services/utils.service';
-import { Platform, LoadingController, AlertController, MenuController } from '@ionic/angular';
+import { Platform, LoadingController, AlertController, MenuController, IonSlides } from '@ionic/angular';
 import { Toast } from '@ionic-native/toast/ngx';
 import { StorageService } from '../services/storage.service';
 import { UtilStorageService } from '../services/util-storage.service';
@@ -20,7 +20,7 @@ declare var cordova;
 })
 export class Tab2Page implements OnInit, AfterViewInit {
 
-  alertSound= false;
+  alertSound = false;
   points: any;
   tickets: any;
   platfrom: any;
@@ -58,6 +58,9 @@ export class Tab2Page implements OnInit, AfterViewInit {
   cancelDisable = false;
   postPoneDisable = false;
   exitDelay: any;
+  crossSelling: any;
+  slides = [];
+  userName: any;
 
   constructor(private services: CrudService,
     private params: UtilsService,
@@ -71,13 +74,12 @@ export class Tab2Page implements OnInit, AfterViewInit {
     private alertCtrl: AlertController,
     public menuCtrl: MenuController,
     private storage: Storage,
-    private vibration: Vibration) 
-    {
-      this.menuCtrl.enable(false);
-      this.platform.ready().then(() => {
+    private vibration: Vibration) {
+    this.menuCtrl.enable(false);
+    this.platform.ready().then(() => {
       this.localNotificactions.on('click').subscribe(res => {
         let msg = res.data ? res.mydata : '';
-       
+
 
       });
       this.localNotificactions.on('trigger').subscribe(res => {
@@ -89,18 +91,28 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
     if (this.platform.is('cordova')) {
       cordova.plugins.backgroundMode.on('activate', () => {
-        cordova.plugins.backgroundMode.disableWebViewOptimizations(); 
+        cordova.plugins.backgroundMode.disableWebViewOptimizations();
       });
     }
 
     this.preventWebBackButton();
     this.destroyDelay(this.exitDelay);
   }
+  @ViewChild('slides', { static: true }) slider: IonSlides; 
+sliderConfig = {
+  initialSlide: 1,
+  autoplay: true,
+  speed: 3000,
+  zoom: {
+            maxRatio: 5
+          }
+  };
 
   ngOnInit() {
     //this.GenerateServices();
     this.presentLoadingDefault();
     clearTimeout(this.exitDelay);
+    this.getCross();
   }
 
   ngAfterViewInit() {
@@ -112,6 +124,8 @@ export class Tab2Page implements OnInit, AfterViewInit {
       this.getTicketPosition();
       this.getTicketTime();
       this.timer();
+      //this.getPersonId();
+     
     }, 4000);
   }
 
@@ -128,26 +142,30 @@ export class Tab2Page implements OnInit, AfterViewInit {
     }).then(alert => alert.present());
   }
 
+  slidesDidLoad( slider: IonSlides) {
+    slider.startAutoplay();
+  }
+
   //Previene que se pueda volver a la página anterior y se pierda el ticket
-  preventWebBackButton(){
+  preventWebBackButton() {
     if (this.platform.is('android') && this.platform.is('mobileweb')) {
       history.pushState(null, null, window.top.location.pathname + window.top.location.search);
       window.addEventListener('popstate', (e) => {
         e.preventDefault();
         history.pushState(null, null, window.top.location.pathname + window.top.location.search);
       });
-    }else if(this.platform.is('ios') && this.platform.is('mobileweb')){
+    } else if (this.platform.is('ios') && this.platform.is('mobileweb')) {
       history.pushState(null, null, document.URL);
       window.addEventListener('popstate', function () {
-          history.pushState(null, null, document.URL);
+        history.pushState(null, null, document.URL);
       });
     }
   }
 
   //Limpia el timeout del delay
-  destroyDelay(exitDelay){
-    if(this.platform.is('mobileweb')){
-      window.onbeforeunload = function(){
+  destroyDelay(exitDelay) {
+    if (this.platform.is('mobileweb')) {
+      window.onbeforeunload = function () {
         clearTimeout(exitDelay);
       };
     }
@@ -156,23 +174,23 @@ export class Tab2Page implements OnInit, AfterViewInit {
   //Obtiene la fecha y hora al posponer un ticket
   createdTicketTime(){
     let d = new Date(),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear(),
-        hour = d.getHours(),
-        minutes = d.getMinutes().toString();
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear(),
+      hour = d.getHours(),
+      minutes = d.getMinutes().toString();
 
     let ampm = hour >= 12 ? 'pm' : 'am';
-        hour = hour % 12;
-        hour = hour ? hour : 12; // the hour '0' should be '12'
-        minutes = minutes < '10' ? '0'+minutes : minutes;
+    hour = hour % 12;
+    hour = hour ? hour : 12; // the hour '0' should be '12'
+    minutes = minutes < '10' ? '0' + minutes : minutes;
 
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
     if (minutes.length < 2)
-        minutes = '0' + minutes;
+      minutes = '0' + minutes;
 
     this.createdDate = day+'-'+month+'-'+year+' a las: '+hour+':'+minutes+' '+ampm;
     this.storeService.localSave(this.localParam.localParam.ticketDate, this.createdDate);
@@ -192,9 +210,9 @@ export class Tab2Page implements OnInit, AfterViewInit {
   getTicketInfo() {
     this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
       this.createdTicket = resp;
-      if(!this.createdTicket){
+      if (!this.createdTicket) {
         this.ticketNumber = "No hay ticket";
-      }else if(this.createdTicket){
+      } else if (this.createdTicket) {
         this.ticketNumber = this.createdTicket.ticketNumber;
         this.setVibration();
       }
@@ -203,15 +221,11 @@ export class Tab2Page implements OnInit, AfterViewInit {
     });
   }
 
-  //Metodo que pone el nombre de la persona en el tiquete
-  getTicketName() {
+  //Metodo para extraer el id de la persona logueada
+  getPersonId() {
     this.storeService.localGet(this.localParam.localParam.userLogged).then((resp) => {
       this.person = resp;
-      if(!this.person){
-        this.ticketName = "Inicie sesión";
-      }else if(this.person){
-        this.ticketName = this.person.person.name;
-      }
+     
     }, (err) => {
       console.error(err);
     });
@@ -221,9 +235,9 @@ export class Tab2Page implements OnInit, AfterViewInit {
   getTicketUbi() {
     this.storeService.localGet(this.localParam.localParam.officeName).then((resp) => {
       this.officeName = resp;
-      if(!this.officeName){
+      if (!this.officeName) {
         this.ticketUbi = "No se ha creado un ticket";
-      }else if(this.officeName){
+      } else if (this.officeName) {
         this.ticketUbi = this.officeName;
       }
     }, (err) => {
@@ -235,9 +249,9 @@ export class Tab2Page implements OnInit, AfterViewInit {
   getTicketDesti() {
     this.storeService.localGet(this.localParam.localParam.ticketStatus).then((resp) => {
       this.ticketStatus = resp;
-      if(!this.ticketStatus){
+      if (!this.ticketStatus) {
         this.ticketDesti = "No se ha creado un ticket";
-      }else if(this.ticketStatus){
+      } else if (this.ticketStatus) {
         this.ticketDesti = this.ticketStatus[0].currentServiceName;
       }
     }, (err) => {
@@ -249,11 +263,11 @@ export class Tab2Page implements OnInit, AfterViewInit {
   getTicketPosition() {
     this.storeService.localGet(this.localParam.localParam.ticketStatus).then((resp) => {
       this.ticketStatus = resp;
-      if(!this.ticketStatus){
+      if (!this.ticketStatus) {
         this.ticketPosition = "No se ha creado un ticket";
-      }else if(this.ticketStatus){
-        this.ticketPosition = "Su posición es: "+this.ticketStatus[0].positionInQueue;
-        this.maxProgressBar = 1/this.ticketStatus[0].positionInQueue;
+      } else if (this.ticketStatus) {
+        this.ticketPosition = "Su posición es: " + this.ticketStatus[0].positionInQueue;
+        this.maxProgressBar = 1 / this.ticketStatus[0].positionInQueue;
       }
     }, (err) => {
       console.error(err);
@@ -261,10 +275,10 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   //Revisa si existe un tiquete creado, si existe hace un get del tiquete nuevamente para refrescarlo
-  refreshTicket(){
+  refreshTicket() {
     this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
       this.createdTicket = resp;
-      if(this.createdTicket){
+      if (this.createdTicket) {
         let visitId = this.createdTicket.visitId;
 
         this.services.getTicket(this.params.params.ticketStatus+'/'+visitId).subscribe((resp) => {
@@ -281,19 +295,19 @@ export class Tab2Page implements OnInit, AfterViewInit {
           }
           this.ticketUbi = this.officeName;
           this.ticketDesti = this.refreshedTicket[0].currentServiceName;
-          this.ticketPosition = "Su posición es: "+positionInQueue;
-          
-          this.maxProgressBar = 1/positionInQueue;
+          this.ticketPosition = "Su posición es: " + positionInQueue;
+
+          this.maxProgressBar = 1 / positionInQueue;
           let calledFrom = this.refreshedTicket[0].servicePointName;
 
           if(currentStatus == "CALLED"){
             this.ticketPosition = "Su posición es: "+0;
             if (!this.stopPopUp) {
               //this.stopPopUp = true;
-              if(this.popUp == null){
-                this.presentAlert(calledFrom);               
+              if (this.popUp == null) {
+                this.presentAlert(calledFrom);
                 //this.setVibration();
-              }else if(this.popUp != null){
+              } else if (this.popUp != null) {
                 this.popUp.dismiss();
                 this.presentAlert(calledFrom);
                 //this.setVibration();
@@ -304,7 +318,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
           //this.ticketDesti = this.refreshedTicket.queueName;
           //console.log(this.refreshedTicket);
         }, (err) => {
-          if(err.status == 404){
+          if (err.status == 404) {
             this.storage.remove("created-ticket");
             this.storage.remove("ticket-status");
             this.ticketNumber = "Atendido";
@@ -327,18 +341,18 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   //Muestra un popup cada vez que se actualiza la posicion en la fila a partir de la posicion 5
-  positionUpdated(positionInQueue){
-    if(positionInQueue == null){
+  positionUpdated(positionInQueue) {
+    if (positionInQueue == null) {
       positionInQueue = 0;
     }
-    if(positionInQueue <= 5){
+    if (positionInQueue <= 5) {
       if (!this.stopPositionPopUp) {
         //this.stopPopUp = true;
-        if(this.positionPopUp == null){
+        if (this.positionPopUp == null) {
           this.alertPosition();
-          this.alertPositionInQueue(positionInQueue);             
+          this.alertPositionInQueue(positionInQueue);
           this.stopPositionPopUp = true;
-        }else if(this.positionPopUp != null){
+        } else if (this.positionPopUp != null) {
           this.positionPopUp.dismiss();
           this.alertPosition();
           this.alertPositionInQueue(positionInQueue);
@@ -360,7 +374,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   //Posponer tiquete
-  postponeTicket(){
+  postponeTicket() {
     this.presentLoadingDefault();
     this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
       this.postPoneTicketInfo = resp;
@@ -393,11 +407,11 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   //Cancelar el tiquete
-  salir(){
+  salir() {
     this.popUpExit();
   }
 
-  cancelTicket(){
+  cancelTicket() {
     this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
       let createdTicket = resp;
       let visitId = createdTicket.visitId;
@@ -408,11 +422,11 @@ export class Tab2Page implements OnInit, AfterViewInit {
       this.services.delete(
         this.params.params.deleteTicket+'/services/'+serviceId+'/branches/'+officeId+'/ticket/'+visitId+'/queueId/'+queueId).subscribe((resp) => {
 
-        this.cancelledTicket();
-        
-      }, (err) => {
-        console.error(err);
-      });
+          this.cancelledTicket();
+
+        }, (err) => {
+          console.error(err);
+        });
     }, (err) => {
       console.error(err);
     });
@@ -421,12 +435,12 @@ export class Tab2Page implements OnInit, AfterViewInit {
   setVibration() {
     if (this.platform.is('android')) {
       navigator.vibrate([500, 500, 500]);
-    }else if(this.platform.is('ios')){
+    } else if (this.platform.is('ios')) {
       this.vibration.vibrate(1000);
     }
   }
 
-  delay(){
+  delay() {
     this.exitDelay = setTimeout(() => {
       this.router.navigateByUrl('/modal-page');
       this.storage.clear();
@@ -461,6 +475,34 @@ export class Tab2Page implements OnInit, AfterViewInit {
     );
   }
 
+  getCross() {
+    this.storeService.localGet(this.localParam.localParam.crossSelling).then((resp) => {
+      this.crossSelling = resp;
+      let name = this.crossSelling.custom1;
+      if(name != "---"){
+       this.userName=this.crossSelling.custom1;
+      }
+      //console.log(this.ticketStatus);
+      //1612198400185
+      if (this.crossSelling.Phone2 != "") {
+        this.slides.push({ img: 'assets/img/extra2.jpg' })
+      }
+      if (this.crossSelling.Email != "") {
+        this.slides.push({ img: 'assets/img/TC.jpg' })
+      }
+      if (this.crossSelling.Town != "") {
+        this.slides.push({ img: 'assets/img/Interbanca.jpg',link:'https://secure.ficohsa.com' })
+      }
+      if (this.crossSelling.Comments2 != "") {
+        this.slides.push({ img: 'assets/img/cuentaAhorro.jpg',link:'https://onbase.ficohsa.com:8083/AppNetOnline/UnityForm.aspx' })
+      }
+      if (this.crossSelling.TarjetadeDebito != "") {
+        this.slides.push({ img: 'assets/img/TD.jpg' })
+      }
+    }, (err) => {
+      console.error(err);
+    });
+  }
   //alert
   async presentLoadingDefault() {
     let loading = await this.loadingCtrl.create({
@@ -493,7 +535,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       header: 'Ficoticket',
       subHeader: '',
       message:
-        '<img class="my-custom-class" src="assets/img/unticket.png"></img><br> <br> Su ticket número '+this.ticketNumber+' está siendo llamado, pasar a la ventanilla: ' + calledFrom,
+        '<img class="my-custom-class" src="assets/img/unticket.png"></img><br> <br> Su ticket número ' + this.ticketNumber + ' está siendo llamado, pasar a la ventanilla: ' + calledFrom,
       buttons: [{
         text: 'Aceptar',
         role: 'OK',
@@ -540,13 +582,13 @@ export class Tab2Page implements OnInit, AfterViewInit {
       header: '¡Ficoticket Generado!',
       subHeader: '',
       message:
-      '<img class="my-custom-class" src="assets/img/check.png"></img><br> <br>Te estaremos notificando según se aproxime tu llamado.',
-       
+        '<img class="my-custom-class" src="assets/img/check.png"></img><br> <br>Te estaremos notificando según se aproxime tu llamado.',
+
       buttons: [{
         text: 'Aceptar',
         role: 'OK',
         handler: () => {
-          
+
         }
       },
       ]
@@ -554,7 +596,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     await this.ticketPopUp.present();
   }
 
-  alertTi(){
+  alertTi() {
     this.localNotificactions.schedule({
       id: 1,
       title: 'Aviso',
@@ -604,7 +646,7 @@ alertPosition(){
         role: 'OK',
         handler: () => {
           this.cancelTicket();
-          
+
         }
       },
       {
@@ -625,8 +667,8 @@ alertPosition(){
       header: 'Ficoticket',
       subHeader: '',
       message:
-      '<img class="my-custom-class" src="assets/img/cancel.png"></img><br> <br><h6>Has cancelado el ticket generado</h6>Te invitamos a seguir utilizando nuestro servicio de Ficoticket.',
-      
+        '<img class="my-custom-class" src="assets/img/cancel.png"></img><br> <br><h6>Has cancelado el ticket generado</h6>Te invitamos a seguir utilizando nuestro servicio de Ficoticket.',
+
       buttons: [{
         text: 'Aceptar',
         role: 'OK',
@@ -646,13 +688,13 @@ alertPosition(){
       header: 'Ficoticket',
       subHeader: '',
       message:
-      '<img class="my-custom-class" src="assets/img/newticket.png"></img><br> <br>Has generado nuevo ticket exitosamente',
-      
+        '<img class="my-custom-class" src="assets/img/newticket.png"></img><br> <br>Has generado nuevo ticket exitosamente',
+
       buttons: [{
         text: 'Aceptar',
         role: 'OK',
         handler: () => {
-          
+
         }
       },
       ]

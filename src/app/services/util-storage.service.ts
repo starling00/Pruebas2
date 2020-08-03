@@ -19,6 +19,7 @@ export class UtilStorageService {
     userModel:"",
     officeName:"",
     ticketDate:"",
+    crossSelling:"",
   }
 
   constructor() { 
@@ -36,5 +37,6 @@ export class UtilStorageService {
     this.localParam.userModel = "user-model";
     this.localParam.officeName = "office-name";
     this.localParam.ticketDate = "ticket-date";
+    this.localParam.crossSelling = "cross-Selling";
   }
 }

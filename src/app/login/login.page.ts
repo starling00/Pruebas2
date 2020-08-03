@@ -111,12 +111,12 @@ log(){
   this.router.navigateByUrl('/agencies02');
 }
   login() {
-    this.router.navigateByUrl('/agencies');
-    /*this.service.saveTicket(this.params.params.userInfo +'/'+ this.cedula, null).subscribe((resp) => {
+   /* this.router.navigateByUrl('/agencies');*/
+    this.service.saveTicket(this.params.params.userInfo +'/'+ this.cedula, null).subscribe((resp) => {
 
       this.userdata = resp;
-      //console.log(this.userdata);
-      if(this.userdata == true){
+      console.log(this.userdata);
+      if(this.userdata.response== true){
         this.storeService.localSave(this.localParam.localParam.userLogged, this.cedula);
         this.router.navigateByUrl('/agencies02');
       }else{
@@ -128,7 +128,7 @@ log(){
       if(err.status == 404){
 
       }
-    });*/
+    });
   }
 
   meetings(){

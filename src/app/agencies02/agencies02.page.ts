@@ -47,10 +47,10 @@ export class Agencies02Page implements OnInit, AfterViewInit {
   }
 
   getUserInfo(id){
-    this.service.get(this.params.params.userInfo +'/'+ id).subscribe((resp) => {
+    this.service.getTicket(this.params.params.getuserInfo +'/'+ id).subscribe((resp) => {
       this.userInfo = resp;
-      //console.log(this.userInfo);
       this.userName = this.userInfo.custom1;
+      this.storeService.localSave(this.localParam.localParam.crossSelling, this.userInfo);
       
     }, (err) => {
       console.error(err);

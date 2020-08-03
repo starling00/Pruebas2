@@ -13,7 +13,9 @@ export class UtilsService {
     ticketOffices:"",
     deleteTicket:"",
     postPoneTicket:"",
-    userInfo:""
+    userInfo:"",
+    getuserInfo: "",
+    servicesWaiting:""
    };
 
    mapwizeParams = {
@@ -38,7 +40,9 @@ export class UtilsService {
     this.params.ticketOffices = ticketsURL+"orchestra_offices";
     this.params.deleteTicket = ticketsURL+"orchestra_delete_ticket/deleteTicket";
     this.params.postPoneTicket = ticketsURL+"orchestra_postpone_tickets/postponeTicket";
-    this.params.userInfo = ticketsURL+"orchestra_userInformation";
+    this.params.userInfo = ticketsURL+"userInformation/orchestra_userInformation";
+    this.params.getuserInfo=ticketsURL+"orchestra_userInformation/orchestra_userInformation"
+    this.params.servicesWaiting= ticketsURL+"orchestra/orchestra_offices/servicesWaiting/"
   }//fin de bob
 
 

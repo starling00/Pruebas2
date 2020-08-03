@@ -24,6 +24,9 @@
       <div class="centerItem"> 
         <p class="text2" >{{ticketDesti}}</p>
       </div>
+      <div class="centerItem"> 
+        <p class="text2" >{{userName}}</p>
+      </div>
       <ion-item class="centerItem">
     
       <div class="card-background-page">
@@ -67,21 +70,17 @@
       </ion-grid>
     
     </ion-list>
+    <br>
+  
+
+  <div class="">
+    <ion-slides pager="true" [options]="sliderConfig">
+      <ion-slide *ngFor='let img of slides' >
+        <a [href]="img.link">
+          <img [src]="img.img" alt="">
+        </a>
+      </ion-slide>
+    </ion-slides> 
+  </div>
   </ion-card-content>
-
-  <!--<ion-button color="primary" (click)="QR()">scanner</ion-button>-->
 </ion-content>
-
-<!-- <ion-tabs >
-      <ion-tab-bar>
-        <ion-tab-button (click)="activeTicket()">Servicios
-          <ion-icon name="apps"></ion-icon>
-      </ion-tab-button>
-          <ion-tab-button class="tabbar"  >Tiquetes
-              <ion-icon name="clipboard"></ion-icon>
-            </ion-tab-button>
-            <ion-tab-button (click)="salir()">Salir
-              <ion-icon name="exit"></ion-icon>
-          </ion-tab-button>
-      </ion-tab-bar>
-  </ion-tabs>-->
