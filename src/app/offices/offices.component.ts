@@ -72,6 +72,7 @@ export class OfficesComponent implements OnInit {
       navigationState.data.id !== undefined && navigationState.data.id !== null
     ) {
       setTimeout(() => {
+        console.log(this.officesList)
         this.officesList.value = navigationState.data.id;
       }, 1000);
     }

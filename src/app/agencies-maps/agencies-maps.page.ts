@@ -283,6 +283,7 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
   getTicket() {
     this.slides.getActiveIndex().then(index => {
       const id = this.bestOptionsAgencies[index].id;
+      this.locateMe();
       this.router.navigate(['/offices'], { state: { data: { id } } });
     });
   }
