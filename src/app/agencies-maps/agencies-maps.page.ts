@@ -305,13 +305,13 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
     });
   }
 
-  printDistanceMetrics(indice){
+  printDistanceMetrics(indice) {
     let distance = this.bestOptionsAgencies[indice]['distance'];
-    let rounded = Math.round(distance*1000)/1000;
-    if(distance < 1 && distance > 0){
+    let rounded = Math.round(distance * 1000) / 1000;
+    if (distance < 1 && distance > 0) {
       rounded = rounded * 1000;
       this.bestOptionsAgencies[indice]['distance'] = rounded + 'm';
-    } else if(distance >= 1){
+    } else if (distance >= 1) {
       rounded = Math.round(rounded);
       this.bestOptionsAgencies[indice]['distance'] = rounded + 'Km';
     }
