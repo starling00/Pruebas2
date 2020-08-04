@@ -74,7 +74,7 @@ img:'assets/img/unnamed.jpg'
 slideOpts = {
   initialSlide: 1,
   autoplay: true,
-        speed: 1000,
+        speed: 5000,
         zoom: {
           maxRatio: 5
         }
@@ -168,7 +168,7 @@ log(){
   }
 
   getImages(){
-    this.service.get('https://localhost:44323/api/Marketing_info').subscribe((resp) => {
+    this.service.get('http://13.58.166.253/marketing/api/Marketing_info').subscribe((resp) => {
       this.images= resp;
       //console.log(this.images);
 
