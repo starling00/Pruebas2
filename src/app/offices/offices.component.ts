@@ -6,6 +6,7 @@ import { StorageService } from '../services/storage.service';
 import { UtilStorageService } from '../services/util-storage.service';
 import { MenuController, LoadingController, IonSelect, AlertController } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { exit } from 'process';
 
 export interface parameters {
   level: String,
@@ -77,10 +78,24 @@ export class OfficesComponent implements OnInit {
       navigationState.data.id !== undefined && navigationState.data.id !== null
     ) {
       setTimeout(() => {
-        console.log(this.officesList)
-        this.officesList.value = navigationState.data.id;
+        // console.log(navigationState.data.id)
+        const office = this.filterOfficePerID(navigationState.data.id);
+        console.log(office);
+        // console.log(this.offices[office]);
+        this.officesList.value = this.offices[office];
       }, 1000);
     }
+  }
+
+  filterOfficePerID(id):number{
+    let i = -1;
+    this.offices.map((office, index) => {
+      if(office.id === id){
+        console.log(index);
+        i = index;
+      }
+    });
+    return i;
   }
 
   /*getUserId() {
