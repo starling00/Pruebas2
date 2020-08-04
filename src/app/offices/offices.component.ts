@@ -83,13 +83,13 @@ export class OfficesComponent implements OnInit {
         console.log(office);
         // console.log(this.offices[office]);
         this.officesList.value = this.offices[office];
-      }, 1000);
+      }, 2500);
     }
   }
 
   filterOfficePerID(id):number{
     let i = -1;
-    this.offices.map((office, index) => {
+    this.offices.forEach((office, index) => {
       if(office.id === id){
         console.log(index);
         i = index;
