@@ -80,7 +80,7 @@ export class OfficesComponent implements OnInit {
       setTimeout(() => {
         // console.log(navigationState.data.id)
         const office = this.filterOfficePerID(navigationState.data.id);
-        console.log(office);
+
         // console.log(this.offices[office]);
         this.officesList.value = this.offices[office];
       }, 2500);
@@ -91,7 +91,7 @@ export class OfficesComponent implements OnInit {
     let i = -1;
     this.offices.forEach((office, index) => {
       if(office.id === id){
-        console.log(index);
+
         i = index;
       }
     });
@@ -110,7 +110,7 @@ export class OfficesComponent implements OnInit {
   getUserInfo() {
     this.storeService.localGet(this.localParam.localParam.crossSelling).then((resp) => {
       this.userInfo = resp;
-      console.log(this.userInfo);
+
     }, (err) => {
       console.error(err);
     });
@@ -120,7 +120,6 @@ export class OfficesComponent implements OnInit {
 
     this.service.getTicket(this.params.params.ticketOffices).subscribe((resp) => {
       this.offices = resp;
-      console.log(this.offices);
 
     }, (err) => {
       console.error(err);
@@ -145,6 +144,7 @@ export class OfficesComponent implements OnInit {
       console.error(err);
     });
   }
+  
   createTicket() {
    this.UserModel.level = this.userInfo.level;
     this.UserModel.custom1 = this.userInfo.custom1 + '/vip level '+ this.userInfo.level;
@@ -205,7 +205,7 @@ export class OfficesComponent implements OnInit {
     minut = minut < '10' ? '0' + minut : minut;
     if (minut.length < 2)
       minut = '0' + minut;
-    console.log(this.selectedOffice.id);
+
     open = this.selectedOffice.openTime;
     close= this.selectedOffice.closeTime;
     openShort = parseInt(open.replace(/:/g, ""));
@@ -230,12 +230,11 @@ export class OfficesComponent implements OnInit {
       }
       
    
-    console.log(openShort);
-    console.log(horaInt);
-    console.log(closeShort);
-
-
+    //console.log(openShort);
+    //console.log(horaInt);
+    //console.log(closeShort);
   }
+
   getSelectedServiceId(id) {
     this.serviceId = id;
     if (this.serviceId) {
@@ -309,11 +308,11 @@ export class OfficesComponent implements OnInit {
   getTotalPeople() {
     this.service.getTicket(this.params.params.servicesWaiting + this.selectedOffice.id).subscribe((resp) => {
       this.totalPeople = resp;
-      console.log(this.totalPeople);
+
       this.nameArea = this.totalPeople.areas;
       for (let i = 0; i < this.nameArea.length; i++) {
         this.totalClientes += this.nameArea[i].total;
-        console.log(this.totalClientes);
+
       }//primer for
       if (this.totalClientes > 0) {
         this.pupTotalPeople(this.nameArea);

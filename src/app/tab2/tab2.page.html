@@ -76,7 +76,7 @@
   <div class="">
     <ion-slides pager="true" [options]="sliderConfig">
       <ion-slide *ngFor='let img of slides' >
-        <a [href]="img.link">
+        <a [href]="img.link" [target]="img.target">
           <img [src]="img.img" alt="">
         </a>
       </ion-slide>
