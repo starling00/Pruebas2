@@ -481,23 +481,25 @@ sliderConfig = {
       let name = this.crossSelling.custom1;
       if(name != "---"){
        this.userName=this.crossSelling.custom1;
+      }else{
+        this.slides.push({ img: 'assets/img/cuentaAhorro.jpg',link:'https://onbase.ficohsa.com:8083/AppNetOnline/UnityForm.aspx', target: '_blank' })
       }
       //console.log(this.ticketStatus);
       //1612198400185
       if (this.crossSelling.Phone2 != "") {
-        this.slides.push({ img: 'assets/img/extra2.jpg' })
+        this.slides.push({ img: 'assets/img/extra2.jpg', link:'javascript:void(0);', target:'' })
       }
       if (this.crossSelling.Email != "") {
-        this.slides.push({ img: 'assets/img/TC.jpg' })
+        this.slides.push({ img: 'assets/img/TC.jpg', link:'javascript:void(0);', target:'' })
       }
       if (this.crossSelling.Town != "") {
-        this.slides.push({ img: 'assets/img/Interbanca.jpg',link:'https://secure.ficohsa.com' })
+        this.slides.push({ img: 'assets/img/Interbanca.jpg',link:'https://secure.ficohsa.com', target: '_blank' })
       }
       if (this.crossSelling.Comments2 != "") {
-        this.slides.push({ img: 'assets/img/cuentaAhorro.jpg',link:'https://onbase.ficohsa.com:8083/AppNetOnline/UnityForm.aspx' })
+        this.slides.push({ img: 'assets/img/cuentaAhorro.jpg',link:'https://onbase.ficohsa.com:8083/AppNetOnline/UnityForm.aspx', target: '_blank' })
       }
       if (this.crossSelling.TarjetadeDebito != "") {
-        this.slides.push({ img: 'assets/img/TD.jpg' })
+        this.slides.push({ img: 'assets/img/TD.jpg', link:'javascript:void(0);', target:'' })
       }
     }, (err) => {
       console.error(err);
@@ -646,7 +648,7 @@ alertPosition(){
         role: 'OK',
         handler: () => {
           this.cancelTicket();
-
+          this.storage.clear();
         }
       },
       {
