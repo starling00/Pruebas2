@@ -57,7 +57,7 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
   }
 
   async ngOnInit() {
-    if (this.platform.is("mobile")) {
+    if (this.platform.is("cordova")) {
       this.checkGPSPermission();
     }
     await this.getInitialPosition();
