@@ -7,6 +7,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FormsModule } from '@angular/forms';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -39,7 +41,7 @@ import { Vibration } from '@ionic-native/vibration/ngx';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     CrudService, UtilsService, StorageService, UtilStorageService,
     Toast, LocalNotifications,
-    Geolocation, LoginPage,Agencies02PageModule, Vibration
+    Geolocation, AndroidPermissions, LocationAccuracy, LoginPage, Agencies02PageModule, Vibration
   ],
   bootstrap: [AppComponent]
 })
