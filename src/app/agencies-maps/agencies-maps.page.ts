@@ -57,12 +57,18 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
   }
 
   async ngOnInit() {
+    console.log('on init')
     if (this.platform.is("cordova")) {
-      this.checkGPSPermission();
+      await this.checkGPSPermission();
+      await this.getInitialPosition();
+      this.loadMap();
+      this.getOffices();
+    }else {
+      await this.getInitialPosition();
+      this.loadMap();
+      this.getOffices();
     }
-    await this.getInitialPosition();
-    this.loadMap();
-    this.getOffices();
+    
   }
 
   ngDoCheck() {
@@ -74,13 +80,13 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
     }
   }
 
-  checkGPSPermission() {
+  async checkGPSPermission() {
     this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
-      result => {
+      async (result) => {
         if (result.hasPermission) {
 
           //If having permission show 'Turn On GPS' dialogue
-          this.askToTurnOnGPS();
+          await this.askToTurnOnGPS();
         } else {
 
           //If not having permission ask for permission
@@ -88,7 +94,7 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
         }
       },
       err => {
-        alert(err);
+        // alert(err);
       }
     );
   }
@@ -107,20 +113,18 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
             },
             error => {
               //Show alert if user click on 'No Thanks'
-              // alert('requestPermission Error requesting location permissions ' + error)
+              alert('requestPermission Error requesting location permissions ' + error)
             }
           );
       }
     });
   }
 
-  askToTurnOnGPS() {
-    this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
-      () => {
-        // When GPS Turned ON call method to get Accurate location coordinates
-      },
-      error => alert('Error requesting location permissions ' + JSON.stringify(error))
-    );
+  async askToTurnOnGPS() {
+    const data = await this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY);
+    if(data.code == 1){
+      window.location.reload();
+    }
   }
 
   async getInitialPosition() {
