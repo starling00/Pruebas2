@@ -107,7 +107,7 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
             },
             error => {
               //Show alert if user click on 'No Thanks'
-              alert('requestPermission Error requesting location permissions ' + error)
+              // alert('requestPermission Error requesting location permissions ' + error)
             }
           );
       }
