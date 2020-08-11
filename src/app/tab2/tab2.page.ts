@@ -482,7 +482,7 @@ sliderConfig = {
       if(name != "---"){
        this.userName=this.crossSelling.custom1;
       }else{
-        this.slides.push({ img: 'assets/img/cuentaAhorro.jpg',link:'https://onbase.ficohsa.com:8083/AppNetOnline/UnityForm.aspx', target: '_blank' })
+        this.slides.push({ img: 'assets/img/cuentaAhorro.jpg',link:' https://www.ficohsa.com/hn/banca-personas/cuentas-depositos/', target: '_blank' })
       }
       //console.log(this.ticketStatus);
       //1612198400185
@@ -496,7 +496,7 @@ sliderConfig = {
         this.slides.push({ img: 'assets/img/Interbanca.jpg',link:'https://secure.ficohsa.com', target: '_blank' })
       }
       if (this.crossSelling.Comments2 != "") {
-        this.slides.push({ img: 'assets/img/cuentaAhorro.jpg',link:'https://onbase.ficohsa.com:8083/AppNetOnline/UnityForm.aspx', target: '_blank' })
+        this.slides.push({ img: 'assets/img/cuentaAhorro.jpg',link:'https://www.ficohsa.com/hn/banca-personas/cuentas-depositos/', target: '_blank' })
       }
       if (this.crossSelling.TarjetadeDebito != "") {
         this.slides.push({ img: 'assets/img/TD.jpg', link:'javascript:void(0);', target:'' })
