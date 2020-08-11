@@ -107,13 +107,17 @@ export class AgenciesMapsPage implements OnInit, DoCheck {
         //Show 'GPS Permission Request' dialogue
         this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION)
           .then(
-            () => {
+            async () => {
               // call method to turn on GPS
-              this.askToTurnOnGPS();
+              await this.askToTurnOnGPS();
+              console.log('entro');
             },
-            error => {
+            async error => {
               //Show alert if user click on 'No Thanks'
-              alert('requestPermission Error requesting location permissions ' + error)
+              // alert('requestPermission Error requesting location permissions ' + error)
+              console.log('error al solicitar permisos');
+              console.log(error);
+              await this.askToTurnOnGPS();
             }
           );
       }
