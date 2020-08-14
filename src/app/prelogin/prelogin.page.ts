@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ActionSheetController, ModalController } from '@ionic/angular';
+import { AlertController, ActionSheetController, ModalController, LoadingController } from '@ionic/angular';
 import { PopoverController} from '@ionic/angular'
 import {} from '../terms-conditions/terms-conditions.module';
 import { TermsConditionsPage } from '../terms-conditions/terms-conditions.page';
+import { StorageService } from '../services/storage.service';
+import { UtilStorageService } from '../services/util-storage.service';
+import { CrudService } from '../services/crud.service';
+import { UtilsService } from '../services/utils.service';
 @Component({
   selector: 'app-prelogin',
   templateUrl: './prelogin.page.html',
@@ -11,14 +15,19 @@ import { TermsConditionsPage } from '../terms-conditions/terms-conditions.page';
 })
 export class PreloginPage implements OnInit {
  
-
+  ticketStatus: any;
   constructor(private router: Router,
     private alertCtrl: AlertController,
     public actionSheetController: ActionSheetController, private popover: PopoverController,
-    public modalController: ModalController) { }
+    public modalController: ModalController,
+    private storeService: StorageService,
+    private localParam: UtilStorageService,
+    private service: CrudService,
+    private params: UtilsService,
+    public loadingCtrl: LoadingController,) { }
 
   ngOnInit() {
-   // this. presentAlert();
+   this.getTicketStatus();
   }
 //crea el popover
 CreatePopOver(){
@@ -38,7 +47,33 @@ async presentModal() {
   login() {
     this.router.navigateByUrl('/login');
   }
-
+//Trae el ticket status del local storage
+getTicketStatus() {
+  this.storeService.localGet(this.localParam.localParam.ticketStatus).then((resp) => {
+    this.ticketStatus = resp;
+    this.checkCreatedTicket(this.ticketStatus);
+    console.log(this.ticketStatus);
+  }, (err) => {
+    console.error(err);
+  });
+}
+//Comprueba si existe un ticket status en el local storage y si este ya fue llamado o no
+  //Luego hace get al endpoint de ticket status y cumprueba si este realmente no ha sido llamado
+  checkCreatedTicket(ticketStatus){
+    if(ticketStatus != null && ticketStatus[0].currentStatus != "CALLED"){
+      this.presentLoading();
+      this.service.getTicket(this.params.params.ticketStatus+'/'+ticketStatus[0].visitId).subscribe((resp) => {
+        let ticket = resp;
+        if(ticket != null && ticket[0].currentStatus != "CALLED"){
+          this.router.navigateByUrl('/ticket');
+        }
+      }, (err) => {
+        console.error(err);
+      });
+    }else{
+      console.log("ticket status null o ya fue llamado");
+    }
+  }
   async presentAlert() {
     const alert = await this.alertCtrl.create({
       header: '¡Consejo del día!',
@@ -83,6 +118,16 @@ async presentModal() {
     });
     await alert.present();
   }
-
+  async presentLoading() {
+    let loading = await this.loadingCtrl.create({
+      message: 'Por favor espere...'
+    });
+  
+    loading.present();
+  
+    setTimeout(() => {
+      loading.dismiss();
+    }, 2000);
+  }
 
 }//fin d la class
