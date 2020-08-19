@@ -73,15 +73,18 @@ img:'assets/img/unnamed.jpg'
 ]
 slideOpts = {
   initialSlide: 1,
-  autoplay: true,
-        speed: 5000,
-        zoom: {
-          maxRatio: 5
-        }
+  autoplay: {
+    disableOnInteraction: false
+  },
+  speed: 5000,
+  zoom: {
+    maxRatio: 5
+  }
 };
   ngOnInit() {
     this.cleanForm();
     this.getImages();
+    this.presentLoadingDefault();
   }
 
  private createMyForm() {

@@ -35,7 +35,7 @@
   <br>
 
    <div class="">
-    <ion-slides pager="true" [options]="slideOpts">
+    <ion-slides *ngIf="images && images.length" pager="true" [options]="slideOpts">
       <ion-slide *ngFor='let img of images' >
         <a [href]="img.Link">
           <img [src]="img.FileData" alt="">
