@@ -33,7 +33,8 @@ import { Vibration } from '@ionic-native/vibration/ngx';
 @NgModule({
   declarations: [AppComponent, OfficesComponent, AgenciesComponent],
   entryComponents: [],
-  imports: [BrowserModule, BrowserAnimationsModule, IonicModule.forRoot(), NgxChartsModule, AppRoutingModule, FormsModule, HttpClientModule, AutoCompleteModule,TermsConditionsPageModule, IonicStorageModule.forRoot()],
+  imports: [BrowserModule, BrowserAnimationsModule, IonicModule.forRoot({swipeBackEnabled: false}), NgxChartsModule, AppRoutingModule,
+  FormsModule, HttpClientModule, AutoCompleteModule,TermsConditionsPageModule, IonicStorageModule.forRoot()],
   providers: [
     StatusBar,
     SplashScreen,

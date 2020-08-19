@@ -4,7 +4,7 @@ import { UtilsService } from '../services/utils.service';
 import { CrudService } from '../services/crud.service';
 import { StorageService } from '../services/storage.service';
 import { UtilStorageService } from '../services/util-storage.service';
-import { MenuController, LoadingController, IonSelect, AlertController } from '@ionic/angular';
+import { MenuController, LoadingController, IonSelect, AlertController, NavController, IonRouterOutlet } from '@ionic/angular';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { exit } from 'process';
 
@@ -50,6 +50,7 @@ export class OfficesComponent implements OnInit {
   horaNow: any;
 
   constructor(
+    private nav: IonRouterOutlet,
     private router: Router,
     private params: UtilsService,
     private service: CrudService,
@@ -61,6 +62,10 @@ export class OfficesComponent implements OnInit {
   ) {
     this.menuCtrl.enable(false);
 
+  }
+
+  ionViewDidEnter() {
+    this.nav.swipeGesture = false;
   }
 
   ngAfterViewInit() {

@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { CrudService } from '../services/crud.service';
 import { UtilsService } from '../services/utils.service';
-import { Platform, LoadingController, AlertController, MenuController, IonSlides } from '@ionic/angular';
+import { Platform, LoadingController, AlertController, MenuController, IonSlides, IonicModule, IonRouterOutlet } from '@ionic/angular';
 import { Toast } from '@ionic-native/toast/ngx';
 import { StorageService } from '../services/storage.service';
 import { UtilStorageService } from '../services/util-storage.service';
@@ -74,7 +74,8 @@ export class Tab2Page implements OnInit, AfterViewInit {
     private alertCtrl: AlertController,
     public menuCtrl: MenuController,
     private storage: Storage,
-    private vibration: Vibration) {
+    private vibration: Vibration,
+    private routerOutlet: IonRouterOutlet) {
     this.menuCtrl.enable(false);
     this.platform.ready().then(() => {
       this.localNotificactions.on('click').subscribe(res => {
@@ -97,22 +98,28 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
     this.preventWebBackButton();
     this.destroyDelay(this.exitDelay);
+    IonicModule.forRoot(({ swipeBackEnabled: false }));
   }
-  @ViewChild('slides', { static: true }) slider: IonSlides; 
-sliderConfig = {
-  initialSlide: 1,
-  autoplay: true,
-  speed: 3000,
-  zoom: {
-            maxRatio: 5
-          }
+  @ViewChild('slides', { static: true }) slider: IonSlides;
+  sliderConfig = {
+    initialSlide: 1,
+    autoplay: true,
+    speed: 3000,
+    zoom: {
+      maxRatio: 5
+    }
   };
 
   ngOnInit() {
+    this.routerOutlet.swipeGesture = false;
     //this.GenerateServices();
     this.presentLoadingDefault();
     clearTimeout(this.exitDelay);
     this.getCross();
+  }
+
+  ionViewDidEnter() {
+    IonicModule.forRoot(({ swipeBackEnabled: false }));
   }
 
   ngAfterViewInit() {
@@ -125,11 +132,11 @@ sliderConfig = {
       this.getTicketTime();
       this.timer();
       //this.getPersonId();
-     
+
     }, 4000);
   }
 
-  ionViewWillLeave(){
+  ionViewWillLeave() {
     clearTimeout(this.exitDelay);
   }
 
@@ -142,7 +149,7 @@ sliderConfig = {
     }).then(alert => alert.present());
   }
 
-  slidesDidLoad( slider: IonSlides) {
+  slidesDidLoad(slider: IonSlides) {
     slider.startAutoplay();
   }
 
@@ -172,7 +179,7 @@ sliderConfig = {
   }
 
   //Obtiene la fecha y hora al posponer un ticket
-  createdTicketTime(){
+  createdTicketTime() {
     let d = new Date(),
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),
@@ -192,12 +199,12 @@ sliderConfig = {
     if (minutes.length < 2)
       minutes = '0' + minutes;
 
-    this.createdDate = day+'-'+month+'-'+year+' a las: '+hour+':'+minutes+' '+ampm;
+    this.createdDate = day + '-' + month + '-' + year + ' a las: ' + hour + ':' + minutes + ' ' + ampm;
     this.storeService.localSave(this.localParam.localParam.ticketDate, this.createdDate);
   }
 
   //Obtiene la fecha y hora del ticket creado
-  getTicketTime(){
+  getTicketTime() {
     this.storeService.localGet(this.localParam.localParam.ticketDate).then((resp) => {
       this.createdDate = resp;
 
@@ -225,7 +232,7 @@ sliderConfig = {
   getPersonId() {
     this.storeService.localGet(this.localParam.localParam.userLogged).then((resp) => {
       this.person = resp;
-     
+
     }, (err) => {
       console.error(err);
     });
@@ -281,13 +288,13 @@ sliderConfig = {
       if (this.createdTicket) {
         let visitId = this.createdTicket.visitId;
 
-        this.services.getTicket(this.params.params.ticketStatus+'/'+visitId).subscribe((resp) => {
+        this.services.getTicket(this.params.params.ticketStatus + '/' + visitId).subscribe((resp) => {
           this.refreshedTicket = resp;
           this.storeService.localSave(this.localParam.localParam.ticketStatus, this.refreshedTicket);
 
           let positionInQueue = this.refreshedTicket[0].positionInQueue;
           let currentStatus = this.refreshedTicket[0].currentStatus;
-          if(this.lastPosition != positionInQueue && positionInQueue != ""){
+          if (this.lastPosition != positionInQueue && positionInQueue != "") {
             this.stopPositionPopUp = false;
             this.alertSound = false;
             this.lastPosition = positionInQueue;
@@ -300,8 +307,8 @@ sliderConfig = {
           this.maxProgressBar = 1 / positionInQueue;
           let calledFrom = this.refreshedTicket[0].servicePointName;
 
-          if(currentStatus == "CALLED"){
-            this.ticketPosition = "Su posición es: "+0;
+          if (currentStatus == "CALLED") {
+            this.ticketPosition = "Su posición es: " + 0;
             if (!this.stopPopUp) {
               //this.stopPopUp = true;
               if (this.popUp == null) {
@@ -362,8 +369,8 @@ sliderConfig = {
     }
   }
 
-  getTicketStatus(visitId){
-    this.services.getTicket(this.params.params.ticketStatus+'/'+visitId).subscribe((resp) => {
+  getTicketStatus(visitId) {
+    this.services.getTicket(this.params.params.ticketStatus + '/' + visitId).subscribe((resp) => {
       let ticketStatus = resp;
       this.storeService.localSave(this.localParam.localParam.ticketStatus, ticketStatus);
 
@@ -387,16 +394,16 @@ sliderConfig = {
         let userModel = resp;
 
         this.services.saveTicket(
-          this.params.params.postPoneTicket+'/services/'+serviceId+'/branches/'+officeId+'/ticket/'+visitId+'/queue/'+queueId, userModel).subscribe((resp) => {
-          let newTicket = resp;
-          this.storeService.localSave(this.localParam.localParam.createdTicket, newTicket[0]);
+          this.params.params.postPoneTicket + '/services/' + serviceId + '/branches/' + officeId + '/ticket/' + visitId + '/queue/' + queueId, userModel).subscribe((resp) => {
+            let newTicket = resp;
+            this.storeService.localSave(this.localParam.localParam.createdTicket, newTicket[0]);
 
-          this.getTicketStatus(visitId);
-          this.createdTicketTime();
-          this.postPonedTicket();
-        }, (err) => {
-          console.error(err);
-        });
+            this.getTicketStatus(visitId);
+            this.createdTicketTime();
+            this.postPonedTicket();
+          }, (err) => {
+            console.error(err);
+          });
       }, (err) => {
         console.error(err);
       });
@@ -420,7 +427,7 @@ sliderConfig = {
       let serviceId = createdTicket.serviceId;
 
       this.services.delete(
-        this.params.params.deleteTicket+'/services/'+serviceId+'/branches/'+officeId+'/ticket/'+visitId+'/queueId/'+queueId).subscribe((resp) => {
+        this.params.params.deleteTicket + '/services/' + serviceId + '/branches/' + officeId + '/ticket/' + visitId + '/queueId/' + queueId).subscribe((resp) => {
 
           this.cancelledTicket();
 
@@ -479,27 +486,27 @@ sliderConfig = {
     this.storeService.localGet(this.localParam.localParam.crossSelling).then((resp) => {
       this.crossSelling = resp;
       let name = this.crossSelling.custom1;
-      if(name != "---"){
-       this.userName=this.crossSelling.custom1;
-      }else{
-        this.slides.push({ img: 'assets/img/cuentaAhorro.jpg',link:' https://www.ficohsa.com/hn/banca-personas/cuentas-depositos/', target: '_blank' })
+      if (name != "---") {
+        this.userName = this.crossSelling.custom1;
+      } else {
+        this.slides.push({ img: 'assets/img/cuentaAhorro.jpg', link: ' https://www.ficohsa.com/hn/banca-personas/cuentas-depositos/', target: '_blank' })
       }
       //console.log(this.ticketStatus);
       //1612198400185
       if (this.crossSelling.Phone2 != "") {
-        this.slides.push({ img: 'assets/img/extra2.jpg', link:'javascript:void(0);', target:'' })
+        this.slides.push({ img: 'assets/img/extra2.jpg', link: 'javascript:void(0);', target: '' })
       }
       if (this.crossSelling.Email != "") {
-        this.slides.push({ img: 'assets/img/TC.jpg', link:'javascript:void(0);', target:'' })
+        this.slides.push({ img: 'assets/img/TC.jpg', link: 'javascript:void(0);', target: '' })
       }
       if (this.crossSelling.Town != "") {
-        this.slides.push({ img: 'assets/img/Interbanca.jpg',link:'https://secure.ficohsa.com', target: '_blank' })
+        this.slides.push({ img: 'assets/img/Interbanca.jpg', link: 'https://secure.ficohsa.com', target: '_blank' })
       }
       if (this.crossSelling.Comments2 != "") {
-        this.slides.push({ img: 'assets/img/cuentaAhorro.jpg',link:'https://www.ficohsa.com/hn/banca-personas/cuentas-depositos/', target: '_blank' })
+        this.slides.push({ img: 'assets/img/cuentaAhorro.jpg', link: 'https://www.ficohsa.com/hn/banca-personas/cuentas-depositos/', target: '_blank' })
       }
       if (this.crossSelling.TarjetadeDebito != "") {
-        this.slides.push({ img: 'assets/img/TD.jpg', link:'javascript:void(0);', target:'' })
+        this.slides.push({ img: 'assets/img/TD.jpg', link: 'javascript:void(0);', target: '' })
       }
     }, (err) => {
       console.error(err);
@@ -611,25 +618,25 @@ sliderConfig = {
       data: { secret: 'key' }
     });
     this.setVibration();
-}
+  }
 
-alertPosition(){
-  this.localNotificactions.schedule({
-  id: 2,
-  title: 'Aviso',
-  text: 'Su posición en la fila se ha modificado',
-  priority: 2,
-  foreground: true,
-  lockscreen: true,
-  vibrate: true,
-  //sound: this.setSoundOnEntry(),
-  data: { secret: 'key' }
-  });
-  this.setVibration();
-  this.alertSound = true;
-}
+  alertPosition() {
+    this.localNotificactions.schedule({
+      id: 2,
+      title: 'Aviso',
+      text: 'Su posición en la fila se ha modificado',
+      priority: 2,
+      foreground: true,
+      lockscreen: true,
+      vibrate: true,
+      //sound: this.setSoundOnEntry(),
+      data: { secret: 'key' }
+    });
+    this.setVibration();
+    this.alertSound = true;
+  }
 
- setSoundOnEntry() {
+  setSoundOnEntry() {
     if (this.platform.is('android')) {
       return 'file://assets/sounds/1102.mp3';
     } else {
