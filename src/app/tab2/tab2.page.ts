@@ -486,17 +486,10 @@ export class Tab2Page implements OnInit, AfterViewInit {
     this.storeService.localGet(this.localParam.localParam.crossSelling).then((resp) => {
       this.crossSelling = resp;
       let name = this.crossSelling.custom1;
-<<<<<<< HEAD
-      if (name != "---") {
-        this.userName = this.crossSelling.custom1;
-      } else {
-        this.slides.push({ img: 'assets/img/cuentaAhorro.jpg', link: ' https://www.ficohsa.com/hn/banca-personas/cuentas-depositos/', target: '_blank' })
-=======
       if(name != "---"){
        this.userName=this.crossSelling.custom1;
       }else{
         this.slides.push({ img: 'assets/img/cuentaAhorro.jpg',link:'https://www.ficohsa.com/hn/banca-personas/cuentas-depositos/', target: '_blank' })
->>>>>>> 45c4471d8d5ae0484bd9e8c87ceb2cd99ddd7610
       }
       //console.log(this.ticketStatus);
       //1612198400185
