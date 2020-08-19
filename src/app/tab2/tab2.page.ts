@@ -98,7 +98,6 @@ export class Tab2Page implements OnInit, AfterViewInit {
 
     this.preventWebBackButton();
     this.destroyDelay(this.exitDelay);
-    IonicModule.forRoot(({ swipeBackEnabled: false }));
   }
   @ViewChild('slides', { static: true }) slider: IonSlides;
   sliderConfig = {
@@ -116,10 +115,6 @@ export class Tab2Page implements OnInit, AfterViewInit {
     this.presentLoadingDefault();
     clearTimeout(this.exitDelay);
     this.getCross();
-  }
-
-  ionViewDidEnter() {
-    IonicModule.forRoot(({ swipeBackEnabled: false }));
   }
 
   ngAfterViewInit() {
