@@ -1,8 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { Platform, NavController } from '@ionic/angular';
+import { Platform, NavController, IonRouterOutlet } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { RouterOutletService } from './services/router-outlet-service.service';
 
 declare var cordova;
 
@@ -13,13 +14,20 @@ declare var cordova;
 })
 export class AppComponent {
 
+  @ViewChild(IonRouterOutlet, { static: false }) routerOutlet: IonRouterOutlet;
+
   rootPage:any = 'LoginPage';
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private routerOutletService: RouterOutletService
   ) {
     this.initializeApp();
+  }
+
+  ngAfterViewInit(): void {
+    this.routerOutletService.init(this.routerOutlet);
   }
 
   initializeApp() {

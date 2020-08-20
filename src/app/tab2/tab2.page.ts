@@ -6,10 +6,11 @@ import { Toast } from '@ionic-native/toast/ngx';
 import { StorageService } from '../services/storage.service';
 import { UtilStorageService } from '../services/util-storage.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
+import { RouterOutletService } from '../services/router-outlet-service.service';
 
 declare var cordova;
 
@@ -75,6 +76,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     public menuCtrl: MenuController,
     private storage: Storage,
     private vibration: Vibration,
+    private routerOutletService: RouterOutletService,
     private routerOutlet: IonRouterOutlet) {
     this.menuCtrl.enable(false);
     this.platform.ready().then(() => {
@@ -115,6 +117,14 @@ export class Tab2Page implements OnInit, AfterViewInit {
     this.presentLoadingDefault();
     clearTimeout(this.exitDelay);
     this.getCross();
+  }
+
+  ionViewDidEnter() {
+    this.routerOutletService.swipebackEnabled = false;
+  }
+  
+  ionViewDidLeave() {
+    this.routerOutletService.swipebackEnabled = true;
   }
 
   ngAfterViewInit() {
