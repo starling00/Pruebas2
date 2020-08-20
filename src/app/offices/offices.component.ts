@@ -69,7 +69,7 @@ export class OfficesComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-
+    this.nav.swipeGesture = false;
   }
 
   ngOnInit() {
@@ -269,7 +269,7 @@ export class OfficesComponent implements OnInit {
 
   go() {
     this.createTicket();
-    this.router.navigateByUrl('/ticket');
+    this.router.navigateByUrl('/ticket',{replaceUrl: true});
   }
 
   //Obtiene la fecha y hora
