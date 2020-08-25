@@ -62,6 +62,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   crossSelling: any;
   slides = [];
   userName: any;
+  newTicket: any;
 
   constructor(private services: CrudService,
     private params: UtilsService,
@@ -114,6 +115,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   ngOnInit() {
     this.routerOutlet.swipeGesture = false;
     //this.GenerateServices();
+    this.getUserLogged();
     this.presentLoadingDefault();
     clearTimeout(this.exitDelay);
     this.getCross();
@@ -315,20 +317,16 @@ export class Tab2Page implements OnInit, AfterViewInit {
           if (currentStatus == "CALLED") {
             this.ticketPosition = "Su posición es: " + 0;
             if (!this.stopPopUp) {
-              //this.stopPopUp = true;
               if (this.popUp == null) {
                 this.presentAlert(calledFrom);
-                //this.setVibration();
               } else if (this.popUp != null) {
                 this.popUp.dismiss();
                 this.presentAlert(calledFrom);
-                //this.setVibration();
               }
             }
           }
           this.ticketNumber = this.refreshedTicket[0].ticketId;
-          //this.ticketDesti = this.refreshedTicket.queueName;
-          //console.log(this.refreshedTicket);
+
         }, (err) => {
           if (err.status == 404) {
             this.storage.remove("created-ticket");
@@ -379,7 +377,6 @@ export class Tab2Page implements OnInit, AfterViewInit {
       let ticketStatus = resp;
       this.storeService.localSave(this.localParam.localParam.ticketStatus, ticketStatus);
 
-      //console.log(this.ticketStatus);
     }, (err) => {
       console.error(err);
     });
@@ -399,11 +396,11 @@ export class Tab2Page implements OnInit, AfterViewInit {
         let userModel = resp;
 
         this.services.saveTicket(
-          this.params.params.postPoneTicket + '/services/' + serviceId + '/branches/' + officeId + '/ticket/' + visitId + '/queue/' + queueId, userModel).subscribe((resp) => {
-            let newTicket = resp;
-            this.storeService.localSave(this.localParam.localParam.createdTicket, newTicket[0]);
+          this.params.params.postPoneTicket + '/services/' + serviceId + '/branches/' + officeId + '/ticket/' + visitId + '/queue/' + queueId + '/userId/' + this.person, userModel).subscribe((resp) => {
+            this.newTicket = resp;
+            this.storeService.localSave(this.localParam.localParam.createdTicket, this.newTicket);
 
-            this.getTicketStatus(visitId);
+            this.getTicketStatus(this.newTicket.visitId);
             this.createdTicketTime();
             this.postPonedTicket();
           }, (err) => {
@@ -472,8 +469,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   getUserLogged() {
     this.storeService.localGet(this.localParam.localParam.userLogged).then((resp) => {
       this.person = resp;
-      //this.ticketName = this.person.person.name;
-      //console.log(this.person);
+
     }, (err) => {
       console.error(err);
     });
@@ -496,8 +492,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       }else{
         this.slides.push({ img: 'assets/img/cuentaAhorro.jpg',link:'https://www.ficohsa.com/hn/banca-personas/cuentas-depositos/', target: '_blank' })
       }
-      //console.log(this.ticketStatus);
-      //1612198400185
+
       if (this.crossSelling.Phone2 != "") {
         this.slides.push({ img: 'assets/img/extra2.jpg', link: 'javascript:void(0);', target: '' })
       }

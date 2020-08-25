@@ -10,6 +10,7 @@ export class UtilsService {
     ticketCreate:"",
     ticketServices:"",
     ticketStatus:"",
+    allTicketsStatus:"",
     ticketOffices:"",
     deleteTicket:"",
     postPoneTicket:"",
@@ -37,6 +38,7 @@ export class UtilsService {
     this.params.ticketCreate = ticketsURL+"orchestra_createTicket/orchestra_createTicket";
     this.params.ticketServices = ticketsURL+"orchestra_services/orchestra_services";
     this.params.ticketStatus = ticketsURL+"orchestra_obtenetticketStatus/orchestra_ticketStatus";
+    this.params.allTicketsStatus = ticketsURL+"orchestra_ticketStatus";
     this.params.ticketOffices = ticketsURL+"orchestra_offices";
     this.params.deleteTicket = ticketsURL+"orchestra_delete_ticket/deleteTicket";
     this.params.postPoneTicket = ticketsURL+"orchestra_postpone_tickets/postponeTicket";

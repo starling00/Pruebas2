@@ -48,6 +48,7 @@ export class OfficesComponent implements OnInit {
   nameArea: any;
   totalClientes = 0;
   horaNow: any;
+  userCed: any;
 
   constructor(
     private nav: IonRouterOutlet,
@@ -75,7 +76,7 @@ export class OfficesComponent implements OnInit {
   ngOnInit() {
     this.presentLoadingDefault();
     this.getOffices();
-    //this.getUserId();
+    this.getUserId();
     this.getUserInfo();
     const navigationState = this.router.getCurrentNavigation().extras.state;
     if (
@@ -103,14 +104,13 @@ export class OfficesComponent implements OnInit {
     return i;
   }
 
-  /*getUserId() {
+  getUserId() {
     this.storeService.localGet(this.localParam.localParam.userLogged).then((resp) => {
-      let userId = resp;
-      this.getUserInfo();
+      this.userCed = resp;
     }, (err) => {
       console.error(err);
     });
-  }*/
+  }
 
   getUserInfo() {
     this.storeService.localGet(this.localParam.localParam.crossSelling).then((resp) => {
@@ -151,25 +151,27 @@ export class OfficesComponent implements OnInit {
   }
   
   createTicket() {
-   this.UserModel.level = this.userInfo.level;
+    this.UserModel.level = this.userInfo.level;
     this.UserModel.custom1 = this.userInfo.custom1 + '/vip level '+ this.userInfo.level;
     this.UserModel.crossSelling = this.userInfo.crossSelling;
-    /* this.UserModel.level = 'VIP Level 6';
-    this.UserModel.custom1 = '---';
-    this.UserModel.crossSelling = 'Extra@#@---#@#Prestamo@#@---#@#Intra@#@---#@#Segunda Tarjeta@#@---#@#Apertura de Cuentas@#@---#@#Tarjeta de Debito@#@---#@#PilTurbo@#@---#@#Aumento de Limite TC@#@---#@#Otros (TC Adicionales, Seguros)@#@---#@#';*/
 
     let parameters = { "parameters": this.UserModel }
-    //console.log(parameters);
+
     this.storeService.localSave(this.localParam.localParam.userModel, parameters);
 
     this.service.saveTicket(
-      this.params.params.ticketCreate + '/serviceId/' + this.serviceId + '/officeId/' + this.selectedOffice.id, parameters)
+      this.params.params.ticketCreate + '/serviceId/' + this.serviceId + '/officeId/' + this.selectedOffice.id + '/userId/' + this.userCed, parameters)
       .subscribe((resp) => {
         this.createdTicket = resp;
         this.storeService.localSave(this.localParam.localParam.createdTicket, this.createdTicket);
 
-        this.getTicketStatus(this.createdTicket.visitId);
-        this.createdTicketTime();
+        if(this.createdTicket.ticketNumber == "FAILED"){
+          this.popUpHaveTicket();
+        }else{
+          this.getTicketStatus(this.createdTicket.visitId);
+          this.createdTicketTime();
+          this.router.navigateByUrl('/ticket',{replaceUrl: true});
+        }
         //console.log(this.createdTicket);
       }, (err) => {
         console.error(err);
@@ -269,7 +271,6 @@ export class OfficesComponent implements OnInit {
 
   go() {
     this.createTicket();
-    this.router.navigateByUrl('/ticket',{replaceUrl: true});
   }
 
   //Obtiene la fecha y hora
@@ -375,6 +376,25 @@ export class OfficesComponent implements OnInit {
       message:
         '<img class="my-custom-class" src="assets/img/lock.png"></img><br><br><p class="agenciaCenter">La agencia seleccionada se encuentra cerrada por su horario de atención.</p>',
 
+      buttons: [{
+        text: 'Aceptar',
+        role: 'OK',
+        handler: () => {
+
+        }
+      },
+      ]
+    });
+    await postPonedPopUp.present();
+  }
+
+  async popUpHaveTicket() {
+    let postPonedPopUp = await this.alertCtrl.create({
+      cssClass: 'my-custom-class',
+      header: 'Aviso',
+      subHeader: '',
+      message:
+        '<img class="my-custom-class" src="assets/img/cancel.png"></img><br><br><p class="agenciaCenter">¡Ya cuenta con un ticket activo!</p>',
       buttons: [{
         text: 'Aceptar',
         role: 'OK',
