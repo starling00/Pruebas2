@@ -8,7 +8,9 @@ import { UtilStorageService } from '../services/util-storage.service';
 import { Router } from '@angular/router';
 import { Toast } from '@ionic-native/toast/ngx';
 import { FormGroup, FormBuilder, Validators,ReactiveFormsModule, FormControl} from '@angular/forms';
-import {trigger,state,style,animate,transition} from '@angular/animations'
+import {trigger,state,style,animate,transition} from '@angular/animations';
+
+declare var OneSignal;
 
 @Component({
   selector: 'app-login',
@@ -118,7 +120,7 @@ log(){
     this.service.saveTicket(this.params.params.userInfo +'/'+ this.cedula, null).subscribe((resp) => {
 
       this.userdata = resp;
-      console.log(this.userdata);
+      this.setWebPush();
       if(this.userdata.response== true){
         this.storeService.localSave(this.localParam.localParam.userLogged, this.cedula);
         this.router.navigateByUrl('/agencies02');
@@ -132,6 +134,34 @@ log(){
 
       }
     });
+  }
+
+  setWebPush(){
+    OneSignal = OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: "538478a8-2b86-4a59-a8cb-720812b2bc4f",
+        notifyButton: {
+          enable: true,
+        },
+        promptOptions: {
+          slidedown: {
+            enabled: true,
+            autoPrompt: true,
+            timeDelay: 20,
+            pageViews: 3,
+            actionMessage: "¡Permite las notificaciones para estar pendiente de tu ticket!",
+          acceptButtonText: "Permitir",
+          cancelButtonText: "No gracias",
+          }
+        }
+      });
+      OneSignal.showSlidedownPrompt();
+      //OneSignal.showHttpPrompt();
+      OneSignal.showNativePrompt();
+      //OneSignal.registerForPushNotifications();
+    });
+    OneSignal.setExternalUserId(this.cedula);
   }
 
   meetings(){

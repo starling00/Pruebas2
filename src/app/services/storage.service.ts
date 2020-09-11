@@ -13,8 +13,18 @@ export interface iStorage {
 
 export class StorageService {
 
+  data: any;
+
   constructor(private storage: Storage, private router: Router) {
 
+  }
+
+  setData(data) {
+    this.data = data;
+  }
+
+  getData(){
+    return this.data;
   }
 
   localSave(key, data: any): void {
