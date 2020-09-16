@@ -120,7 +120,7 @@ log(){
     this.service.saveTicket(this.params.params.userInfo +'/'+ this.cedula, null).subscribe((resp) => {
 
       this.userdata = resp;
-      this.setWebPush();
+      OneSignal.setExternalUserId(this.cedula);
       if(this.userdata.response== true){
         this.storeService.localSave(this.localParam.localParam.userLogged, this.cedula);
         this.router.navigateByUrl('/agencies02');
@@ -134,34 +134,6 @@ log(){
 
       }
     });
-  }
-
-  setWebPush(){
-    OneSignal = OneSignal || [];
-    OneSignal.push(function() {
-      OneSignal.init({
-        appId: "538478a8-2b86-4a59-a8cb-720812b2bc4f",
-        notifyButton: {
-          enable: true,
-        },
-        promptOptions: {
-          slidedown: {
-            enabled: true,
-            autoPrompt: true,
-            timeDelay: 20,
-            pageViews: 3,
-            actionMessage: "¡Permite las notificaciones para estar pendiente de tu ticket!",
-          acceptButtonText: "Permitir",
-          cancelButtonText: "No gracias",
-          }
-        }
-      });
-      OneSignal.showSlidedownPrompt();
-      //OneSignal.showHttpPrompt();
-      OneSignal.showNativePrompt();
-      //OneSignal.registerForPushNotifications();
-    });
-    OneSignal.setExternalUserId(this.cedula);
   }
 
   meetings(){

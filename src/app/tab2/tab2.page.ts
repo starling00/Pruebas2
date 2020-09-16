@@ -369,6 +369,10 @@ export class Tab2Page implements OnInit, AfterViewInit {
       let ticketStatus = resp;
       this.storeService.localSave(this.localParam.localParam.ticketStatus, ticketStatus);
 
+      this.ticketNumber = ticketStatus[0].ticketId;
+      this.ticketPosition = "Su posición es: " + ticketStatus[0].positionInQueue;
+      this.maxProgressBar = 1 / ticketStatus[0].positionInQueue;
+
     }, (err) => {
       console.error(err);
     });
