@@ -141,7 +141,9 @@ export class Tab2Page implements OnInit, AfterViewInit {
       this.getTicketDesti();
       this.getTicketPosition();
       this.getTicketTime();
-      //this.timer();
+      if(this.platform.is('ios')){
+        this.timer();
+      }
       //this.getPersonId();
 
     }, 4000);
@@ -293,20 +295,24 @@ export class Tab2Page implements OnInit, AfterViewInit {
   }
 
   getNotificationData() {
-    OneSignal.on('notificationDisplay', (event) => {
-      console.log('OneSignal notification en TICKET', event.data);
-      this.refreshTicket(event.data);
-    });
-
-    OneSignal.on('notificationDismiss', (event) => {
-      console.warn('OneSignal notification dismissed:', event);
-      this.refreshTicket(event.data);
-    });
+    if(this.platform.is('android')){
+      OneSignal.on('notificationDisplay', (event) => {
+        //console.log('OneSignal notification en TICKET', event.data);
+        this.refreshTicket(event.data);
+      });
+  
+      OneSignal.on('notificationDismiss', (event) => {
+        //console.warn('OneSignal notification dismissed:', event);
+        this.refreshTicket(event.data);
+      });
+    }
   }
 
   //Revisa si existe un tiquete creado, si existe hace un get del tiquete nuevamente para refrescarlo
   refreshTicket(data) {
-    console.log(data);
+    let updatedStatus = [];
+    updatedStatus.push(data);
+    this.storeService.localSave(this.localParam.localParam.ticketStatus, updatedStatus);
     let additionalData = data;
     this.ticketNumber = additionalData.ticketId;
     let positionInQueue = additionalData.positionInQueue;
@@ -336,10 +342,65 @@ export class Tab2Page implements OnInit, AfterViewInit {
     }
   }
 
+  iosRefresh(){
+    this.storeService.localGet(this.localParam.localParam.createdTicket).then((resp) => {
+      this.createdTicket = resp;
+      if (this.createdTicket) {
+        let visitId = this.createdTicket.visitId;
+        this.services.getTicket(this.params.params.ticketStatus + '/' + visitId).subscribe((resp) => {
+          this.refreshedTicket = resp;
+          this.storeService.localSave(this.localParam.localParam.ticketStatus, this.refreshedTicket);
+          let positionInQueue = this.refreshedTicket[0].positionInQueue;
+          let currentStatus = this.refreshedTicket[0].currentStatus;
+          if (this.lastPosition != positionInQueue && positionInQueue != "") {
+            this.stopPositionPopUp = false;
+            this.alertSound = false;
+            this.lastPosition = positionInQueue;
+            this.positionUpdated(positionInQueue);
+          }
+          this.ticketUbi = this.officeName;
+          this.ticketDesti = this.refreshedTicket[0].currentServiceName;
+          this.ticketPosition = "Su posición es: " + positionInQueue;
+          this.maxProgressBar = 1 / positionInQueue;
+          let calledFrom = this.refreshedTicket[0].servicePointName;
+          if (currentStatus == "CALLED") {
+            this.ticketPosition = "Su posición es: " + 0;
+            if (!this.stopPopUp) {
+              //this.stopPopUp = true;
+              if (this.popUp == null) {
+                this.presentAlert(calledFrom);
+                //this.setVibration();
+              } else if (this.popUp != null) {
+                this.popUp.dismiss();
+                this.presentAlert(calledFrom);
+                //this.setVibration();
+              }
+            }
+          }
+          this.ticketNumber = this.refreshedTicket[0].ticketId;
+          //this.ticketDesti = this.refreshedTicket.queueName;
+          //console.log(this.refreshedTicket);
+
+        }, (err) => {
+          if (err.status == 404) {
+            this.storage.remove("created-ticket");
+            this.storage.remove("ticket-status");
+            this.ticketNumber = "Atendido";
+            this.ticketPosition = "Atendido";
+            this.ticketUbi = "Atendido";
+            this.ticketDesti = "Atendido";
+          }
+        });
+      }
+    }, (err) => {
+      console.error(err);
+    });
+  }
+
   timer() {
     this.interval = setInterval(() => {
-      //this.refreshTicket();
-    }, 1000);
+      this.iosRefresh();
+    }, 5000);
   }
 
   //Muestra un popup cada vez que se actualiza la posicion en la fila a partir de la posicion 5

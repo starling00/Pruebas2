@@ -71,13 +71,15 @@ export class OfficesComponent implements OnInit {
 
   ngAfterViewInit() {
     this.nav.swipeGesture = false;
+    setTimeout(() => {
+      this.getUserInfo();
+    }, 1000);
   }
 
   ngOnInit() {
     this.presentLoadingDefault();
     this.getOffices();
     this.getUserId();
-    this.getUserInfo();
     const navigationState = this.router.getCurrentNavigation().extras.state;
     if (
       navigationState !== undefined && navigationState !== null &&
@@ -270,6 +272,7 @@ export class OfficesComponent implements OnInit {
   }
 
   go() {
+    this.presentLoadingDefault();
     this.createTicket();
   }
 

@@ -72,7 +72,8 @@ export class AppComponent {
     OneSignal = OneSignal || [];
     OneSignal.push(function() {
       OneSignal.init({
-        appId: "538478a8-2b86-4a59-a8cb-720812b2bc4f",
+        appId: "45a1ae42-f405-41a3-b17d-1c00320a387e",
+        safari_web_id: "web.onesignal.auto.3f550615-46c0-4fa5-9ee8-42953ece3d19",
         notifyButton: {
           enable: true,
         },
@@ -88,8 +89,10 @@ export class AppComponent {
           }
         }
       });
-      OneSignal.showSlidedownPrompt();
-      //OneSignal.showNativePrompt();
+      //OneSignal.showSlidedownPrompt();
+      //OneSignal.showHttpPrompt();
+      OneSignal.showNativePrompt();
+      OneSignal.setDefaultNotificationUrl("https://ficoticketdev.ficohsa.com.hn/ticket");
     });
   }
 }

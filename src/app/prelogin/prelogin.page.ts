@@ -64,6 +64,7 @@ getTicketStatus() {
       this.presentLoading();
       this.service.getTicket(this.params.params.ticketStatus+'/'+ticketStatus[0].visitId).subscribe((resp) => {
         let ticket = resp;
+        this.storeService.localSave(this.localParam.localParam.ticketStatus, ticket);
         if(ticket != null && ticket[0].currentStatus != "CALLED"){
           this.router.navigateByUrl('/ticket');
         }
