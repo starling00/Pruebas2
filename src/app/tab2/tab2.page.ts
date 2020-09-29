@@ -489,6 +489,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
         this.params.params.deleteTicket + '/services/' + serviceId + '/branches/' + officeId + '/ticket/' + visitId + '/queueId/' + queueId).subscribe((resp) => {
 
           this.cancelledTicket();
+          OneSignal.removeExternalUserId();
 
         }, (err) => {
           console.error(err);
@@ -610,6 +611,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
           this.cancelDisable = true;
           this.postPoneDisable = true;
           this.delay();
+          OneSignal.removeExternalUserId();
         }
       },
       ],
