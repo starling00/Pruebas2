@@ -52,7 +52,6 @@ getTicketStatus() {
   this.storeService.localGet(this.localParam.localParam.ticketStatus).then((resp) => {
     this.ticketStatus = resp;
     this.checkCreatedTicket(this.ticketStatus);
-    console.log(this.ticketStatus);
   }, (err) => {
     console.error(err);
   });
@@ -72,7 +71,7 @@ getTicketStatus() {
         console.error(err);
       });
     }else{
-      console.log("ticket status null o ya fue llamado");
+      console.log(" ");
     }
   }
   async presentAlert() {

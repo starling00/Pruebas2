@@ -18,7 +18,9 @@
         <ion-item>
           <ion-icon class="iconP" name="person" slot="end"></ion-icon>
           <ion-label position="floating">Tarjeta de identidad:</ion-label>
-          <ion-input formControlName="cedula" type="text" [(ngModel)]="cedula" pattern="^[0-9]\d{12}$" clearInput></ion-input>
+          <ion-input formControlName="cedula" type="text" [(ngModel)]="cedula" 
+          pattern="^(?=.{13}$)(([0-9])\2?(?!\2{3}))+$" clearInput>
+          </ion-input>
         </ion-item>
         <div class="validation-errors">
           <ng-container *ngFor="let validation of validation_messages.cedula">

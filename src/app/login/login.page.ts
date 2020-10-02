@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, LoadingController } from '@ionic/angular';
+import { NavController, NavParams, LoadingController, AlertController } from '@ionic/angular';
 import { CrudService } from '../services/crud.service';
 import { Storage } from '@ionic/storage';
 import { UtilsService } from '../services/utils.service';
@@ -59,6 +59,7 @@ export class LoginPage implements OnInit {
     private router: Router,
     private toast: Toast,
     public loadingCtrl: LoadingController,
+    private alertCtrl: AlertController,
     public formBuilder: FormBuilder)
      {
       this.myForm = this.createMyForm();
@@ -116,24 +117,48 @@ log(){
   this.router.navigateByUrl('/agencies02');
 }
   login() {
-   /* this.router.navigateByUrl('/agencies');*/
-    this.service.saveTicket(this.params.params.userInfo +'/'+ this.cedula, null).subscribe((resp) => {
+    if(this.validateLogin()){
+      this.service.saveTicket(this.params.params.userInfo +'/'+ this.cedula, null).subscribe((resp) => {
 
-      this.userdata = resp;
-      OneSignal.setExternalUserId(this.cedula);
-      if(this.userdata.response== true){
-        this.storeService.localSave(this.localParam.localParam.userLogged, this.cedula);
-        this.router.navigateByUrl('/agencies02');
-      }else{
-        this.storeService.localSave(this.localParam.localParam.userLogged, this.cedula);
-        this.router.navigateByUrl('/agencies');
-      }
-    }, (err) => {
-      console.error(err);
-      if(err.status == 404){
+        this.userdata = resp;
+        OneSignal.setExternalUserId(this.cedula);
+        if(this.userdata.response== true){
+          this.storeService.localSave(this.localParam.localParam.userLogged, this.cedula);
+          this.router.navigateByUrl('/agencies02');
+        }else{
+          this.storeService.localSave(this.localParam.localParam.userLogged, this.cedula);
+          this.router.navigateByUrl('/agencies');
+        }
+      }, (err) => {
+        console.error(err);
+        if(err.status == 404){
+  
+        }
+      });
+    }else{
+      this.popUpValidation();
+    }
+  }
 
+  validateLogin() {
+    var value = this.cedula;
+    for (var i = 0; i < value.length; i++) {
+      var saveDigits = [];
+      var char = value.charAt(i);
+      if (i + 3 < value.length) {
+        var substr = value.substring(i, i + 4);
+        for(var j = 0; j < substr.length; j++){
+          var subChar = substr.charAt(j);
+          var intValue = parseInt(subChar) 
+          saveDigits.push(intValue);
+        }
+        if ((saveDigits[0] + 1 == saveDigits[1] && saveDigits[1] + 1 == saveDigits[2] && saveDigits[2] + 1 == saveDigits[3]) || (saveDigits[0] - 1 == saveDigits[1] && saveDigits[1] - 1 == saveDigits[2] && saveDigits[2] - 1 == saveDigits[3])) {
+          console.log("ERROR");
+          return false;
+        }
       }
-    });
+    }
+    return true;
   }
 
   meetings(){
@@ -180,6 +205,24 @@ log(){
     }, (err) => {
       console.error(err);
     });
+  }
+
+  async popUpValidation() {
+    let popUpValidate = await this.alertCtrl.create({
+      header: 'Error en el número de identidad:',
+      subHeader: '',
+      message:
+        'No se permiten más de 4 dígitos consecutivos. <br/> Ejemplo: 1234',
+      buttons: [{
+        text: 'Aceptar',
+        role: 'OK',
+        handler: () => {
+
+        }
+      },
+      ]
+    });
+    await popUpValidate.present();
   }
 
 }// fin de la class
