@@ -26,25 +26,25 @@ export class UtilsService {
     // APIs production
     // var localizationAPI = 'https://cservices.ficohsa.com/';
     // APIs Development
-    var localizationAPI = 'https://cdservices.ficohsa.com:9023/';
+    var localizationAPI = 'https://13.58.166.253/orchestra/api/';
 
     //APIs produccion
     //var ticketsURL = 'https://cservices.ficohsa.com/';
     //APIs desarrollo
-    var ticketsURL = 'https://cdservices.ficohsa.com:9023/';
+    var ticketsURL = 'https://13.58.166.253/orchestra/api/';
     
     this.params.officeInfo = localizationAPI+"orchestra_offices/officeslocalization";
-    this.params.officeQueue = localizationAPI+"orchestra/orchestra_offices/servicesWaiting/";
-    this.params.ticketCreate = ticketsURL+"orchestra_createTicket/orchestra_createTicket";
-    this.params.ticketServices = ticketsURL+"orchestra_services/orchestra_services";
-    this.params.ticketStatus = ticketsURL+"orchestra_obtenetticketStatus/orchestra_ticketStatus";
+    this.params.officeQueue = localizationAPI+"orchestra_offices/servicesWaiting/";
+    this.params.ticketCreate = ticketsURL+"orchestra_createTicket";
+    this.params.ticketServices = ticketsURL+"orchestra_services";
+    this.params.ticketStatus = ticketsURL+"orchestra_ticketStatus";
     this.params.allTicketsStatus = ticketsURL+"orchestra_ticketStatus";
     this.params.ticketOffices = ticketsURL+"orchestra_offices";
-    this.params.deleteTicket = ticketsURL+"orchestra_delete_ticket/deleteTicket";
-    this.params.postPoneTicket = ticketsURL+"orchestra_postpone_tickets/postponeTicket";
+    this.params.deleteTicket = ticketsURL+"orchestra_tickets/deleteTicket";
+    this.params.postPoneTicket = ticketsURL+"orchestra_tickets/postponeTicket";
     this.params.userInfo = ticketsURL+"userInformation/orchestra_userInformation";
     this.params.getuserInfo=ticketsURL+"orchestra_userInformation/orchestra_userInformation"
-    this.params.servicesWaiting= ticketsURL+"orchestra/orchestra_offices/servicesWaiting/"
+    this.params.servicesWaiting= ticketsURL+"orchestra_offices/servicesWaiting/"
   }//fin de bob
 
 

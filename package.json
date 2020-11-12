@@ -40,6 +40,7 @@
     "cordova-android": "^8.1.0",
     "cordova-browser": "6.0.0",
     "cordova-ios": "^5.1.1",
+    "cordova-plugin-android-permissions": "^1.1.0",
     "cordova-plugin-androidx": "^1.0.2",
     "cordova-plugin-androidx-adapter": "^1.1.0",
     "cordova-plugin-background-mode": "git+https://bitbucket.org/TheBosZ/cordova-plugin-run-in-background.git",
@@ -52,6 +53,7 @@
     "cordova-plugin-ionic-webview": "^4.2.1",
     "cordova-plugin-local-notification": "^0.9.0-beta.2",
     "cordova-plugin-powermanagement-orig": "git+https://github.com/boltex/cordova-plugin-powermanagement.git",
+    "cordova-plugin-request-location-accuracy": "^2.3.0",
     "cordova-plugin-splashscreen": "^5.0.2",
     "cordova-plugin-statusbar": "^2.4.2",
     "cordova-plugin-vibration": "^3.1.1",
@@ -115,7 +117,9 @@
       "cordova-plugin-geolocation": {},
       "cordova-plugin-foreground-service": {},
       "cordova-plugin-background-mode": {},
-      "cordova-plugin-request-location-accuracy": {},
+      "cordova-plugin-request-location-accuracy": {
+        "PLAY_SERVICES_LOCATION_VERSION": "16.+"
+      },
       "cordova-plugin-android-permissions": {}
     },
     "platforms": [

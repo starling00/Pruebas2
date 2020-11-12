@@ -1,13 +1,13 @@
 
 <ion-header >
     <ion-toolbar class="topMenu" >
-        <ion-title>FICOTICKET</ion-title>
+        <ion-title>Summit Tickets</ion-title>
       </ion-toolbar>
 </ion-header>
  
 <ion-content @fadein  padding>
   <div class="logo">
-        <img src="assets/img/fico.png" alt="Logo del banco de ficohsa" > 
+        <img src="assets/img/logosummitnegro.png" alt="Logo del banco de ficohsa" > 
           
       </div>
       <p class="text1">Asegúrate de digitar correctamente tu número 
@@ -19,7 +19,7 @@
           <ion-icon class="iconP" name="person" slot="end"></ion-icon>
           <ion-label position="floating">Tarjeta de identidad:</ion-label>
           <ion-input formControlName="cedula" type="text" [(ngModel)]="cedula" 
-          pattern="^(?=.{13}$)(([0-9])\2?(?!\2{3}))+$" clearInput>
+          pattern="^(?=.{9}$)(([0-9])\2?(?!\2{3}))+$" clearInput>
           </ion-input>
         </ion-item>
         <div class="validation-errors">

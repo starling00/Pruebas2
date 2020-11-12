@@ -40,29 +40,29 @@ export class CrudService {
     //Authorization de Produccion: Basic SE5TVkNGSUNPVElDS0VUOlQxY2tldEYxYzAk
     //Authorization de Desarrollo: Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==
 
-    return this.http.get(url, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
+    return this.http.get(url, { headers: {} });
   }
 
   getAgencies(url, data: any) {
     return this.http.post(url, data, { headers: { 'Content-Type': 'application/json' } });
   }
 
-  save(url, data: any) {
-    return this.http.post(url, data, { headers: {} });
+  save(url) {
+    return this.http.post(url, { headers: {} });
   }
 
   saveTicket(url, data: any) {
     //Authorization de Produccion: Basic SE5TVkNGSUNPVElDS0VUOlQxY2tldEYxYzAk
     //Authorization de Desarrollo: Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==
 
-    return this.http.post(url, data, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
+    return this.http.post(url, data, { headers: {} });
   }
 
   delete(url){
     //Authorization de Produccion: Basic SE5TVkNGSUNPVElDS0VUOlQxY2tldEYxYzAk
     //Authorization de Desarrollo: Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw==
 
-    return this.http.delete(url, { headers: {'Authorization': 'Basic SE5TVkNERVNURUs6VDNrTDBHMm8ybw=='} });
+    return this.http.delete(url, { headers: {} });
   }
 
   xmlHttpPostRequest(url, formData: FormData) {

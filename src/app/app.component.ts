@@ -36,7 +36,7 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      this.setWebPush();
+      //this.setWebPush();
 
       if (this.platform.is('cordova')) {
         cordova.plugins.backgroundMode.setDefaults({ 

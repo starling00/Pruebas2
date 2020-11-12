@@ -27,7 +27,7 @@ export class PreloginPage implements OnInit {
     public loadingCtrl: LoadingController,) { }
 
   ngOnInit() {
-   this.getTicketStatus();
+   //this.getTicketStatus();
   }
 //crea el popover
 CreatePopOver(){

@@ -5,7 +5,7 @@
       </ion-buttons>
     <ion-title>
       <div class="logo">
-        <img src="assets/img/fb.png" alt="Logo del banco de ficohsa">
+        <img src="assets/img/logosummit.png" alt="Logo del banco de ficohsa">
   
       </div>
     </ion-title>
@@ -36,8 +36,8 @@
           <ion-select placeholder="Seleccione Plataforma" #A (ionChange)="selectedArea(A.value)" [disabled]="areaDisable"
           interface="popover">
             <ion-select-option value="Caja">Caja</ion-select-option>
-            <ion-select-option value="Servicios">Servicios</ion-select-option>
-            <ion-select-option value="Negocios">Negocios</ion-select-option>
+            <ion-select-option value="Servicio">Servicios</ion-select-option>
+            <!--<ion-select-option value="Negocios">Negocios</ion-select-option>-->
             <!--<ion-select-option value="Seguros">Seguros</ion-select-option>-->
           </ion-select>
 
@@ -47,10 +47,10 @@
       <ion-label position="floating">Tipo de cliente</ion-label>
           <ion-select placeholder="Seleccione el tipo de cliente" #T (ionChange)="selectedClient(T.value)" 
           [disabled]="clientDisable" interface="popover">
-            <ion-select-option value="Emprendedor">Emprendedor(Pyme)</ion-select-option>
+            <!--<ion-select-option value="Emprendedor">Emprendedor(Pyme)</ion-select-option>-->
             <ion-select-option value="Natural">Persona Natural</ion-select-option>
-            <ion-select-option value="Preferencial">Preferencial(3 era edad, embarazada, persona con capacidades especiales) </ion-select-option>
-            <ion-select-option value="Corporativo">Corporativo y Empresarial</ion-select-option>
+            <!--<ion-select-option value="Preferencial">Preferencial(3 era edad, embarazada, persona con capacidades especiales) </ion-select-option>-->
+            <!--<ion-select-option value="Corporativo">Corporativo y Empresarial</ion-select-option>-->
           </ion-select>
     </ion-item>
     <br>

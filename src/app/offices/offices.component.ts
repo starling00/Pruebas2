@@ -72,6 +72,7 @@ export class OfficesComponent implements OnInit {
   ngAfterViewInit() {
     this.nav.swipeGesture = false;
     setTimeout(() => {
+      this.getUserId();
       this.getUserInfo();
     }, 1000);
   }
@@ -79,7 +80,6 @@ export class OfficesComponent implements OnInit {
   ngOnInit() {
     this.presentLoadingDefault();
     this.getOffices();
-    this.getUserId();
     const navigationState = this.router.getCurrentNavigation().extras.state;
     if (
       navigationState !== undefined && navigationState !== null &&
@@ -153,16 +153,20 @@ export class OfficesComponent implements OnInit {
   }
   
   createTicket() {
-    this.UserModel.level = this.userInfo.level;
+    /*this.UserModel.level = this.userInfo.level;
     this.UserModel.custom1 = this.userInfo.custom1 + '/vip level '+ this.userInfo.level;
-    this.UserModel.crossSelling = this.userInfo.crossSelling;
+    this.UserModel.crossSelling = this.userInfo.crossSelling;*/
+
+    this.UserModel.level = 'VIP Level 6';
+    this.UserModel.custom1 = '---';
+    this.UserModel.crossSelling = 'Extra@#@---#@#Prestamo@#@---#@#Intra@#@---#@#Segunda Tarjeta@#@---#@#Apertura de Cuentas@#@---#@#Tarjeta de Debito@#@---#@#PilTurbo@#@---#@#Aumento de Limite TC@#@---#@#Otros (TC Adicionales, Seguros)@#@---#@#';
 
     let parameters = { "parameters": this.UserModel }
 
     this.storeService.localSave(this.localParam.localParam.userModel, parameters);
 
-    this.service.saveTicket(
-      this.params.params.ticketCreate + '/serviceId/' + this.serviceId + '/officeId/' + this.selectedOffice.id + '/userId/' + this.userCed, parameters)
+    this.service.save(
+      this.params.params.ticketCreate + '/serviceId/' + this.serviceId + '/officeId/' + this.selectedOffice.id + '/userId/' + this.userCed)
       .subscribe((resp) => {
         this.createdTicket = resp;
         this.storeService.localSave(this.localParam.localParam.createdTicket, this.createdTicket);
@@ -336,7 +340,7 @@ export class OfficesComponent implements OnInit {
   async pupTotalPeople(areas: any) {
     let postPonedPopUp = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: 'Ficoticket',
+      header: 'Summit Tickets',
       subHeader: '',
       message:
         '<img class="my-custom-class" src="assets/img/numeroClientes.png"></img><br> <br>De momento contamos con clientes en las siguientes áreas:  <br><br>' + areas[0].name + ': ' + areas[0].total + '<br>' + areas[1].name + ': ' + areas[1].total + '<br>' + areas[2].name + ': ' + areas[2].total,
@@ -355,7 +359,7 @@ export class OfficesComponent implements OnInit {
   async pupCeroPeople() {
     let postPonedPopUp = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: 'Ficoticket',
+      header: 'Summit Tickets',
       subHeader: '',
       message:
         '<img class="my-custom-class" src="assets/img/nohaypersonas.png"></img><br><p class="agenciaCenter">De momento no hay clientes en espera para la oficina seleccionada</p>',

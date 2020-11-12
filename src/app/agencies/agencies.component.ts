@@ -46,7 +46,7 @@ export class AgenciesComponent implements OnInit,AfterViewInit {
   getUserId(){
     this.storeService.localGet(this.localParam.localParam.userLogged).then((resp) => {
       this.userId = resp;
-      this.getUserInfo(this.userId);
+      //this.getUserInfo(this.userId);
     }, (err) => {
       console.error(err);
     });

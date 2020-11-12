@@ -93,7 +93,7 @@ slideOpts = {
  private createMyForm() {
     return this.formBuilder.group({
      
-     cedula: ['', [Validators.required, Validators.maxLength(13)]],
+     cedula: ['', [Validators.required, Validators.maxLength(9)]],
      
     });
   }
@@ -118,7 +118,9 @@ log(){
 }
   login() {
     if(this.validateLogin()){
-      this.service.saveTicket(this.params.params.userInfo +'/'+ this.cedula, null).subscribe((resp) => {
+      this.router.navigateByUrl('/agencies');
+      this.storeService.localSave(this.localParam.localParam.userLogged, this.cedula);
+      /*this.service.saveTicket(this.params.params.userInfo +'/'+ this.cedula, null).subscribe((resp) => {
 
         this.userdata = resp;
         OneSignal.setExternalUserId(this.cedula);
@@ -134,7 +136,7 @@ log(){
         if(err.status == 404){
   
         }
-      });
+      });*/
     }else{
       this.popUpValidation();
     }
@@ -198,7 +200,7 @@ log(){
   }
 
   getImages(){
-    this.service.getTicket('https://cdservices.ficohsa.com:9023/Marketing_info').subscribe((resp) => {
+    this.service.getTicket('https://13.58.166.253/marketing/api/Marketing_info').subscribe((resp) => {
       this.images= resp;
       //console.log(this.images);
 

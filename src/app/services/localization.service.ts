@@ -45,7 +45,7 @@ interface OptionsParamsQuery {
 export class LocalizationService {
 
   private headers = new HttpHeaders({
-    'Authorization': token.dev
+    //'Authorization': token.dev
   });
 
   private microsoftKey = 'D7u4dtG3OyO-S5wTY5ucRriJqXAmfO8uO20X2Kk3wl0';

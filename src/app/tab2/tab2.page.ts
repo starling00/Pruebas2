@@ -101,7 +101,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       });
     }
 
-    this.getNotificationData();
+    //this.getNotificationData();
 
     this.preventWebBackButton();
     this.destroyDelay(this.exitDelay);
@@ -122,7 +122,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     this.getUserLogged();
     this.presentLoadingDefault();
     clearTimeout(this.exitDelay);
-    this.getCross();
+    //this.getCross();
   }
 
   ionViewDidEnter() {
@@ -141,9 +141,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
       this.getTicketDesti();
       this.getTicketPosition();
       this.getTicketTime();
-      if(this.platform.is('ios')){
-        this.timer();
-      }
+      this.timer();
       //this.getPersonId();
 
     }, 4000);
@@ -352,7 +350,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
           this.storeService.localSave(this.localParam.localParam.ticketStatus, this.refreshedTicket);
           let positionInQueue = this.refreshedTicket[0].positionInQueue;
           let currentStatus = this.refreshedTicket[0].currentStatus;
-          if (this.lastPosition != positionInQueue && positionInQueue != "") {
+          if (this.lastPosition != positionInQueue && positionInQueue != null) {
             this.stopPositionPopUp = false;
             this.alertSound = false;
             this.lastPosition = positionInQueue;
@@ -452,8 +450,8 @@ export class Tab2Page implements OnInit, AfterViewInit {
       this.storeService.localGet(this.localParam.localParam.userModel).then((resp) => {
         let userModel = resp;
 
-        this.services.saveTicket(
-          this.params.params.postPoneTicket + '/services/' + serviceId + '/branches/' + officeId + '/ticket/' + visitId + '/queue/' + queueId + '/userId/' + this.person, userModel).subscribe((resp) => {
+        this.services.save(
+          this.params.params.postPoneTicket + '/services/' + serviceId + '/branches/' + officeId + '/ticket/' + visitId + '/queue/' + queueId + '/userId/' + this.person).subscribe((resp) => {
             this.newTicket = resp;
             this.storeService.localSave(this.localParam.localParam.createdTicket, this.newTicket);
 
@@ -599,7 +597,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
     this.alertTi();
     this.popUp = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: 'Ficoticket',
+      header: 'Summit Tickets',
       subHeader: '',
       message:
         '<img class="my-custom-class" src="assets/img/unticket.png"></img><br> <br> Su ticket número ' + this.ticketNumber + ' está siendo llamado, pasar a la ventanilla: ' + calledFrom,
@@ -623,9 +621,10 @@ export class Tab2Page implements OnInit, AfterViewInit {
   //Popup de la posicion del cliente
   async alertPositionInQueue(positionInQueue) {
     //this.alertPosition();
+    this.stopPositionPopUp = true;
     this.positionPopUp = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: 'Ficoticket:',
+      header: 'Summit Tickets:',
       subHeader: '',
       message:
         '<img class="my-custom-class" src="assets/img/tickets3.png"></img><br> <br> Faltan ' + positionInQueue + ' tickets para su llamado.',
@@ -640,14 +639,12 @@ export class Tab2Page implements OnInit, AfterViewInit {
       ]
     });
     await this.positionPopUp.present();
-
-    this.stopPositionPopUp = true;
   }
 
   async popUpActiveTicket() {
     this.ticketPopUp = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: '¡Ficoticket Generado!',
+      header: 'Ticket Generado!',
       subHeader: '',
       message:
         '<img class="my-custom-class" src="assets/img/check.png"></img><br> <br>Te estaremos notificando según se aproxime tu llamado.',
@@ -732,10 +729,10 @@ export class Tab2Page implements OnInit, AfterViewInit {
   async cancelledTicket() {
     let cancelledPopUp = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: 'Ficoticket',
+      header: 'Summit Tickets',
       subHeader: '',
       message:
-        '<img class="my-custom-class" src="assets/img/cancel.png"></img><br> <br><h6>Has cancelado el ticket generado</h6>Te invitamos a seguir utilizando nuestro servicio de Ficoticket.',
+        '<img class="my-custom-class" src="assets/img/cancel.png"></img><br> <br><h6>Has cancelado el ticket generado</h6>Te invitamos a seguir utilizando nuestro servicio de Summit Tickets.',
 
       buttons: [{
         text: 'Aceptar',
@@ -753,7 +750,7 @@ export class Tab2Page implements OnInit, AfterViewInit {
   async postPonedTicket() {
     let postPonedPopUp = await this.alertCtrl.create({
       cssClass: 'my-custom-class',
-      header: 'Ficoticket',
+      header: 'Summit Tickets',
       subHeader: '',
       message:
         '<img class="my-custom-class" src="assets/img/newticket.png"></img><br> <br>Has generado nuevo ticket exitosamente',
