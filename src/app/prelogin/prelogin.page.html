@@ -1,20 +1,30 @@
-<ion-header >
-  <ion-toolbar class="topMenu" >
-      <ion-title></ion-title>
-    </ion-toolbar>
+<ion-header>
+ <ion-toolbar class="topMenu">
+  <ion-title>
+  </ion-title>
+ </ion-toolbar>
 </ion-header>
-
-<ion-content class="" padding>
-<div class="logo">
-      <img id="logoAprelogin" src="assets/img/logoA.png" alt="Logo del banco de ficohsa" > 
-        
-    </div>
-
-    <ion-list>
-<p class="text1">¡Bienvenido(a), a la experiencia de <span id="titlePrelogin"><strong class="colorF">Summit Tickets</strong></span> desde ahora puedes generar
-   tu ticket virtual para ser atendido en nuestras agencias a nivel nacional!</p>
-    </ion-list>
-
-    <br> <br>
- <ion-button class="btnLoging" expand="block" (click)="login()">Continuar<ion-icon name="log-in"></ion-icon></ion-button>
+<ion-content class="" padding="">
+ <div class="logo">
+  <img alt="Logo del banco de ficohsa" id="logoAprelogin" src="assets/img/logoA.png"/>
+ </div>
+ <ion-list>
+  <p class="text1">
+   ¡Bienvenido(a), a la experiencia de
+   <span id="titlePrelogin">
+    <strong class="colorF">
+     Caja Ande ~ Tickets
+    </strong>
+   </span>
+   desde ahora puedes generar
+   tu ticket virtual para ser atendido en nuestras agencias a nivel nacional!
+  </p>
+ </ion-list>
+ <br/>
+ <br/>
+ <ion-button (click)="login()" class="btnLoging" expand="block">
+  Continuar
+  <ion-icon name="log-in">
+  </ion-icon>
+ </ion-button>
 </ion-content>

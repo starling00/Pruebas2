@@ -1,51 +1,56 @@
-
-<ion-header >
-    <ion-toolbar class="topMenu" >
-        <ion-title id="titleLogin">Summit Tickets</ion-title>
-      </ion-toolbar>
+<ion-header>
+ <ion-toolbar class="topMenu">
+  <ion-title id="titleLogin">
+   Caja Ande ~ Tickets
+  </ion-title>
+ </ion-toolbar>
 </ion-header>
- 
-<ion-content @fadein  padding>
-  <div class="logo">
-        <img id="logoAlogin" src="assets/img/logoA.png" alt="Logo del banco de ficohsa" > 
-          
-      </div>
-      <p class="text1">Asegúrate de digitar correctamente tu número 
+<ion-content @fadein="" padding="">
+ <div class="logo">
+  <img alt="Logo del banco de ficohsa" id="logoAlogin" src="assets/img/logoA.png"/>
+ </div>
+ <p class="text1">
+  Asegúrate de digitar correctamente tu número 
         de identificación para que puedas gozar de tus beneficios.
-      </p>
-      <form [formGroup]="myForm" >
-      <ion-list class="line-input">
-        <ion-item>
-          <ion-icon class="iconP" name="person" slot="end"></ion-icon>
-          <ion-label position="floating">Tarjeta de identidad:</ion-label>
-          <ion-input formControlName="cedula" type="text" [(ngModel)]="cedula" 
-          pattern="^(?=.{9}$)(([0-9])\2?(?!\2{3}))+$" clearInput>
-          </ion-input>
-        </ion-item>
-        <div class="validation-errors">
-          <ng-container *ngFor="let validation of validation_messages.cedula">
-            <div class="error-message" *ngIf="myForm.get('cedula').hasError(validation.type)">
-              {{ validation.message }}
-            </div>
-          </ng-container>
-        </div>
-      </ion-list>
-      
-      <br> <br>
-   <ion-button class="btnLoging" expand="block" [disabled]="!myForm.valid" (click)="login()">Continuar<ion-icon name="log-in"></ion-icon></ion-button>
-  </form>
-  <br>
-
-   <div class="">
-    <ion-slides *ngIf="images && images.length" pager="true" [options]="slideOpts">
-      <ion-slide *ngFor='let img of images' >
-        <a [href]="img.Link">
-          <img [src]="img.FileData" alt="">
-        </a>
-      </ion-slide>
-    </ion-slides> 
-  </div>
-  <!--<div (click)="link()" class="">
+ </p>
+ <form [formgroup]="myForm">
+  <ion-list class="line-input">
+   <ion-item>
+    <ion-icon class="iconP" name="person" slot="end">
+    </ion-icon>
+    <ion-label position="floating">
+     Tarjeta de identidad:
+    </ion-label>
+    <ion-input [(ngmodel)]="cedula" clearinput="" formcontrolname="cedula" pattern="^(?=.{9}$)(([0-9])\2?(?!\2{3}))+$" type="text">
+    </ion-input>
+   </ion-item>
+   <div class="validation-errors">
+    <ng-container *ngfor="let validation of validation_messages.cedula">
+     <div *ngif="myForm.get('cedula').hasError(validation.type)" class="error-message">
+      {{ validation.message }}
+     </div>
+    </ng-container>
+   </div>
+  </ion-list>
+  <br/>
+  <br/>
+  <ion-button (click)="login()" [disabled]="!myForm.valid" class="btnLoging" expand="block">
+   Continuar
+   <ion-icon name="log-in">
+   </ion-icon>
+  </ion-button>
+ </form>
+ <br/>
+ <div class="">
+  <ion-slides *ngif="images &amp;&amp; images.length" [options]="slideOpts" pager="true">
+   <ion-slide *ngfor="let img of images">
+    <a [href]="img.Link">
+     <img [src]="img.FileData" alt=""/>
+    </a>
+   </ion-slide>
+  </ion-slides>
+ </div>
+ <!--<div (click)="link()" class="">
   
   <ion-slides pager="true"  [options]="slideOpts">
 <ion-slide *ngFor='let slide of slides' >
@@ -53,5 +58,5 @@
 </ion-slide>
   </ion-slides> 
   </div>-->
-  <!--<ion-button class="btnLoging" expand="block"(click)="log()">Continuar<ion-icon name="log-in"></ion-icon></ion-button>-->
-  </ion-content>
+ <!--<ion-button class="btnLoging" expand="block"(click)="log()">Continuar<ion-icon name="log-in"></ion-icon></ion-button>-->
+</ion-content>

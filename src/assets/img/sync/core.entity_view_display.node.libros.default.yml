@@ -1,0 +1,46 @@
+uuid: 17ce2e92-aed2-4e63-809f-1c6aa9079e27
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.libros.body
+    - field.field.node.libros.field_autor
+    - field.field.node.libros.field_categoria
+    - node.type.libros
+  module:
+    - text
+    - user
+id: node.libros.default
+targetEntityType: node
+bundle: libros
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 101
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_autor:
+    weight: 103
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_categoria:
+    weight: 102
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+hidden: {  }

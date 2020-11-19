@@ -1,30 +1,35 @@
 <ion-header>
-    <ion-toolbar class="topMenu">
-       
-      <ion-title>
-        <div class="logo">
-          <img id="logoBmodal" src="assets/img/logoB.png" alt="Logo de la compañia">
-    
-        </div> 
-      </ion-title>
-  
-    </ion-toolbar>
-  </ion-header>
-
-<ion-content padding>
-
-<h2>Tickets</h2>
-  <div class="imagenIcon">
-    <img src="assets/img/like.png" alt="Icono de Like" > 
-      
-  </div>
-
-  <ion-list>
-<p class="text1"><strong class="colorF">Gracias por utilizar el servicio de <span id="titleModal">Summit Tickets</span></strong></p>
-
-<p class="text1">Ha sido un placer atenderte</p>  
-</ion-list>
-
-  <br> <br>
-<ion-button class="btnLoging" expand="block" (click)="finalScreen()">Ok</ion-button>
+ <ion-toolbar class="topMenu">
+  <ion-title>
+   <div class="logo">
+    <img alt="Logo de la compañia" id="logoBmodal" src="assets/img/logoB.png"/>
+   </div>
+  </ion-title>
+ </ion-toolbar>
+</ion-header>
+<ion-content padding="">
+ <h2>
+  Tickets
+ </h2>
+ <div class="imagenIcon">
+  <img alt="Icono de Like" src="assets/img/like.png"/>
+ </div>
+ <ion-list>
+  <p class="text1">
+   <strong class="colorF">
+    Gracias por utilizar el servicio de
+    <span id="titleModal">
+     Tickets Caja Ande
+    </span>
+   </strong>
+  </p>
+  <p class="text1">
+   Ha sido un placer atenderte
+  </p>
+ </ion-list>
+ <br/>
+ <br/>
+ <ion-button (click)="finalScreen()" class="btnLoging" expand="block">
+  Ok
+ </ion-button>
 </ion-content>

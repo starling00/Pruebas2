@@ -1,60 +1,77 @@
 <ion-header>
-  <ion-toolbar class="topMenu">
-    <ion-title id="title1Agencies">Summit Tickets</ion-title>
-  </ion-toolbar>
+ <ion-toolbar class="topMenu">
+  <ion-title id="title1Agencies">
+   Tickets Caja Ande
+  </ion-title>
+ </ion-toolbar>
 </ion-header>
-
-<ion-content class="" padding>
-  <div class="logo">
-    <img id="logoAagencies" src="assets/img/logoA.png" alt="Logo del banco de ficohsa">
-
-  </div>
-  <div>
-    <p class="text1">
-      Bienvenido(a) a <span id="title2Agencies"><Strong class="colorF">Summit Tickets</Strong></span>, puedes proceder a
+<ion-content class="" padding="">
+ <div class="logo">
+  <img alt="Logo del banco de ficohsa" id="logoAagencies" src="assets/img/logoA.png"/>
+ </div>
+ <div>
+  <p class="text1">
+   Bienvenido(a) a
+   <span id="title2Agencies">
+    <strong class="colorF">
+     Tickets Caja Ande
+    </strong>
+   </span>
+   , puedes proceder a
       seleccionar la agencia que deseas visitar.
-    </p>
-  </div>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <div>
-          <p class="text2">Seleccione una opción: </p>
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <div (click)="openOffices()">
-          <ion-card class="colorCards">
-            <ion-card-header>
-              <ion-card-subtitle><strong>Agencia de mi preferencia</strong></ion-card-subtitle>
-              <hr>
-            </ion-card-header>
-            <ion-card-content style="
+  </p>
+ </div>
+ <ion-grid>
+  <ion-row>
+   <ion-col>
+    <div>
+     <p class="text2">
+      Seleccione una opción:
+     </p>
+    </div>
+   </ion-col>
+  </ion-row>
+  <ion-row>
+   <ion-col>
+    <div (click)="openOffices()">
+     <ion-card class="colorCards">
+      <ion-card-header>
+       <ion-card-subtitle>
+        <strong>
+         Agencia de mi preferencia
+        </strong>
+       </ion-card-subtitle>
+       <hr/>
+      </ion-card-header>
+      <ion-card-content style="
               text-align: center;">
-             <img style="padding: 5px;" src="assets/img/ag1.png" />
-            </ion-card-content>
-          </ion-card>
-
-        </div>
-      </ion-col>
-      <ion-col>
-        <div routerLink="/agencies-maps">
-          <ion-card class="colorCards">
-            <ion-card-header>
-              <ion-card-subtitle><strong>Agencia por ubicación</strong></ion-card-subtitle>
-              <hr>
-            </ion-card-header>
-            <ion-card-content style="
+       <img src="assets/img/ag1.png" style="padding: 5px;">
+       </img>
+      </ion-card-content>
+     </ion-card>
+    </div>
+   </ion-col>
+   <ion-col>
+    <div routerlink="/agencies-maps">
+     <ion-card class="colorCards">
+      <ion-card-header>
+       <ion-card-subtitle>
+        <strong>
+         Agencia por ubicación
+        </strong>
+       </ion-card-subtitle>
+       <hr/>
+      </ion-card-header>
+      <ion-card-content style="
                 text-align: center;">
-              <img style="padding: 5px;" src="assets/img/m02.png" />
-            </ion-card-content>
-          </ion-card>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  <br> <br>
-  <!--<ion-button class="btnLoging" expand="block" (click)="login()">Continuar<ion-icon name="log-in"></ion-icon></ion-button>-->
+       <img src="assets/img/m02.png" style="padding: 5px;"/>
+      </ion-card-content>
+     </ion-card>
+    </div>
+   </ion-col>
+  </ion-row>
+ </ion-grid>
+ <br/>
+ <br/>
+ <!--<ion-button class="btnLoging" expand="block" (click)="login()">Continuar<ion-icon name="log-in"></ion-icon></ion-button>-->
 </ion-content>
